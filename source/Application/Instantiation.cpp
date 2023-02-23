@@ -2,7 +2,7 @@
 
 using namespace ::terminal;
 
-Instantiation::Instantiation() : mTerminal(mUart)
+Instantiation::Instantiation() : mTerminal(mUart), mHX711(mTerminal)
 {
 }
 

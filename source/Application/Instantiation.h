@@ -1,5 +1,6 @@
 #pragma once
 
+#include "HX711.h"
 #include "Terminal.h"
 #include "Uart.h"
 
@@ -13,4 +14,5 @@ public:
 private:
     halwrapper::Uart mUart;
     terminal::Terminal mTerminal;
+    halwrapper::HX711 mHX711;
 };

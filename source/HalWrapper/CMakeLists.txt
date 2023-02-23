@@ -2,6 +2,8 @@ set(NAME HalWrapper)
 enable_language(C CXX)
 
 set(SOURCES
+    HX711.cpp
+    HX711.h
     Uart.cpp
     Uart.h
     UartInterface.h)
@@ -27,4 +29,4 @@ target_compile_definitions(${NAME} PRIVATE
 )
 
 target_include_directories(${NAME} PUBLIC ${INCLUDES})
-target_link_libraries(${NAME} PUBLIC STM32L4)
+target_link_libraries(${NAME} PUBLIC STM32L4 Terminal)
