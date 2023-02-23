@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "application.h"
+#include "Application.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +62,7 @@ static void MX_USART2_UART_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -96,7 +97,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    loop();
+    uint8_t Test[] = "Hello World !!!\r\n";
+    HAL_UART_Transmit(&huart2,Test,sizeof(Test) - 1,10);
+    HAL_Delay(200U);
+    Application();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -192,7 +196,6 @@ static void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART2_Init 2 */
-
   /* USER CODE END USART2_Init 2 */
 
 }

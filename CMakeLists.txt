@@ -11,92 +11,61 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(SOURCES
-        source/application.cpp
-        source/application.h)
-
-set(STM32CUBEMX_GENERATED_FILES
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim_ex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c
-        BSP/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_exti.c
-
-        BSP/Inc/main.h
-        BSP/Inc/stm32l4xx_hal_conf.h
-        BSP/Inc/stm32l4xx_it.h
-
-        BSP/Src/main.c
-        BSP/Src/stm32l4xx_hal_msp.c
-        BSP/Src/stm32l4xx_it.c
-        BSP/Src/system_stm32l4xx.c
-
-        BSP/startup_stm32l432xx.s)
+add_subdirectory(source/Terminal)
+add_subdirectory(source/Application)
+add_subdirectory(source/STM32L4)
 
 set(EXECUTABLE ${PROJECT_NAME}.out)
 
-add_executable(${EXECUTABLE} ${STM32CUBEMX_GENERATED_FILES} ${SOURCES})
-
-target_compile_definitions(${EXECUTABLE} PRIVATE
-        -DUSE_HAL_DRIVER
-        -DSTM32L432xx
-        )
-
-target_include_directories(${EXECUTABLE} PRIVATE
-        BSP/Inc
-        BSP/Drivers/STM32L4xx_HAL_Driver/Inc
-        BSP/Drivers/CMSIS/Device/ST/STM32L4xx/Include
-        BSP/Drivers/CMSIS/Include
-        source/
-        )
+add_executable(${EXECUTABLE} source/STM32L4/BSP/Src/main.c)
 
 target_compile_options(${EXECUTABLE} PRIVATE
-        -mcpu=cortex-m4
-        -mthumb
-        -mfpu=fpv4-sp-d16
-        -mfloat-abi=hard
-        -fdata-sections
-        -ffunction-sections
-        -Wall
-        $<$<CONFIG:Debug>:-Og>
-        -fno-exceptions
-        )
+    -mcpu=cortex-m4
+    -mthumb
+    -mfpu=fpv4-sp-d16
+    -mfloat-abi=hard
+    -fdata-sections
+    -ffunction-sections
+    -Wall
+    $<$<CONFIG:Debug>:-Og>
+    -fno-exceptions
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+)
+
+target_compile_definitions(${EXECUTABLE} PRIVATE
+    -DUSE_HAL_DRIVER
+    -DSTM32L432xx
+)
 
 target_link_options(${EXECUTABLE} PRIVATE
-        -T${CMAKE_SOURCE_DIR}/BSP/STM32L432KCUx_FLASH.ld
-        -mcpu=cortex-m4
-        -mthumb
-        -mfpu=fpv4-sp-d16
-        -mfloat-abi=hard
-        -specs=nano.specs
-        -lc
-        -lm
-        -lnosys
-        -Wl,-Map=${PROJECT_NAME}.map,--cref
-        -Wl,--gc-sections
-        )
+    -T${CMAKE_SOURCE_DIR}/source/STM32L4/BSP/STM32L432KCUx_FLASH.ld
+    -mcpu=cortex-m4
+    -mthumb
+    -mfpu=fpv4-sp-d16
+    -mfloat-abi=hard
+    -specs=nano.specs
+    -lc
+    -lm
+    -lnosys
+    -Wl,-Map=${PROJECT_NAME}.map,--cref
+    -Wl,--gc-sections
+)
+
+target_include_directories(${EXECUTABLE} PRIVATE ${source/STM32L4/BSP/Src/main.h})
+
+set_target_properties(${EXECUTABLE} PROPERTIES ADDITIONAL_CLEAN_FILES
+"${PROJECT_NAME}.bin;${PROJECT_NAME}.hex;${PROJECT_NAME}.map")
+
+target_link_libraries(${EXECUTABLE} PUBLIC
+    Application)
 
 # Print executable size
 add_custom_command(TARGET ${EXECUTABLE}
-        POST_BUILD
-        COMMAND arm-none-eabi-size ${EXECUTABLE})
+POST_BUILD
+COMMAND arm-none-eabi-size ${EXECUTABLE})
 
 # Create hex file
 add_custom_command(TARGET ${EXECUTABLE}
-        POST_BUILD
-        COMMAND arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
-        COMMAND arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin)
+POST_BUILD
+COMMAND arm-none-eabi-objcopy -O ihex ${EXECUTABLE} ${PROJECT_NAME}.hex
+COMMAND arm-none-eabi-objcopy -O binary ${EXECUTABLE} ${PROJECT_NAME}.bin)
