@@ -4,9 +4,12 @@
 namespace terminal
 {
 
-    class Terminal : public TerminalInterface
-    {
-        void Transmit(const char* txData, size_t size) override;
-    };
+class Terminal : public TerminalInterface
+{
+public:
+    Terminal();
+    void Init();
+    void Transmit(const char* txData, size_t size) override;
+};
 
 }
