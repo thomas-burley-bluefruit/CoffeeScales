@@ -1,5 +1,6 @@
 #include <cstddef>
 #include "TerminalInterface.h"
+#include "UartInterface.h"
 
 namespace terminal
 {
@@ -7,9 +8,11 @@ namespace terminal
 class Terminal : public TerminalInterface
 {
 public:
-    Terminal();
-    void Init();
-    void Transmit(const char* txData, size_t size) override;
+    Terminal(const halwrapper::UartInterface& uart);
+    void Transmit(const char* txData, size_t size) const override;
+
+private:
+    const halwrapper::UartInterface& mUart;
 };
 
 }

@@ -3,7 +3,9 @@ enable_language(C CXX)
 
 set(SOURCES
     Application.cpp
-    Application.h)
+    Application.h
+    Instantiation.cpp
+    Instantiation.h)
 
 set(INCLUDES .)
 
@@ -28,5 +30,6 @@ target_compile_definitions(${NAME} PRIVATE
 
 target_include_directories(${NAME} PUBLIC ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
+    HalWrapper
     Terminal
     STM32L4)

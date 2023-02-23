@@ -11,13 +11,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_subdirectory(source/Terminal)
 add_subdirectory(source/Application)
+add_subdirectory(source/HalWrapper)
 add_subdirectory(source/STM32L4)
+add_subdirectory(source/Terminal)
 
 set(EXECUTABLE ${PROJECT_NAME}.out)
 
-add_executable(${EXECUTABLE} source/STM32L4/BSP/Src/main.c)
+add_executable(${EXECUTABLE} source/STM32L4/Src/main.c)
 
 target_compile_options(${EXECUTABLE} PRIVATE
     -mcpu=cortex-m4
@@ -38,7 +39,7 @@ target_compile_definitions(${EXECUTABLE} PRIVATE
 )
 
 target_link_options(${EXECUTABLE} PRIVATE
-    -T${CMAKE_SOURCE_DIR}/source/STM32L4/BSP/STM32L432KCUx_FLASH.ld
+    -T${CMAKE_SOURCE_DIR}/source/STM32L4/STM32L432KCUx_FLASH.ld
     -mcpu=cortex-m4
     -mthumb
     -mfpu=fpv4-sp-d16
@@ -50,8 +51,6 @@ target_link_options(${EXECUTABLE} PRIVATE
     -Wl,-Map=${PROJECT_NAME}.map,--cref
     -Wl,--gc-sections
 )
-
-target_include_directories(${EXECUTABLE} PRIVATE ${source/STM32L4/BSP/Src/main.h})
 
 set_target_properties(${EXECUTABLE} PROPERTIES ADDITIONAL_CLEAN_FILES
 "${PROJECT_NAME}.bin;${PROJECT_NAME}.hex;${PROJECT_NAME}.map")

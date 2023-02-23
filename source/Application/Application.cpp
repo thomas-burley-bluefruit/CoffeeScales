@@ -1,16 +1,16 @@
 #include <cstring>
 #include "stm32l4xx_hal.h"
 #include "Application.h"
-#include "Terminal.h"
+#include "Instantiation.h"
 
-static terminal::Terminal mTerminal;
+static Instantiation mInstantiation;
 
 extern "C"
 {
 
 void Init()
 {
-    mTerminal.Init();
+    mInstantiation.Init();
 }
 
 void Application()
@@ -18,7 +18,7 @@ void Application()
     while (1)
     {
         const char* message = "Hello world!";
-        mTerminal.Transmit(message, strlen(message));
+        mInstantiation.Terminal().Transmit(message, strlen(message));
         HAL_Delay(400);
     }
 }

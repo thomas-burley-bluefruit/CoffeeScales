@@ -1,10 +1,10 @@
-set(NAME Terminal)
+set(NAME HalWrapper)
 enable_language(C CXX)
 
 set(SOURCES
-    Terminal.cpp
-    Terminal.h
-    TerminalInterface.h)
+    Uart.cpp
+    Uart.h
+    UartInterface.h)
 
 set(INCLUDES .)
 
@@ -27,4 +27,4 @@ target_compile_definitions(${NAME} PRIVATE
 )
 
 target_include_directories(${NAME} PUBLIC ${INCLUDES})
-target_link_libraries(${NAME} PUBLIC HalWrapper)
+target_link_libraries(${NAME} PUBLIC STM32L4)
