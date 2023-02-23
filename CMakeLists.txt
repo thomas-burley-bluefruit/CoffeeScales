@@ -43,7 +43,7 @@ target_link_options(${EXECUTABLE} PRIVATE
     -mthumb
     -mfpu=fpv4-sp-d16
     -mfloat-abi=hard
-    -specs=nano.specs
+    -specs=nosys.specs
     -lc
     -lm
     -lnosys
