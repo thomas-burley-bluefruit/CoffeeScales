@@ -4,6 +4,8 @@
 
 static UART_HandleTypeDef mUart;
 static constexpr uint32_t TimeoutMs = 10;
+static constexpr uint32_t UartTxPin = GPIO_PIN_2;
+static constexpr uint32_t  UartRxPin = GPIO_PIN_15;
 
 using namespace ::halwrapper;
 
@@ -23,6 +25,7 @@ void Uart::Init()
     mUart.Init.OverSampling = UART_OVERSAMPLING_16;
     mUart.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
     mUart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+    HAL_UART_Init(&mUart);
 }
 
 void Uart::Transmit(const uint8_t* txData, size_t size) const
@@ -31,4 +34,44 @@ void Uart::Transmit(const uint8_t* txData, size_t size) const
                       txData,
                       size,
                       TimeoutMs);
+}
+
+extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+    if(huart->Instance==USART2)
+    {
+        PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+        PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+        HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
+
+        __HAL_RCC_USART2_CLK_ENABLE();
+
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+        GPIO_InitStruct.Pin = UartTxPin;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+        GPIO_InitStruct.Pin = UartRxPin;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF3_USART2;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    }
+
+}
+
+extern "C" void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
+{
+    if(huart->Instance==USART2)
+    {
+        __HAL_RCC_USART2_CLK_DISABLE();
+        HAL_GPIO_DeInit(GPIOA, UartTxPin|UartRxPin);
+    }
+
 }
