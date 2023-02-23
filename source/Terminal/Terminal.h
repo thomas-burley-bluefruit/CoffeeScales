@@ -9,7 +9,7 @@ class Terminal : public TerminalInterface
 {
 public:
     Terminal(const halwrapper::UartInterface& uart);
-    void Transmit(const char* txData, size_t size) const override;
+    void TextOut(const char* text) const override;
 
 private:
     const halwrapper::UartInterface& mUart;

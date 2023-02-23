@@ -9,7 +9,7 @@ class TerminalInterface
 {
 public:
     ~TerminalInterface() = default;
-    virtual void Transmit(const char* txData, size_t size) const = 0;
+    virtual void TextOut(const char *text) const = 0;
 };
 
 }

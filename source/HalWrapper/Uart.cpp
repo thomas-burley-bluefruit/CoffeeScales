@@ -25,7 +25,7 @@ void Uart::Init()
     mUart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
 }
 
-void Uart::Transmit(uint8_t* txData, size_t size) const
+void Uart::Transmit(const uint8_t* txData, size_t size) const
 {
     HAL_UART_Transmit(&mUart,
                       txData,

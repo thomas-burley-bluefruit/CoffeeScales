@@ -18,7 +18,7 @@ void Application()
     while (1)
     {
         const char* message = "Hello world!";
-        mInstantiation.Terminal().Transmit(message, strlen(message));
+        mInstantiation.Terminal().TextOut(message);
         HAL_Delay(400);
     }
 }
