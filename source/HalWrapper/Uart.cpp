@@ -3,9 +3,9 @@
 #include "stm32l4xx_hal_uart.h"
 
 static UART_HandleTypeDef mUart;
-static constexpr uint32_t TimeoutMs = 10;
 static constexpr uint32_t UartTxPin = GPIO_PIN_2;
-static constexpr uint32_t  UartRxPin = GPIO_PIN_15;
+static constexpr uint32_t UartRxPin = GPIO_PIN_15;
+static constexpr uint32_t TimeoutMs = 10;
 
 using namespace ::halwrapper;
 
@@ -63,7 +63,6 @@ extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart)
         GPIO_InitStruct.Alternate = GPIO_AF3_USART2;
         HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
     }
-
 }
 
 extern "C" void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
@@ -73,5 +72,4 @@ extern "C" void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
         __HAL_RCC_USART2_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOA, UartTxPin|UartRxPin);
     }
-
 }
