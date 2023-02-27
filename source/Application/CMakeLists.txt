@@ -10,26 +10,10 @@ set(SOURCES
 set(INCLUDES .)
 
 add_library(${NAME} STATIC ${SOURCES})
-target_compile_options(${NAME} PRIVATE
-    -mcpu=cortex-m4
-    -mthumb
-    -mfpu=fpv4-sp-d16
-    -mfloat-abi=hard
-    -fdata-sections
-    -ffunction-sections
-    -Wall
-    $<$<CONFIG:Debug>:-Og>
-    -fno-exceptions
-    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-)
 
-target_compile_definitions(${NAME} PRIVATE
-        -DUSE_HAL_DRIVER
-        -DSTM32L432xx
-)
-
+target_compile_options(${NAME} PRIVATE ${COMPILE_OPTIONS})
+target_compile_definitions(${NAME} PRIVATE ${COMPILE_DEFINITIONS})
 target_include_directories(${NAME} PUBLIC ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
     HalWrapper
-    Terminal
-    STM32L4)
+    Terminal)

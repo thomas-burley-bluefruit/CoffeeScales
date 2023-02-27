@@ -1,5 +1,3 @@
-#include <cstring>
-#include "stm32l4xx_hal.h"
 #include "Application.h"
 #include "Instantiation.h"
 
@@ -17,9 +15,8 @@ void Application()
 {
     while (1)
     {
-        const char* message = "Hello world!";
+        const char* message = "Hello world!\n";
         mInstantiation.Terminal().TextOut(message);
-        HAL_Delay(400);
     }
 }
 
