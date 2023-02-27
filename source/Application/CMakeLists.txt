@@ -5,7 +5,8 @@ set(SOURCES
     Application.cpp
     Application.h
     Instantiation.cpp
-    Instantiation.h)
+    Instantiation.h
+    main.cpp)
 
 set(INCLUDES .)
 

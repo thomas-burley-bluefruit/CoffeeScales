@@ -3,21 +3,16 @@
 
 static Instantiation mInstantiation;
 
-extern "C"
-{
-
-void Init()
+void Application_Init()
 {
     mInstantiation.Init();
 }
 
-void Application()
+void Application_Loop()
 {
     while (1)
     {
         const char* message = "Hello world!\n";
         mInstantiation.Terminal().TextOut(message);
     }
-}
-
 }

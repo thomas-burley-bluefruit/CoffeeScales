@@ -2,6 +2,8 @@ set(NAME HalWrapper)
 enable_language(C CXX)
 
 set(SOURCES
+    HalInit.cpp
+    HalInit.h
     HX711.cpp
     HX711.h
     Uart.cpp

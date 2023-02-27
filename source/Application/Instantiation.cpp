@@ -8,6 +8,7 @@ Instantiation::Instantiation() : mTerminal(mUart), mHX711(mTerminal)
 
 void Instantiation::Init()
 {
+    mHalInit.Init();
     mUart.Init();
 }
 

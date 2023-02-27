@@ -15,10 +15,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(EXECUTABLE ${PROJECT_NAME}.out)
 
 set(SOURCES
-        source/STM32L4/Src/main.c
         source/STM32L4/Inc/stm32l4xx_hal_conf.h
-        source/STM32L4/Inc/stm32l4xx_it.h
-        source/STM32L4/Src/stm32l4xx_hal_msp.c
+        source/Application/main.cpp
         source/STM32L4/Src/stm32l4xx_it.c
         source/STM32L4/Src/system_stm32l4xx.c
         source/STM32L4/startup_stm32l432xx.s)

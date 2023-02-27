@@ -1,5 +1,6 @@
 #pragma once
 
+#include "HalInit.h"
 #include "HX711.h"
 #include "Terminal.h"
 #include "Uart.h"
@@ -12,6 +13,7 @@ public:
     const terminal::Terminal& Terminal() const;
 
 private:
+    halwrapper::HalInit mHalInit;
     halwrapper::Uart mUart;
     terminal::Terminal mTerminal;
     halwrapper::HX711 mHX711;
