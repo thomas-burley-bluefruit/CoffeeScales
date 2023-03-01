@@ -14,5 +14,6 @@ void Application_Loop()
     {
         const char* message = "Hello world!\n";
         mInstantiation.Terminal().TextOut(message);
+        mInstantiation.Delay().DelayMs(500);
     }
 }

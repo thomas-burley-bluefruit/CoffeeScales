@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Types.h"
+
 namespace halwrapper
 {
 
@@ -7,8 +9,8 @@ class HX711GpioInterface
 {
 public:
     ~HX711GpioInterface() = default;
-    virtual bool GetDataPinState() const = 0;
-    virtual void SetClockPin(const bool state) = 0;
+    virtual GpioPinState GetDataPinState() const = 0;
+    virtual void SetClockPin(const GpioPinState state) = 0;
 };
 
 }

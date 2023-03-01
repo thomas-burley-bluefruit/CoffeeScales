@@ -2,15 +2,16 @@
 
 using namespace ::terminal;
 
-Instantiation::Instantiation() : mTerminal(mUart), mHX711(mTerminal)
+Instantiation::Instantiation() : mTerminal(mUart)
 {
 }
 
 void Instantiation::Init()
 {
     mHalInit.Init();
-    mDelay.Init();
     mUart.Init();
+    mDelay.Init();
+    mHX711.Init();
 }
 
 halwrapper::Delay &Instantiation::Delay()

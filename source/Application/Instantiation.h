@@ -17,7 +17,7 @@ public:
 private:
     halwrapper::HalInit mHalInit;
     halwrapper::Delay mDelay;
+    halwrapper::HX711Gpio mHX711;
     halwrapper::Uart mUart;
     terminal::Terminal mTerminal;
-    halwrapper::HX711Gpio mHX711;
 };
