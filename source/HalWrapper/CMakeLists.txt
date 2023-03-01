@@ -8,8 +8,8 @@ set(SOURCES
     DelayTimer.h
     HalInit.cpp
     HalInit.h
-    HX711.cpp
-    HX711.h
+        HX711Gpio.cpp
+        HX711Gpio.h
     Uart.cpp
     Uart.h
     UartInterface.h)

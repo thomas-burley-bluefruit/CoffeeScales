@@ -2,7 +2,7 @@
 
 #include "Delay.h"
 #include "HalInit.h"
-#include "HX711.h"
+#include "HX711Gpio.h"
 #include "Terminal.h"
 #include "Uart.h"
 
@@ -19,5 +19,5 @@ private:
     halwrapper::Delay mDelay;
     halwrapper::Uart mUart;
     terminal::Terminal mTerminal;
-    halwrapper::HX711 mHX711;
+    halwrapper::HX711Gpio mHX711;
 };
