@@ -3,7 +3,6 @@
 #include "Utilities.h"
 
 using namespace ::halwrapper;
-using namespace ::terminal;
 
 static constexpr uint32_t HX711DoutPin = GPIO_PIN_3;
 static GPIO_TypeDef* HX711DoutGpioPort = GPIOA;

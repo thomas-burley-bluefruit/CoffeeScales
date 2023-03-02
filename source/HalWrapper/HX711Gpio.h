@@ -1,5 +1,4 @@
 #pragma once
-#include "TerminalInterface.h"
 #include "HX711GpioInterface.h"
 #include "DelayInterface.h"
 
