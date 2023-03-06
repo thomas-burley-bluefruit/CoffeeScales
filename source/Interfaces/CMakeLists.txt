@@ -3,7 +3,9 @@ enable_language(C CXX)
 
 set(SOURCES
         DelayInterface.h
-        HX711GpioInterface.h
+        HX711DriverInterface.h
+        GpioInterface.h
+        SystemInterface.h
         TerminalInterface.h
         UartInterface.h)
 

@@ -10,6 +10,8 @@ set(SOURCES
     HalInit.h
     HX711Gpio.cpp
     HX711Gpio.h
+    System.cpp
+    System.h
     Uart.cpp
     Uart.h)
 
@@ -20,4 +22,4 @@ add_library(${NAME} STATIC ${SOURCES})
 target_compile_options(${NAME} PRIVATE ${COMPILE_OPTIONS})
 target_compile_definitions(${NAME} PRIVATE ${COMPILE_DEFINITIONS})
 target_include_directories(${NAME} PUBLIC ${INCLUDES})
-target_link_libraries(${NAME} PUBLIC STM32L4)
+target_link_libraries(${NAME} PUBLIC Interfaces STM32L4 Types)

@@ -8,10 +8,10 @@
 namespace halwrapper
 {
 
-class Delay final : public DelayTimer, public DelayInterface
+class Delay : public DelayTimer, public DelayInterface
 {
 public:
-    void DelayUs(uint16_t delayUs) override;
+    void DelayUs(const uint16_t delayUs) override;
     void DelayMs(uint32_t delayMs) override;
 };
 

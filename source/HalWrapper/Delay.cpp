@@ -3,7 +3,7 @@
 
 using namespace ::halwrapper;
 
-void Delay::DelayUs(uint16_t delayUs)
+void Delay::DelayUs(const uint16_t delayUs)
 {
     ResetCounter();
     while (GetCounter() < delayUs);

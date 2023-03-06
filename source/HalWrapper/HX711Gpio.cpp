@@ -30,13 +30,11 @@ void HX711Gpio::Init()
     HAL_GPIO_Init(HX711PdSckGpioPort, &GpioPdSck);
 }
 
-GpioPinState HX711Gpio::GetDataPinState() const
-{
+GpioPinState HX711Gpio::GetPinState() const {
     return PinState(HAL_GPIO_ReadPin(HX711DoutGpioPort, HX711DoutPin));
 }
 
-void HX711Gpio::SetClockPin(const GpioPinState state)
-{
+void HX711Gpio::SetPinState(const halwrapper::GpioPinState state) {
     HAL_GPIO_WritePin(HX711PdSckGpioPort,
                       HX711PdSckPin,
                       HalPinState(state));

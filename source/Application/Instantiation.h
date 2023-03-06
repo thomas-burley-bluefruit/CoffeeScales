@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Delay.h"
 #include "HalInit.h"
-#include "HX711Gpio.h"
+#include "HX711Driver.h"
+#include "System.h"
 #include "Terminal.h"
 #include "Uart.h"
 
@@ -12,12 +12,13 @@ public:
     Instantiation();
     void Init();
     const terminal::Terminal& Terminal() const;
-    halwrapper::Delay& Delay();
+    halwrapper::System& System();
+    drivers::HX711Driver& Hx711();
 
 private:
     halwrapper::HalInit mHalInit;
-    halwrapper::Delay mDelay;
-    halwrapper::HX711Gpio mHX711;
+    halwrapper::System mSystem;
     halwrapper::Uart mUart;
     terminal::Terminal mTerminal;
+    drivers::HX711Driver mHx711;
 };

@@ -31,7 +31,8 @@ void DelayTimer::Init()
 
 void DelayTimer::ResetCounter()
 {
-    __HAL_TIM_SET_COUNTER(&sTimer, 0);
+    // TODO: Do we need to clear the event? (NVIC)
+    sTimer.Instance->EGR |= TIM_EGR_UG;
 }
 
 uint16_t DelayTimer::GetCounter()

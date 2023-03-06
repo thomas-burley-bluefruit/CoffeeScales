@@ -67,6 +67,7 @@ void HalInit::MxGpioInit(void)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
 }
 
 void HalInit::ErrorHandler()

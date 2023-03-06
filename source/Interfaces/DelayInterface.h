@@ -9,8 +9,8 @@ class DelayInterface
 {
 public:
     ~DelayInterface() = default;
-    virtual void DelayMs(uint32_t delayMs) = 0;
-    virtual void DelayUs(uint16_t delayUs) = 0;
+    virtual void DelayMs(const uint32_t delayMs) = 0;
+    virtual void DelayUs(const uint16_t delayUs) = 0;
 };
 
 }
