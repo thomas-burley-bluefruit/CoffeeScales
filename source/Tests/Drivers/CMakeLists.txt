@@ -1,7 +1,8 @@
 set(NAME Tests.Drivers)
 
 set(SOURCES
-        tests.HX711Driver.cpp)
+        tests.HX711Driver.cpp
+        tests.Utilities.cpp)
 
 set(INCLUDES .)
 
