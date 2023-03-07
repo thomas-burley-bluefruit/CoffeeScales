@@ -1,7 +1,11 @@
 #include "HX711Driver.h"
+#include "Utilities.h"
+
+#include <bitset>
 
 using namespace drivers;
 using namespace halwrapper;
+using std::bitset;
 
 HX711Driver::HX711Driver(SystemInterface& system) : mSystem(system)
 {}
@@ -11,13 +15,13 @@ bool HX711Driver::ReadAdcValue(int32_t &value) const
     if (mSystem.GetPinState() == GpioPinState::Set)
         return false;
 
-    int32_t adcValue = 0;
-    for (uint32_t i = AdcMsb; i > 0; i >>= 1)
+    bitset<AdcBits> adcData;
+    for (uint32_t i = AdcBits; i > 0; --i)
     {
         mSystem.SetPinState(GpioPinState::Set);
         mSystem.DelayUs(TimingDelayUs);
         if (mSystem.GetPinState() == GpioPinState::Set)
-            adcValue |= i;
+            adcData.set(i - 1);
         mSystem.SetPinState(GpioPinState::Reset);
         mSystem.DelayUs(TimingDelayUs);
     }
@@ -26,6 +30,6 @@ bool HX711Driver::ReadAdcValue(int32_t &value) const
     mSystem.DelayUs(TimingDelayUs);
     mSystem.SetPinState(GpioPinState::Reset);
 
-    value = adcValue;
+    value = Utilities::TwosComplementToInt(adcData);
     return true;
 }

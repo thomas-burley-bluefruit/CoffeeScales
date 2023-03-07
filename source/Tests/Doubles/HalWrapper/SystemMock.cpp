@@ -7,22 +7,19 @@ GpioPinState SystemMock::GetPinState() const {
     Calls.push_back({ SystemInterfaceMethod::GetPinState });
 
     if (!DataAvailable)
-    {
         return GpioPinState::Set;
-    }
-    else
-    {
-        bool pinState = AdcValue & ReadIndex;
-        if (ClockRisingEdge)
-        {
-            ReadIndex >>= 1;
-            ClockRisingEdge = false;
-        }
-        if (ReadIndex == 0)
-            ReadIndex = HX711Driver::AdcMsb;
-        return pinState ? GpioPinState::Set : GpioPinState::Reset;
-    }
 
+    if (!ClockRisingEdge)
+        return GpioPinState::Reset;
+
+    ClockRisingEdge = false;
+
+    bool pinState = AdcData[ReadIndex];
+    if (ReadIndex == 0)
+        ReadIndex = HX711Driver::AdcBits - 1;
+    else
+        --ReadIndex;
+    return pinState ? GpioPinState::Set : GpioPinState::Reset;
 }
 
 void SystemMock::SetPinState(const halwrapper::GpioPinState state) {

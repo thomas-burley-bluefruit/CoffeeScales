@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "HX711Driver.h"
 #include "SystemMock.h"
+#include "Utilities.h"
 
 #include <vector>
 
@@ -51,18 +52,36 @@ TEST_F(Hx711DriverTests, Read_ADC_value_returns_true_when_data_is_available)
     ASSERT_TRUE(returnVal);
 }
 
-TEST_F(Hx711DriverTests, Read_ADC_value_returns_correct_ADC_value)
+TEST_F(Hx711DriverTests, Read_ADC_value_returns_correct_ADC_value_for_positive_reading)
 {
     // Given
     mSystem.DataAvailable = true;
-    mSystem.AdcValue = 123456;
+    const int32_t expectedValue = 123456;
+    mSystem.AdcData =
+        Utilities::IntToTwosComplement<HX711Driver::AdcBits>(expectedValue);
 
     // When
     int32_t adcValue = 0;
     ASSERT_TRUE(mHx711.ReadAdcValue(adcValue));
 
     // Then
-    ASSERT_EQ(mSystem.AdcValue, adcValue);
+    ASSERT_EQ(expectedValue, adcValue);
+}
+
+TEST_F(Hx711DriverTests, Read_ADC_value_returns_correct_ADC_value_for_negative_reading)
+{
+    // Given
+    mSystem.DataAvailable = true;
+    const int32_t expectedValue = -123456;
+    mSystem.AdcData =
+        Utilities::IntToTwosComplement<HX711Driver::AdcBits>(expectedValue);
+
+    // When
+    int32_t adcValue = 0;
+    ASSERT_TRUE(mHx711.ReadAdcValue(adcValue));
+
+    // Then
+    ASSERT_EQ(expectedValue, adcValue);
 }
 
 TEST_F(Hx711DriverTests, Read_ADC_sequence_when_conversion_ready)

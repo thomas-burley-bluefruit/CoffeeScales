@@ -3,6 +3,7 @@
 #include "SystemInterface.h"
 #include "HX711Driver.h"
 
+#include <bitset>
 #include <cstdint>
 #include <vector>
 
@@ -43,8 +44,8 @@ public:
     bool DataAvailable = false;
     GpioPinState SetClockPinState = GpioPinState::Reset;
     mutable bool ClockRisingEdge = false;
-    int32_t AdcValue = 0;
-    mutable uint32_t ReadIndex = drivers::HX711Driver::AdcMsb;
+    std::bitset<drivers::HX711Driver::AdcBits> AdcData;
+    mutable uint32_t ReadIndex = drivers::HX711Driver::AdcBits - 1;
 };
 
 }
