@@ -2,7 +2,9 @@
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_uart.h"
 
-static UART_HandleTypeDef mUart;
+static UART_HandleTypeDef sUart;
+static ReceiveInterruptCallbackInterface* sCallback = nullptr;
+
 static constexpr uint32_t UartTxPin = GPIO_PIN_2;
 static constexpr uint32_t UartRxPin = GPIO_PIN_15;
 static constexpr uint32_t TimeoutMs = 10;
@@ -15,25 +17,30 @@ Uart::Uart()
 
 void Uart::Init()
 {
-    mUart.Instance = USART2;
-    mUart.Init.BaudRate = 115200;
-    mUart.Init.WordLength = UART_WORDLENGTH_8B;
-    mUart.Init.StopBits = UART_STOPBITS_1;
-    mUart.Init.Parity = UART_PARITY_NONE;
-    mUart.Init.Mode = UART_MODE_TX_RX;
-    mUart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    mUart.Init.OverSampling = UART_OVERSAMPLING_16;
-    mUart.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-    mUart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-    HAL_UART_Init(&mUart);
+    sUart.Instance = USART2;
+    sUart.Init.BaudRate = 115200;
+    sUart.Init.WordLength = UART_WORDLENGTH_8B;
+    sUart.Init.StopBits = UART_STOPBITS_1;
+    sUart.Init.Parity = UART_PARITY_NONE;
+    sUart.Init.Mode = UART_MODE_TX_RX;
+    sUart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    sUart.Init.OverSampling = UART_OVERSAMPLING_16;
+    sUart.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+    sUart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+    HAL_UART_Init(&sUart);
 }
 
 void Uart::Transmit(const uint8_t* txData, size_t size) const
 {
-    HAL_UART_Transmit(&mUart,
+    HAL_UART_Transmit(&sUart,
                       txData,
                       size,
                       TimeoutMs);
+}
+
+void Uart::SetCallback(ReceiveInterruptCallbackInterface *callback) const
+{
+    sCallback = callback;
 }
 
 extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart)
@@ -62,6 +69,17 @@ extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart)
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
         GPIO_InitStruct.Alternate = GPIO_AF3_USART2;
         HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+        // USART2 interrupt Init
+        HAL_NVIC_SetPriority(USART2_IRQn, 1, 0);
+        HAL_NVIC_EnableIRQ(USART2_IRQn);
+
+        // Receive Data register not empty interrupt
+        __HAL_UART_ENABLE_IT(&sUart, UART_IT_RXNE);
+        // Error interrupt(Frame error, noise error, overrun error)
+        __HAL_UART_ENABLE_IT(&sUart, UART_IT_ERR);
+        // Parity Error interrupt
+        __HAL_UART_ENABLE_IT(&sUart, UART_IT_PE);
     }
 }
 
@@ -72,4 +90,24 @@ extern "C" void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
         __HAL_RCC_USART2_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOA, UartTxPin|UartRxPin);
     }
+}
+
+extern "C" void USART2_IRQHandler(void)
+{
+    // Overrun, Noise, Framing, Parity error occurred
+    if (__HAL_UART_GET_FLAG(&sUart, UART_FLAG_ORE) ||
+        __HAL_UART_GET_FLAG(&sUart, UART_FLAG_NE) ||
+        __HAL_UART_GET_FLAG(&sUart, UART_FLAG_FE) ||
+        __HAL_UART_GET_FLAG(&sUart, UART_FLAG_PE))
+    {
+        // macro will clear any of the above flags
+        __HAL_UART_CLEAR_PEFLAG(&sUart);
+        if (sCallback != nullptr)
+            sCallback->OnReceiveError();
+        return;
+    }
+    uint8_t byte = 0x00;
+    HAL_UART_Receive(&sUart, &byte, 1, TimeoutMs);
+    if (sCallback != nullptr)
+        sCallback->OnReceiveInterrupt(byte);
 }

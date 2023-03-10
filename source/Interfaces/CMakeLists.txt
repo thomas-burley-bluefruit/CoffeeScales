@@ -5,7 +5,9 @@ set(SOURCES
         DelayInterface.h
         HX711DriverInterface.h
         GpioInterface.h
+        ReceiveInterruptCallbackInterface.h
         SystemInterface.h
+        TerminalCallbackInterface.h
         TerminalInterface.h
         UartInterface.h)
 

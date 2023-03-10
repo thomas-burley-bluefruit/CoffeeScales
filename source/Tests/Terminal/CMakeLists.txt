@@ -1,18 +1,18 @@
-set(NAME Tests.Drivers)
+set(NAME Tests.Terminal)
 
 set(SOURCES
-        tests.HX711Driver.cpp
-        tests.Utilities.cpp)
+        tests.Terminal.cpp)
 
 set(INCLUDES .)
 
+enable_testing()
 add_executable(${NAME} ${SOURCES})
 target_include_directories(${NAME} PRIVATE ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
         Drivers
         HalWrapper.Doubles
+        Terminal.Doubles
         gtest_main)
 
-#add_test(${NAME} ${NAME})
 include(GoogleTest)
 gtest_discover_tests(${NAME})
