@@ -5,13 +5,14 @@
 #include "System.h"
 #include "Terminal.h"
 #include "Uart.h"
+#include "TerminalCommandTest.h"
 
 class Instantiation
 {
 public:
     Instantiation();
     void Init();
-    const terminal::Terminal& Terminal() const;
+    terminal::Terminal& Terminal();
     halwrapper::System& System();
     drivers::HX711Driver& Hx711();
 
@@ -21,4 +22,5 @@ private:
     halwrapper::Uart mUart;
     terminal::Terminal mTerminal;
     drivers::HX711Driver mHx711;
+    terminal::TerminalCommandTest mTerminalCommandTest;
 };

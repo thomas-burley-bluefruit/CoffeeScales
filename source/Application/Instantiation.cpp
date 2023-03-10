@@ -4,15 +4,15 @@ using namespace ::drivers;
 using namespace ::halwrapper;
 using namespace ::terminal;
 
-Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem)
+Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem), mTerminalCommandTest(mTerminal)
 {
 }
 
 void Instantiation::Init()
 {
     mHalInit.Init();
-    mUart.Init();
     mSystem.Init();
+    mTerminal.Start();
 }
 
 System &Instantiation::System()
@@ -20,7 +20,7 @@ System &Instantiation::System()
     return mSystem;
 }
 
-const Terminal& Instantiation::Terminal() const
+Terminal& Instantiation::Terminal()
 {
     return mTerminal;
 }

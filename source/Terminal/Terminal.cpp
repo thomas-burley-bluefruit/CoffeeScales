@@ -27,6 +27,7 @@ void Terminal::ProcessCommand()
     char commandName[TerminalCallbackInterface::MaxCommandNameLength]{0};
     size_t argsStartPos = 0;
     ExtractCommandName(commandName, argsStartPos);
+
     auto args = ExtractArgs(argsStartPos);
 
     for (auto handler : mCommandHandlers)
@@ -64,8 +65,7 @@ void Terminal::ExtractCommandName(char *buf, size_t &argsStartPos)
         commandNameLength++;
     }
 
-    strncpy_s(buf, TerminalCallbackInterface::MaxCommandNameLength,
-              mCommandBuffer.data(), commandNameLength);
+    strncpy(buf, mCommandBuffer.data(), commandNameLength);
 }
 
 CommandArgs Terminal::ExtractArgs(size_t startPos)
@@ -85,8 +85,7 @@ CommandArgs Terminal::ExtractArgs(size_t startPos)
         {
             if (*currentArgStart != ' ')
             {
-                strncpy_s(args.Arguments[args.Count].data(),
-                          CommandArgs::MaxArgLength,
+                strncpy(args.Arguments[args.Count].data(),
                           currentArgStart,
                           &ch - currentArgStart);
 
@@ -130,8 +129,7 @@ void Terminal::OnReceiveError()
 
 bool Terminal::RegisterCommandHandler(TerminalCallbackInterface* callback)
 {
-    auto commandNameLen = strnlen(callback->CommandName(),
-                                  TerminalCallbackInterface::MaxCommandNameLength + 1);
+    auto commandNameLen = strlen(callback->CommandName());
     if (commandNameLen > TerminalCallbackInterface::MaxCommandNameLength)
         return false;
 
