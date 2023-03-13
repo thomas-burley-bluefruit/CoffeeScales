@@ -1,7 +1,9 @@
 #include "Application.h"
 
+static Application mApplication;
+
 int main()
 {
-    Application_Init();
-    Application_Loop();
+    mApplication.Init();
+    mApplication.Loop();
 }

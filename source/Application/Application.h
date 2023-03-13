@@ -1,4 +1,14 @@
 #pragma once
 
-void Application_Init();
-void Application_Loop();
+namespace coffeescales
+{
+
+class Application
+{
+public:
+    void Init();
+
+    void Loop();
+};
+
+}
