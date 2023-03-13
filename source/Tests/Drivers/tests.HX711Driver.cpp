@@ -33,7 +33,7 @@ TEST_F(Hx711DriverTests, Read_ADC_value_returns_false_when_data_not_available)
 
     // When
     int32_t adcVal = 0;
-    bool returnVal = mHx711.ReadAdcValue(adcVal);
+    bool returnVal = mHx711.Read(adcVal);
 
     // Then
     ASSERT_FALSE(returnVal);
@@ -46,7 +46,7 @@ TEST_F(Hx711DriverTests, Read_ADC_value_returns_true_when_data_is_available)
 
     // When
     int32_t adcVal = 0;
-    bool returnVal = mHx711.ReadAdcValue(adcVal);
+    bool returnVal = mHx711.Read(adcVal);
 
     // Then
     ASSERT_TRUE(returnVal);
@@ -62,7 +62,7 @@ TEST_F(Hx711DriverTests, Read_ADC_value_returns_correct_ADC_value_for_positive_r
 
     // When
     int32_t adcValue = 0;
-    ASSERT_TRUE(mHx711.ReadAdcValue(adcValue));
+    ASSERT_TRUE(mHx711.Read(adcValue));
 
     // Then
     ASSERT_EQ(expectedValue, adcValue);
@@ -78,7 +78,7 @@ TEST_F(Hx711DriverTests, Read_ADC_value_returns_correct_ADC_value_for_negative_r
 
     // When
     int32_t adcValue = 0;
-    ASSERT_TRUE(mHx711.ReadAdcValue(adcValue));
+    ASSERT_TRUE(mHx711.Read(adcValue));
 
     // Then
     ASSERT_EQ(expectedValue, adcValue);
@@ -117,7 +117,7 @@ TEST_F(Hx711DriverTests, Read_ADC_sequence_when_conversion_ready)
 
     // When
     int32_t adcValue = 0;
-    ASSERT_TRUE(mHx711.ReadAdcValue(adcValue));
+    ASSERT_TRUE(mHx711.Read(adcValue));
 
     // Then
     ASSERT_EQ(mSystem.Calls.size(), entireSequence.size());

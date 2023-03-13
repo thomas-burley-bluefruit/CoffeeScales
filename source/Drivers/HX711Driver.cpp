@@ -10,7 +10,7 @@ using std::bitset;
 HX711Driver::HX711Driver(SystemInterface& system) : mSystem(system)
 {}
 
-bool HX711Driver::ReadAdcValue(int32_t &value) const
+bool HX711Driver::Read(int32_t &value) const
 {
     if (mSystem.GetPinState() == GpioPinState::Set)
         return false;

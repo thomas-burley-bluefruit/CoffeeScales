@@ -3,7 +3,7 @@ enable_language(C CXX)
 
 set(SOURCES
         DelayInterface.h
-        HX711DriverInterface.h
+        AdcDriverInterface.h
         GpioInterface.h
         ReceiveInterruptCallbackInterface.h
         SystemInterface.h

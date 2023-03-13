@@ -1,18 +1,18 @@
 #pragma once
 
 #include "SystemInterface.h"
-#include "HX711DriverInterface.h"
+#include "AdcDriverInterface.h"
 
 namespace coffeescales::drivers
 {
 
-class HX711Driver final : public HX711DriverInterface
+class HX711Driver final : public AdcDriverInterface
 {
 public:
     HX711Driver(halwrapper::SystemInterface& system);
     ~HX711Driver() = default;
 
-    bool ReadAdcValue(int32_t &value) const override;
+    bool Read(int32_t &value) const override;
 
     static constexpr uint16_t TimingDelayUs = 1;
     static constexpr uint32_t AdcBits = 24;
