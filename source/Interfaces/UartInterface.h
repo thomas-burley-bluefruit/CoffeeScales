@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class UartInterface

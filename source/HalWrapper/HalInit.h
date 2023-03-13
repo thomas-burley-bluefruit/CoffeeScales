@@ -1,6 +1,6 @@
 #pragma once
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class HalInit

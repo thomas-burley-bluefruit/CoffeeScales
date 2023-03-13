@@ -4,7 +4,7 @@
 #include "Delay.h"
 #include "SystemInterface.h"
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class System final : public SystemInterface, private HX711Gpio, private Delay

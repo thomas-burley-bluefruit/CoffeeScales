@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cmath>
 
-namespace drivers
+namespace coffeescales::drivers
 {
 
 class Utilities

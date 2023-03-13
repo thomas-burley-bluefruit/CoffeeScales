@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class DelayTimer

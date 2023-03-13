@@ -1,7 +1,7 @@
 #include "HalInit.h"
 #include "stm32l4xx_hal.h"
 
-using namespace ::halwrapper;
+using namespace ::coffeescales::halwrapper;
 
 static GPIO_TypeDef *LD3_GPIO_Port = GPIOB;
 static constexpr uint32_t LD3_Pin = GPIO_PIN_3;

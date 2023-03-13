@@ -1,7 +1,7 @@
 #pragma once
 #include "UartInterface.h"
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class Uart : public UartInterface

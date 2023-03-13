@@ -4,7 +4,7 @@
 
 #include <cstddef>
 
-namespace terminal
+namespace coffeescales::terminal
 {
 
 class TerminalInterface

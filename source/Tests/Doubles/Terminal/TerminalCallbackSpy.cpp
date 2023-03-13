@@ -1,6 +1,6 @@
 #include "TerminalCallbackSpy.h"
 
-using namespace ::terminal;
+using namespace ::coffeescales::terminal;
 
 bool TerminalCallbackSpy::Callback(CommandArgs &args)
 {

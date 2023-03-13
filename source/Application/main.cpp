@@ -1,6 +1,6 @@
 #include "Application.h"
 
-static Application mApplication;
+static coffeescales::Application mApplication;
 
 int main()
 {

@@ -2,7 +2,7 @@
 #include "Utilities.h"
 #include <bitset>
 
-using namespace ::drivers;
+using namespace ::coffeescales::drivers;
 using std::bitset;
 
 TEST(UtilitiesTests, Twos_complement_to_int_positive_value)

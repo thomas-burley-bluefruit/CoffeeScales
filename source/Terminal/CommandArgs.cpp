@@ -2,7 +2,7 @@
 #include "CommandArgs.h"
 #include <cstring>
 
-using namespace ::terminal;
+using namespace ::coffeescales::terminal;
 
 bool CommandArgs::ArgIs(size_t index, const char* value) const
 {

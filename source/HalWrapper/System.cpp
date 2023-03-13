@@ -1,6 +1,6 @@
 #include "System.h"
 
-using namespace ::halwrapper;
+using namespace ::coffeescales::halwrapper;
 
 void System::Init()
 {

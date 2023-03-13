@@ -2,8 +2,8 @@
 #include <cstdint>
 #include <string.h>
 
-using namespace ::halwrapper;
-using namespace ::terminal;
+using namespace ::coffeescales::halwrapper;
+using namespace ::coffeescales::terminal;
 
 Terminal::Terminal(UartInterface& uart) : mUart(uart)
 {

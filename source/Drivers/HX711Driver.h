@@ -3,7 +3,7 @@
 #include "SystemInterface.h"
 #include "HX711DriverInterface.h"
 
-namespace drivers
+namespace coffeescales::drivers
 {
 
 class HX711Driver final : public HX711DriverInterface

@@ -1,8 +1,8 @@
 #include "TerminalCommandTest.h"
 
-using namespace terminal;
+using namespace ::coffeescales::terminal;
 
-TerminalCommandTest::TerminalCommandTest(terminal::TerminalInterface &terminal) : mTerminal(terminal)
+TerminalCommandTest::TerminalCommandTest(TerminalInterface &terminal) : mTerminal(terminal)
 {
     mTerminal.RegisterCommandHandler(this);
 }

@@ -2,7 +2,7 @@
 
 #include "TerminalCallbackInterface.h"
 
-namespace terminal
+namespace coffeescales::terminal
 {
 
 class TerminalCallbackSpy : public TerminalCallbackInterface

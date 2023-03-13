@@ -2,7 +2,7 @@
 #include "GpioInterface.h"
 #include "DelayInterface.h"
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class HX711Gpio : public GpioInterface

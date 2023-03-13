@@ -3,7 +3,7 @@
 #include "stm32l4xx_hal.h"
 #include "Types.h"
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
     static constexpr GPIO_PinState HalPinState(const GpioPinState state) {
         return state == GpioPinState::Set ?

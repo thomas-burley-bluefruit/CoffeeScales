@@ -1,7 +1,7 @@
 #include "SystemMock.h"
 
-using namespace drivers;
-using namespace halwrapper;
+using namespace coffeescales::drivers;
+using namespace coffeescales::halwrapper;
 
 GpioPinState SystemMock::GetPinState() const {
     Calls.push_back({ SystemInterfaceMethod::GetPinState });

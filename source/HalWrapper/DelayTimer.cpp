@@ -5,7 +5,7 @@
 static TIM_HandleTypeDef sTimer;
 static constexpr uint16_t TimerPrescaler = 31; // period is in units of 1us
 
-using namespace ::halwrapper;
+using namespace ::coffeescales::halwrapper;
 
 void DelayTimer::Init()
 {

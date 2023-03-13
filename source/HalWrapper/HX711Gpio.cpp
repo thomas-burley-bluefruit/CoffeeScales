@@ -2,7 +2,7 @@
 #include "stm32l4xx_hal.h"
 #include "Utilities.h"
 
-using namespace ::halwrapper;
+using namespace ::coffeescales::halwrapper;
 
 static constexpr uint32_t HX711DoutPin = GPIO_PIN_3;
 static GPIO_TypeDef* HX711DoutGpioPort = GPIOA;

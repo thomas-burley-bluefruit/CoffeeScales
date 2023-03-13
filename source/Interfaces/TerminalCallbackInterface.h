@@ -2,7 +2,7 @@
 
 #include "CommandArgs.h"
 
-namespace terminal
+namespace coffeescales::terminal
 {
 
 class TerminalCallbackInterface

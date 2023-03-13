@@ -3,7 +3,7 @@
 #include "GpioInterface.h"
 #include "DelayInterface.h"
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class SystemInterface : public GpioInterface, public DelayInterface

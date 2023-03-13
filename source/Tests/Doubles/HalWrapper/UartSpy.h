@@ -2,7 +2,7 @@
 
 #include "UartInterface.h"
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class UartSpy : public UartInterface

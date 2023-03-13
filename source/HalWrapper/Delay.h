@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 class Delay : public DelayTimer, public DelayInterface

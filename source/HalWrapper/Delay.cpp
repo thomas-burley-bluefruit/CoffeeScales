@@ -1,7 +1,7 @@
 #include "Delay.h"
 #include "stm32l4xx_hal.h"
 
-using namespace ::halwrapper;
+using namespace ::coffeescales::halwrapper;
 
 void Delay::DelayUs(const uint16_t delayUs)
 {

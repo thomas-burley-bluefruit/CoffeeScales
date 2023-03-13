@@ -1,6 +1,6 @@
 #include "UartSpy.h"
 
-using namespace ::halwrapper;
+using namespace ::coffeescales::halwrapper;
 
 void UartSpy::Init()
 {

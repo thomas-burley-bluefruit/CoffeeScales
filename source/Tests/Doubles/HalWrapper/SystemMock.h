@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace halwrapper
+namespace coffeescales::halwrapper
 {
 
 enum class SystemInterfaceMethod

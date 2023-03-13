@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "Instantiation.h"
 
+using namespace ::coffeescales;
+
 static Instantiation mInstantiation;
 
 void Application::Init()

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace drivers
+namespace coffeescales::drivers
 {
 
 class HX711DriverInterface

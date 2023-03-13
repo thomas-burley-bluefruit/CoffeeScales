@@ -5,8 +5,8 @@
 
 #include <vector>
 
-using namespace ::drivers;
-using namespace ::halwrapper;
+using namespace ::coffeescales::drivers;
+using namespace ::coffeescales::halwrapper;
 using ::std::vector;
 
 class Hx711DriverTests : public testing::Test

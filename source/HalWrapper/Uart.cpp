@@ -2,6 +2,8 @@
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_uart.h"
 
+using namespace ::coffeescales::halwrapper;
+
 static UART_HandleTypeDef sUart;
 static ReceiveInterruptCallbackInterface* sCallback = nullptr;
 
@@ -9,7 +11,6 @@ static constexpr uint32_t UartTxPin = GPIO_PIN_2;
 static constexpr uint32_t UartRxPin = GPIO_PIN_15;
 static constexpr uint32_t TimeoutMs = 10;
 
-using namespace ::halwrapper;
 
 Uart::Uart()
 {

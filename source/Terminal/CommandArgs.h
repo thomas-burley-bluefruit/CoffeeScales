@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace terminal
+namespace coffeescales::terminal
 {
 
 struct CommandArgs

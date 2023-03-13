@@ -7,7 +7,6 @@ class Application
 {
 public:
     void Init();
-
     void Loop();
 };
 

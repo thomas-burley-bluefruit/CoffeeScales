@@ -5,8 +5,8 @@
 
 #include <string>
 
-using namespace ::halwrapper;
-using namespace ::terminal;
+using namespace ::coffeescales::halwrapper;
+using namespace ::coffeescales::terminal;
 using ::std::string;
 
 class TerminalTests : public testing::Test

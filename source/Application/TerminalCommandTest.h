@@ -3,7 +3,7 @@
 #include "TerminalInterface.h"
 #include "TerminalCallbackInterface.h"
 
-namespace terminal
+namespace coffeescales::terminal
 {
 
 class TerminalCommandTest final : public TerminalCallbackInterface

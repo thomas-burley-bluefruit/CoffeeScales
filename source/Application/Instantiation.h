@@ -7,14 +7,17 @@
 #include "Uart.h"
 #include "TerminalCommandTest.h"
 
+namespace coffeescales
+{
+
 class Instantiation
 {
 public:
     Instantiation();
     void Init();
-    terminal::Terminal& Terminal();
-    halwrapper::System& System();
-    drivers::HX711Driver& Hx711();
+    terminal::Terminal &Terminal();
+    halwrapper::System &System();
+    drivers::HX711Driver &Hx711();
 
 private:
     halwrapper::HalInit mHalInit;
@@ -24,3 +27,5 @@ private:
     drivers::HX711Driver mHx711;
     terminal::TerminalCommandTest mTerminalCommandTest;
 };
+
+}

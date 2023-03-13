@@ -1,5 +1,6 @@
 #include "Instantiation.h"
 
+using namespace ::coffeescales;
 using namespace ::drivers;
 using namespace ::halwrapper;
 using namespace ::terminal;

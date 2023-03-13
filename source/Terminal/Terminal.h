@@ -3,10 +3,10 @@
 #include "TerminalInterface.h"
 #include "UartInterface.h"
 
-namespace terminal
+namespace coffeescales::terminal
 {
 
-class Terminal : public TerminalInterface, public ReceiveInterruptCallbackInterface
+class Terminal : public TerminalInterface, public halwrapper::ReceiveInterruptCallbackInterface
 {
 public:
     Terminal(halwrapper::UartInterface& uart);
