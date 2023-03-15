@@ -38,3 +38,8 @@ void SystemMock::DelayUs(const uint16_t delayUs)
 {
     Calls.push_back({ .method = SystemInterfaceMethod::DelayUs, .delayUs = delayUs });
 }
+
+uint32_t SystemMock::GetTick() const
+{
+    return SysTick;
+}

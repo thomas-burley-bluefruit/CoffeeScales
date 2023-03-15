@@ -39,6 +39,7 @@ public:
     void SetPinState(const GpioPinState state) override;
     void DelayMs(const uint32_t delayMs) override;
     void DelayUs(const uint16_t delayUs) override;
+    uint32_t GetTick() const override;
 
     mutable std::vector<SystemInterfaceCall> Calls;
     bool DataAvailable = false;
@@ -46,6 +47,7 @@ public:
     mutable bool ClockRisingEdge = false;
     std::bitset<drivers::HX711Driver::AdcBits> AdcData;
     mutable uint32_t ReadIndex = drivers::HX711Driver::AdcBits - 1;
+    uint32_t SysTick = 0;
 };
 
 }

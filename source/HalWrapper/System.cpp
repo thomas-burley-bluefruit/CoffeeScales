@@ -17,6 +17,10 @@ void System::DelayUs(const uint16_t delayUs)
 {
     Time::DelayUs(delayUs);
 }
+
+uint32_t System::GetTick() const
+{
+    return Time::GetTick();
 }
 
 GpioPinState System::GetPinState() const {
