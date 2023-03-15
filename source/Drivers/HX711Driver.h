@@ -13,6 +13,7 @@ public:
     ~HX711Driver() = default;
 
     bool Read(int32_t &value) const override;
+    uint32_t MaxValue() const override;
 
     static constexpr uint16_t TimingDelayUs = 1;
     static constexpr uint32_t AdcBits = 24;

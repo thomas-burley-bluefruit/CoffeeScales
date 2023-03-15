@@ -1,4 +1,7 @@
 add_subdirectory(Drivers)
+add_subdirectory(Doubles/Drivers)
 add_subdirectory(Doubles/HalWrapper)
 add_subdirectory(Doubles/Terminal)
+add_subdirectory(Doubles/Weight)
 add_subdirectory(Terminal)
+add_subdirectory(Weight)

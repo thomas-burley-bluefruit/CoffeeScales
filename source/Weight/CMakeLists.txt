@@ -1,14 +1,10 @@
-set(NAME Application)
+set(NAME Weight)
 enable_language(C CXX)
 
 set(SOURCES
-    Application.cpp
-    Application.h
-    Instantiation.cpp
-    Instantiation.h
-    TerminalCommandTest.cpp
-    TerminalCommandTest.h
-    main.cpp)
+    Scales.cpp
+    Scales.h
+)
 
 set(INCLUDES .)
 
@@ -18,8 +14,6 @@ target_compile_options(${NAME} PRIVATE ${COMPILE_OPTIONS})
 target_compile_definitions(${NAME} PRIVATE ${COMPILE_DEFINITIONS})
 target_include_directories(${NAME} PUBLIC ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
-    Drivers
-    HalWrapper
-    Terminal
-    Types
-    Weight)
+        Interfaces
+        Terminal
+        Types)

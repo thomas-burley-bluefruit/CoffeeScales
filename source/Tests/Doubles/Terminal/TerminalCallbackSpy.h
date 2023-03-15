@@ -8,7 +8,7 @@ namespace coffeescales::terminal
 class TerminalCallbackSpy : public TerminalCallbackInterface
 {
 public:
-    bool Callback(CommandArgs &args) override;
+    bool TerminalCommand(CommandArgs &args) override;
     const char *CommandName() const override;
 
     CommandArgs CallbackArgs;

@@ -7,7 +7,7 @@ TerminalCommandTest::TerminalCommandTest(TerminalInterface &terminal) : mTermina
     mTerminal.RegisterCommandHandler(this);
 }
 
-bool TerminalCommandTest::Callback(CommandArgs &args)
+bool TerminalCommandTest::TerminalCommand(CommandArgs &args)
 {
     mTerminal.TextOut("Command received\n");
     return true;

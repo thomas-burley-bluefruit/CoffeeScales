@@ -2,7 +2,7 @@
 
 using namespace ::coffeescales::terminal;
 
-bool TerminalCallbackSpy::Callback(CommandArgs &args)
+bool TerminalCallbackSpy::TerminalCommand(CommandArgs &args)
 {
     CallbackArgs = args;
     CallbackCount++;

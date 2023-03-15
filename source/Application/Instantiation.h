@@ -2,6 +2,7 @@
 
 #include "HalInit.h"
 #include "HX711Driver.h"
+#include "Scales.h"
 #include "System.h"
 #include "Terminal.h"
 #include "Uart.h"
@@ -15,9 +16,10 @@ class Instantiation
 public:
     Instantiation();
     void Init();
-    terminal::Terminal &Terminal();
-    halwrapper::System &System();
-    drivers::HX711Driver &Hx711();
+    terminal::Terminal& Terminal();
+    halwrapper::System& System();
+    drivers::HX711Driver& Hx711();
+    weight::Scales& Scales();
 
 private:
     halwrapper::HalInit mHalInit;
@@ -25,7 +27,7 @@ private:
     halwrapper::Uart mUart;
     terminal::Terminal mTerminal;
     drivers::HX711Driver mHx711;
-    terminal::TerminalCommandTest mTerminalCommandTest;
+    weight::Scales mScales;
 };
 
 }

@@ -15,5 +15,6 @@ void Application::Loop()
     while (1)
     {
         mInstantiation.Terminal().Task();
+        mInstantiation.Scales().Task();
     }
 }

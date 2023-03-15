@@ -38,7 +38,7 @@ void Terminal::ProcessCommand()
         if (strncmp(handler->CommandName(), commandName,
                     TerminalCallbackInterface::MaxCommandNameLength) == 0)
         {
-            handler->Callback(args);
+            handler->TerminalCommand(args);
             mCommandReceived = false;
             return;
         }

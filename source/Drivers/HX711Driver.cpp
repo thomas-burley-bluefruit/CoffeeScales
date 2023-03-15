@@ -33,3 +33,8 @@ bool HX711Driver::Read(int32_t &value) const
     value = Utilities::TwosComplementToInt(adcData);
     return true;
 }
+
+uint32_t HX711Driver::MaxValue() const
+{
+    return 0x7FFFFF;
+}

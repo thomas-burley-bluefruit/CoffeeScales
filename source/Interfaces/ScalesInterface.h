@@ -1,15 +1,17 @@
 #pragma once
 
 #include "TerminalCallbackInterface.h"
+#include "WeightReadingCallbackInterface.h"
 
-namespace coffeescales::drivers
+namespace coffeescales::weight
 {
 
 class ScalesInterface
 {
 public:
     ~ScalesInterface() = default;
-    virtual float GetWeightG() const = 0;
+    virtual void Tare() = 0;
+    virtual bool RegisterCallback(WeightReadingCallbackInterface* callback) = 0;
 };
 
 }
