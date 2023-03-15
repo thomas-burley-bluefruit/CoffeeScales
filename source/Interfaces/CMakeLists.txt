@@ -2,7 +2,7 @@ set(NAME Interfaces)
 enable_language(C CXX)
 
 set(SOURCES
-        DelayInterface.h
+        TimeInterface.h
         AdcDriverInterface.h
         GpioInterface.h
         ReceiveInterruptCallbackInterface.h

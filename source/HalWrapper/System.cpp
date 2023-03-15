@@ -4,18 +4,19 @@ using namespace ::coffeescales::halwrapper;
 
 void System::Init()
 {
-    Delay::Init();
+    Time::Init();
     HX711Gpio::Init();
 }
 
 void System::DelayMs(const uint32_t delayMs)
 {
-    Delay::DelayMs(delayMs);
+    Time::DelayMs(delayMs);
 }
 
 void System::DelayUs(const uint16_t delayUs)
 {
-    Delay::DelayUs(delayUs);
+    Time::DelayUs(delayUs);
+}
 }
 
 GpioPinState System::GetPinState() const {

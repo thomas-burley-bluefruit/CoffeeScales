@@ -2,8 +2,8 @@ set(NAME HalWrapper)
 enable_language(C CXX)
 
 set(SOURCES
-    Delay.cpp
-    Delay.h
+        Time.cpp
+        Time.h
     DelayTimer.cpp
     DelayTimer.h
     HalInit.cpp

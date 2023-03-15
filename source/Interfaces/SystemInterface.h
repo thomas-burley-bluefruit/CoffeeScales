@@ -1,12 +1,12 @@
 #pragma once
 
 #include "GpioInterface.h"
-#include "DelayInterface.h"
+#include "TimeInterface.h"
 
 namespace coffeescales::halwrapper
 {
 
-class SystemInterface : public GpioInterface, public DelayInterface
+class SystemInterface : public GpioInterface, public TimeInterface
 {
 public:
     ~SystemInterface() = default;

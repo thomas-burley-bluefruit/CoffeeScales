@@ -1,13 +1,13 @@
 #pragma once
 
 #include "HX711Gpio.h"
-#include "Delay.h"
+#include "Time.h"
 #include "SystemInterface.h"
 
 namespace coffeescales::halwrapper
 {
 
-class System final : public SystemInterface, private HX711Gpio, private Delay
+class System final : public SystemInterface, private HX711Gpio, private Time
 {
 public:
     ~System() = default;

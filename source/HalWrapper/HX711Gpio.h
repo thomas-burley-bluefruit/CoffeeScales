@@ -1,6 +1,6 @@
 #pragma once
 #include "GpioInterface.h"
-#include "DelayInterface.h"
+#include "TimeInterface.h"
 
 namespace coffeescales::halwrapper
 {
