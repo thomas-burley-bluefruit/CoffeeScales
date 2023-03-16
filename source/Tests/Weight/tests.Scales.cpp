@@ -31,6 +31,7 @@ public:
     uint32_t &CallbackCount = mCallbackCount;
     double &CalibrationFactor = mCalibrationFactor;
     static constexpr double CalibrationWeight = Scales::CalibrationWeightMg;
+    State& State = Scales::mState;
 };
 
 class ScalesTests : public testing::Test
@@ -511,4 +512,21 @@ TEST_F(ScalesTests, weight_off_terminal_command_stops_printing_weight_values_on_
 
     // Then
     ASSERT_FALSE(mTerminal.TextOutCalled);
+}
+
+TEST_F(ScalesTests, tare_command_starts_tare_process)
+{
+    // Given
+    Tare();
+    ASSERT_EQ(Scales::State::Weigh, mScales.State);
+
+    CommandArgs args;
+    SetCommandArg(args, 0, ScalesTerminalCommands::Tare);
+    args.Count++;
+
+    // When
+    ASSERT_TRUE(mScales.TerminalCommand(args));
+
+    // Then
+    ASSERT_EQ(Scales::State::Tare, mScales.State);
 }

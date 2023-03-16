@@ -220,5 +220,11 @@ bool Scales::TerminalCommand(CommandArgs &args)
         }
     }
 
+    if (args.Count == 1 && args.Arg0Is(ScalesTerminalCommands::Tare))
+    {
+        StartTare();
+        return true;
+    }
+
     return false;
 }

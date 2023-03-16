@@ -58,7 +58,6 @@ private:
     static constexpr uint32_t LoadCellRangeMg = 1'000'000;
     static constexpr uint32_t AdcReadIntervalMs = 100;
 
-    State mState = State::Idle;
 
     uint32_t mLastReadTick = 0;
     int32_t mLastWeightConversionMg = 0.0f;
@@ -75,6 +74,7 @@ private:
     bool mWeightDebugPrint = false;
 
 protected:
+    State mState = State::Idle;
     static constexpr size_t MaxCallbacks = 32;
     static constexpr double CalibrationWeightMg = 100000.0;
     static constexpr size_t AveragingCount = 10;
