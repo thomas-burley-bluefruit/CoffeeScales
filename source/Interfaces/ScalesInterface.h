@@ -10,7 +10,7 @@ class ScalesInterface
 {
 public:
     ~ScalesInterface() = default;
-    virtual void Tare() = 0;
+    virtual void StartTare() = 0;
     virtual bool RegisterCallback(WeightReadingCallbackInterface* callback) = 0;
 };
 

@@ -14,7 +14,7 @@ void Instantiation::Init()
     mHalInit.Init();
     mSystem.Init();
     mTerminal.Start();
-    mScales.Tare();
+    mScales.StartTare();
 }
 
 System &Instantiation::System()

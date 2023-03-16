@@ -22,64 +22,114 @@ Scales::Scales(AdcDriverInterface &adc, SystemInterface &system, TerminalInterfa
 
 void Scales::Task()
 {
-    CheckWeight();
-    if (mCalibrationStartRequested)
-        StartCalibration();
-    if (mCalibrationSetRequested)
-        SetCalibration();
+    bool readSuccess = ReadAdc();
+
+    switch (mState)
+    {
+        case State::Weigh:
+            if (readSuccess)
+                Weigh();
+            break;
+
+        case State::Tare:
+            if (readSuccess)
+                Tare();
+            break;
+
+        case State::CalibrateStart:
+            CalibrateStart();
+            break;
+
+        case State::CalibrateSet:
+            if (readSuccess)
+                CalibrateSet();
+            break;
+
+        case State::CalibrateWait:
+        case State::Idle:
+        default:
+            break;
+    }
+}
+
+void Scales::StartTare()
+{
+    mState = State::Tare;
+    mAverageSum = 0;
+    mAverageCount = 0;
+}
+
+void Scales::Weigh()
+{
+    ConvertWeight();
+    UpdateSubscribers();
+    if (mWeightDebugPrint)
+        PrintWeightValue();
 }
 
 void Scales::Tare()
 {
-    mTaring = true;
-    mTareAverageSum = 0;
-    mTareAverageCount = 0;
-}
+    mAverageSum += mLastAdcReading;
+    mAverageCount++;
 
-void Scales::TareTask()
-{
-    mTareAverageSum += mLastAdcReading;
-    mTareAverageCount++;
-
-    if (mTareAverageCount >= AveragingCount)
+    if (mAverageCount >= AveragingCount)
     {
-        mTareAdcReading = mTareAverageSum / AveragingCount;
+        mTareAdcReading = mAverageSum / AveragingCount;
         ConvertWeight();
         UpdateSubscribers();
-        mTaring = false;
+
+        if (mCalibrationStartRequested)
+            mState = State::CalibrateStart;
+        else
+            mState = State::Weigh;
     }
 }
 
-void Scales::CheckWeight()
+void Scales::CalibrateStart()
+{
+    mTerminal.TextOut(ScalesTerminalMessages::CalibratePlaceWeight);
+    mCalibrationStartRequested = false;
+    mAverageCount = 0;
+    mAverageSum = 0;
+    mState = State::CalibrateWait;
+}
+
+void Scales::CalibrateSet()
+{
+    mAverageSum += mLastAdcReading;
+    mAverageCount++;
+
+    if (mAverageCount >= AveragingCount)
+    {
+        const int32_t averageReading = mAverageSum / mAverageCount;
+        mCalibrationFactor = (averageReading - mTareAdcReading) / CalibrationWeightMg;
+        mTerminal.TextOut(ScalesTerminalMessages::CalibrateComplete);
+        mState = State::Weigh;
+    }
+}
+
+bool Scales::ReadAdc()
 {
     bool readSuccess = false;
     const auto tick = mSystem.GetTick();
 
     if (tick - mLastReadTick >= AdcReadIntervalMs)
-    {
         readSuccess = mAdc.Read(mLastAdcReading);
+
+    if (readSuccess)
+    {
         mLastReadTick = tick;
+        if (mAdcDebugPrint)
+            PrintAdcValue();
     }
 
-    if (!readSuccess)
-        return;
-
-    ConvertWeight();
-    UpdateSubscribers();
-
-    if (mTaring)
-        TareTask();
-
-    if (mAdcDebugPrint)
-        PrintAdcValue();
-    if (mWeightDebugPrint)
-        PrintWeightValue();
+    return readSuccess;
 }
 
 void Scales::ConvertWeight()
 {
-    const auto taredAdcReading = mLastAdcReading - mTareAdcReading;
-    mLastWeightConversionMg = taredAdcReading / mCalibrationFactor;
+    const auto adcReadingDelta = mLastAdcReading - mTareAdcReading;
+    mLastWeightConversionMg = adcReadingDelta / mCalibrationFactor;
 }
 
 void Scales::UpdateSubscribers()
@@ -90,21 +140,6 @@ void Scales::UpdateSubscribers()
             continue;
         mCallbacks[i]->NewWeightReadingMg(mLastWeightConversionMg);
     }
-}
-
-void Scales::StartCalibration()
-{
-    Tare();
-    mTerminal.TextOut(ScalesTerminalMessages::CalibratePlaceWeight);
-    mCalibrationStartRequested = false;
-    mCalibrationStarted = true;
-}
-
-void Scales::SetCalibration()
-{
-    mCalibrationFactor = (mLastAdcReading - mTareAdcReading) / CalibrationWeightMg;
-    mCalibrationSetRequested = false;
-    mCalibrationStarted = false;
 }
 
 void Scales::PrintAdcValue()
@@ -136,14 +171,15 @@ bool Scales::TerminalCommand(CommandArgs &args)
     {
         if (args.Count == 1)
         {
+            StartTare();
             mCalibrationStartRequested = true;
             return true;
         }
 
         if (args.Count == 2 && args.Arg1Is(ScalesTerminalCommands::Set) &&
-            mCalibrationStarted)
+            mState == State::CalibrateWait)
         {
-            mCalibrationSetRequested = true;
+            mState = State::CalibrateSet;
             return true;
         }
     }

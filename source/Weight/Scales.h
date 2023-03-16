@@ -21,7 +21,7 @@ public:
     void Task();
 
     // ScalesInterface
-    void Tare() override;
+    void StartTare() override;
     bool RegisterCallback(WeightReadingCallbackInterface *callback) override;
 
     // TerminalCallbackInterface
@@ -30,15 +30,26 @@ public:
     const char *CommandName() const override
     { return ScalesTerminalCommands::CommandName; }
 
+    enum class State
+    {
+        Idle,
+        Weigh,
+        Tare,
+        CalibrateStart,
+        CalibrateWait,
+        CalibrateSet
+    };
+
 private:
-    void CheckWeight();
+    bool ReadAdc();
     void ConvertWeight();
     void UpdateSubscribers();
-    void StartCalibration();
-    void SetCalibration();
+    void CalibrateStart();
+    void CalibrateSet();
     void PrintAdcValue();
     void PrintWeightValue();
-    void TareTask();
+    void Weigh();
+    void Tare();
 
     const drivers::AdcDriverInterface &mAdc;
     const halwrapper::SystemInterface &mSystem;
@@ -47,18 +58,17 @@ private:
     static constexpr uint32_t LoadCellRangeMg = 1'000'000;
     static constexpr uint32_t AdcReadIntervalMs = 100;
 
+    State mState = State::Idle;
+
     uint32_t mLastReadTick = 0;
     int32_t mLastWeightConversionMg = 0.0f;
     int32_t mLastAdcReading = 0;
-
-    bool mTaring = false;
-    int32_t mTareAverageSum = 0;
-    size_t mTareAverageCount = 0;
     int32_t mTareAdcReading = 0;
 
+    int32_t mAverageSum = 0;
+    size_t mAverageCount = 0;
+
     bool mCalibrationStartRequested = false;
-    bool mCalibrationStarted = false;
-    bool mCalibrationSetRequested = false;
 
     char mPrintBuffer[coffeescales::terminal::Terminal::TerminalBufferSize];
     bool mAdcDebugPrint = false;
