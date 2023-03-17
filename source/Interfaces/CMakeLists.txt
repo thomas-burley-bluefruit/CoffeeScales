@@ -6,6 +6,7 @@ set(SOURCES
         AdcDriverInterface.h
         GpioInterface.h
         ReceiveInterruptCallbackInterface.h
+        SpiInterface.h
         SystemInterface.h
         TerminalCallbackInterface.h
         TerminalInterface.h
