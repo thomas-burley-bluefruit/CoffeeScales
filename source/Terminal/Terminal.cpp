@@ -5,7 +5,7 @@
 using namespace ::coffeescales::halwrapper;
 using namespace ::coffeescales::terminal;
 
-Terminal::Terminal(UartInterface& uart) : mUart(uart)
+Terminal::Terminal(UartInterface &uart) : mUart(uart)
 {
     mCommandBuffer.fill('\0');
 }
@@ -30,7 +30,7 @@ void Terminal::ProcessCommand()
 
     auto args = ExtractArgs(argsStartPos);
 
-    for (auto handler : mCommandHandlers)
+    for (auto handler: mCommandHandlers)
     {
         if (handler == nullptr)
             continue;
@@ -75,19 +75,19 @@ CommandArgs Terminal::ExtractArgs(size_t startPos)
     if (startPos == 0)
         return args;
 
-    const char* currentArgStart = &mCommandBuffer[startPos];
+    const char *currentArgStart = &mCommandBuffer[startPos];
 
     for (size_t i = startPos; i < mCommandBuffer.size(); ++i)
     {
-        auto& ch = mCommandBuffer[i];
+        auto &ch = mCommandBuffer[i];
 
         if (ch == ' ' || ch == '\0')
         {
             if (*currentArgStart != ' ')
             {
                 strncpy(args.Arguments[args.Count].data(),
-                          currentArgStart,
-                          &ch - currentArgStart);
+                        currentArgStart,
+                        &ch - currentArgStart);
 
                 args.Count++;
             }
@@ -127,7 +127,7 @@ void Terminal::OnReceiveError()
 {
 }
 
-bool Terminal::RegisterCommandHandler(TerminalCallbackInterface* callback)
+bool Terminal::RegisterCommandHandler(TerminalCallbackInterface *callback)
 {
     auto commandNameLen = strlen(callback->CommandName());
     if (commandNameLen > TerminalCallbackInterface::MaxCommandNameLength)

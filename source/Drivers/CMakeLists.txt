@@ -2,10 +2,10 @@ set(NAME Drivers)
 enable_language(C CXX)
 
 set(SOURCES
-    HX711Driver.cpp
-    HX711Driver.h
-    Utilities.h
-)
+        HX711Driver.cpp
+        HX711Driver.h
+        Utilities.h
+        )
 
 set(INCLUDES .)
 

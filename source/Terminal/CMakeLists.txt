@@ -2,11 +2,11 @@ set(NAME Terminal)
 enable_language(C CXX)
 
 set(SOURCES
-    CommandArgs.cpp
-    CommandArgs.h
-    GenericTerminalCommands.h
-    Terminal.cpp
-    Terminal.h)
+        CommandArgs.cpp
+        CommandArgs.h
+        GenericTerminalCommands.h
+        Terminal.cpp
+        Terminal.h)
 
 set(INCLUDES .)
 

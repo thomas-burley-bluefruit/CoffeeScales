@@ -13,7 +13,7 @@ public:
 
     CommandArgs CallbackArgs;
     size_t CallbackCount = 0;
-    const char* CommandNameValue = "commandspy";
+    const char *CommandNameValue = "commandspy";
 };
 
 }

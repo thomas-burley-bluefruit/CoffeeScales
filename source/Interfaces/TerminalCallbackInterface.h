@@ -9,8 +9,8 @@ class TerminalCallbackInterface
 {
 public:
     ~TerminalCallbackInterface() = default;
-    virtual bool TerminalCommand(CommandArgs& args) = 0;
-    [[nodiscard]] virtual const char* CommandName() const = 0;
+    virtual bool TerminalCommand(CommandArgs &args) = 0;
+    [[nodiscard]] virtual const char *CommandName() const = 0;
     static constexpr size_t MaxCommandNameLength = 32;
 };
 

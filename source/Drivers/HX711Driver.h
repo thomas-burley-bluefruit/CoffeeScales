@@ -9,7 +9,7 @@ namespace coffeescales::drivers
 class HX711Driver final : public AdcDriverInterface
 {
 public:
-    explicit HX711Driver(halwrapper::SystemInterface& system);
+    explicit HX711Driver(halwrapper::SystemInterface &system);
     ~HX711Driver() = default;
 
     bool Read(int32_t &value) const override;
@@ -19,7 +19,7 @@ public:
     static constexpr uint32_t AdcBits = 24;
 
 private:
-    halwrapper::SystemInterface& mSystem;
+    halwrapper::SystemInterface &mSystem;
 };
 
 }

@@ -16,10 +16,10 @@ class Instantiation
 public:
     Instantiation();
     void Init();
-    terminal::Terminal& Terminal();
-    halwrapper::System& System();
-    drivers::HX711Driver& Hx711();
-    weight::Scales& Scales();
+    terminal::Terminal &Terminal();
+    halwrapper::System &System();
+    drivers::HX711Driver &Hx711();
+    weight::Scales &Scales();
 
 private:
     halwrapper::HalInit mHalInit;

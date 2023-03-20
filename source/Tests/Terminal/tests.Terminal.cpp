@@ -12,12 +12,13 @@ using ::std::string;
 class TerminalTests : public testing::Test
 {
 public:
-    TerminalTests() : mTerminal(mUart) {}
+    TerminalTests() : mTerminal(mUart)
+    {}
 
 protected:
-    void SendCommand(const string& command)
+    void SendCommand(const string &command)
     {
-        for (auto ch : command)
+        for (auto ch: command)
             mTerminal.OnReceiveInterrupt(static_cast<uint8_t>(ch));
     }
 
@@ -48,7 +49,7 @@ TEST_F(TerminalTests, Start_sets_uart_callback)
 TEST_F(TerminalTests, TextOut_passes_correct_data_to_uart)
 {
     // Given
-    const char* text = "Hello world\n";
+    const char *text = "Hello world\n";
 
     // When
     mTerminal.TextOut(text);
@@ -56,7 +57,7 @@ TEST_F(TerminalTests, TextOut_passes_correct_data_to_uart)
     // Then
     ASSERT_TRUE(mUart.TransmitCalled);
     ASSERT_EQ(mUart.TxSize, strlen(text));
-    ASSERT_STREQ(reinterpret_cast<const char*>(mUart.TxData), text);
+    ASSERT_STREQ(reinterpret_cast<const char *>(mUart.TxData), text);
 }
 
 TEST_F(TerminalTests, Can_register_command_handler)
@@ -183,7 +184,7 @@ TEST_F(TerminalTests, Number_of_args_is_limited)
 TEST_F(TerminalTests, Partially_recognised_command_does_not_call_handler)
 {
     // Given
-    const char* commandName = "testcommand\n";
+    const char *commandName = "testcommand\n";
     mTerminalCallback.CommandNameValue = commandName;
 
     ASSERT_TRUE(mTerminal.RegisterCommandHandler(&mTerminalCallback));

@@ -3,8 +3,9 @@
 using namespace coffeescales::drivers;
 using namespace coffeescales::halwrapper;
 
-GpioPinState SystemMock::GetPinState() const {
-    Calls.push_back({ SystemInterfaceMethod::GetPinState });
+GpioPinState SystemMock::GetPinState() const
+{
+    Calls.push_back({SystemInterfaceMethod::GetPinState});
 
     if (!DataAvailable)
         return GpioPinState::Set;
@@ -22,8 +23,9 @@ GpioPinState SystemMock::GetPinState() const {
     return pinState ? GpioPinState::Set : GpioPinState::Reset;
 }
 
-void SystemMock::SetPinState(const halwrapper::GpioPinState state) {
-    Calls.push_back({ .method = SystemInterfaceMethod::SetPinState, .gpioState = state });
+void SystemMock::SetPinState(const halwrapper::GpioPinState state)
+{
+    Calls.push_back({.method = SystemInterfaceMethod::SetPinState, .gpioState = state});
 
     if (state == GpioPinState::Set && SetClockPinState == GpioPinState::Reset)
         ClockRisingEdge = true;
@@ -36,7 +38,7 @@ void SystemMock::DelayMs(const uint32_t delayMs)
 
 void SystemMock::DelayUs(const uint16_t delayUs)
 {
-    Calls.push_back({ .method = SystemInterfaceMethod::DelayUs, .delayUs = delayUs });
+    Calls.push_back({.method = SystemInterfaceMethod::DelayUs, .delayUs = delayUs});
 }
 
 uint32_t SystemMock::GetTick() const

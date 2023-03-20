@@ -13,7 +13,7 @@ public:
     bool RegisterCommandHandler(TerminalCallbackInterface *callback) override;
 
     mutable bool TextOutCalled = false;
-    mutable char TextOutValue[Terminal::TerminalBufferSize] {0};
+    mutable char TextOutValue[Terminal::TerminalBufferSize]{0};
 };
 
 }

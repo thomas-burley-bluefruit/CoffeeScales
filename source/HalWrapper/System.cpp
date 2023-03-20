@@ -23,10 +23,12 @@ uint32_t System::GetTick() const
     return Time::GetTick();
 }
 
-GpioPinState System::GetPinState() const {
+GpioPinState System::GetPinState() const
+{
     return HX711Gpio::GetPinState();
 }
 
-void System::SetPinState(const halwrapper::GpioPinState state) {
+void System::SetPinState(const halwrapper::GpioPinState state)
+{
     HX711Gpio::SetPinState(state);
 }

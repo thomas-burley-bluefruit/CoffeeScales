@@ -15,11 +15,11 @@ public:
     bool InitCalled = false;
 
     mutable bool TransmitCalled = false;
-    mutable const uint8_t* TxData = nullptr;
+    mutable const uint8_t *TxData = nullptr;
     mutable size_t TxSize = 0;
 
     mutable bool SetCallbackCalled = false;
-    mutable ReceiveInterruptCallbackInterface* Callback = nullptr;
+    mutable ReceiveInterruptCallbackInterface *Callback = nullptr;
 };
 
 }

@@ -25,7 +25,8 @@ struct SystemInterfaceCall
         GpioPinState gpioState;
         uint16_t delayUs;
     };
-    bool operator==(const SystemInterfaceCall& rhs) const
+
+    bool operator==(const SystemInterfaceCall &rhs) const
     {
         return this->method == rhs.method &&
                this->delayUs == rhs.delayUs;

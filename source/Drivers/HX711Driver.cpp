@@ -7,7 +7,7 @@ using namespace ::coffeescales::drivers;
 using namespace ::coffeescales::halwrapper;
 using std::bitset;
 
-HX711Driver::HX711Driver(SystemInterface& system) : mSystem(system)
+HX711Driver::HX711Driver(SystemInterface &system) : mSystem(system)
 {}
 
 bool HX711Driver::Read(int32_t &value) const

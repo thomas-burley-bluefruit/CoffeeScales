@@ -2,9 +2,9 @@ set(NAME Weight)
 enable_language(C CXX)
 
 set(SOURCES
-    Scales.cpp
-    Scales.h
-)
+        Scales.cpp
+        Scales.h
+        )
 
 set(INCLUDES .)
 

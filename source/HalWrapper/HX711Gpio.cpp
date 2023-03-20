@@ -5,9 +5,9 @@
 using namespace ::coffeescales::halwrapper;
 
 static constexpr uint32_t HX711DoutPin = GPIO_PIN_3;
-static GPIO_TypeDef* HX711DoutGpioPort = GPIOA;
+static GPIO_TypeDef *HX711DoutGpioPort = GPIOA;
 static constexpr uint32_t HX711PdSckPin = GPIO_PIN_4;
-static GPIO_TypeDef* HX711PdSckGpioPort = GPIOA;
+static GPIO_TypeDef *HX711PdSckGpioPort = GPIOA;
 
 void HX711Gpio::Init()
 {
@@ -30,11 +30,13 @@ void HX711Gpio::Init()
     HAL_GPIO_Init(HX711PdSckGpioPort, &GpioPdSck);
 }
 
-GpioPinState HX711Gpio::GetPinState() const {
+GpioPinState HX711Gpio::GetPinState() const
+{
     return PinState(HAL_GPIO_ReadPin(HX711DoutGpioPort, HX711DoutPin));
 }
 
-void HX711Gpio::SetPinState(const halwrapper::GpioPinState state) {
+void HX711Gpio::SetPinState(const halwrapper::GpioPinState state)
+{
     HAL_GPIO_WritePin(HX711PdSckGpioPort,
                       HX711PdSckPin,
                       HalPinState(state));

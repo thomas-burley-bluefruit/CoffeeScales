@@ -24,7 +24,7 @@ void HalInit::SystemClockConfig()
     HAL_PWR_EnableBkUpAccess();
     __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
 
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE | RCC_OSCILLATORTYPE_MSI;
     RCC_OscInitStruct.LSEState = RCC_LSE_ON;
     RCC_OscInitStruct.MSIState = RCC_MSI_ON;
     RCC_OscInitStruct.MSICalibrationValue = 0;
@@ -39,8 +39,8 @@ void HalInit::SystemClockConfig()
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
         ErrorHandler();
 
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                                  |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+                                  | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -72,5 +72,6 @@ void HalInit::MxGpioInit()
 
 void HalInit::ErrorHandler()
 {
-    while (true) {}
+    while (true)
+    {}
 }

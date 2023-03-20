@@ -32,7 +32,7 @@ public:
     uint32_t &CallbackCount = mCallbackCount;
     double &CalibrationFactor = mCalibrationFactor;
     static constexpr double CalibrationWeight = Scales::CalibrationWeightMg;
-    State& State = Scales::mState;
+    State &State = Scales::mState;
 };
 
 class ScalesTests : public testing::Test
@@ -247,7 +247,8 @@ TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
     mAdc.ReadValue += additionalAdcValue;
     TriggerAdcRead();
 
-    const auto expectedWeight = static_cast<int32_t>(additionalAdcValue / mScales.CalibrationFactor);
+    const auto expectedWeight = static_cast<int32_t>(additionalAdcValue /
+                                                     mScales.CalibrationFactor);
     ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
 }
 

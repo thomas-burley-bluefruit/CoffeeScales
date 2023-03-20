@@ -11,7 +11,7 @@ class Utilities
 {
 public:
     template<size_t bits>
-    static constexpr int32_t TwosComplementToInt(std::bitset<bits>& data)
+    static constexpr int32_t TwosComplementToInt(std::bitset<bits> &data)
     {
         bool negativeValue = data[bits - 1];
         if (negativeValue)

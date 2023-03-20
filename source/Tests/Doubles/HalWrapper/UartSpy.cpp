@@ -9,7 +9,7 @@ void UartSpy::Init()
 
 void UartSpy::Transmit(const uint8_t *txData, size_t size) const
 {
-    TransmitCalled  = true;
+    TransmitCalled = true;
     TxData = txData;
     TxSize = size;
 }

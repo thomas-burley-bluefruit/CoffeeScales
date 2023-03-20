@@ -9,7 +9,7 @@ bool TerminalCallbackSpy::TerminalCommand(CommandArgs &args)
     return true;
 }
 
-const char* TerminalCallbackSpy::CommandName() const
+const char *TerminalCallbackSpy::CommandName() const
 {
     return CommandNameValue;
 }

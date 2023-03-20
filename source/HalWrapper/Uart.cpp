@@ -5,7 +5,7 @@
 using namespace ::coffeescales::halwrapper;
 
 static UART_HandleTypeDef sUart;
-static ReceiveInterruptCallbackInterface* sCallback = nullptr;
+static ReceiveInterruptCallbackInterface *sCallback = nullptr;
 
 static constexpr uint32_t UartTxPin = GPIO_PIN_2;
 static constexpr uint32_t UartRxPin = GPIO_PIN_15;
@@ -30,7 +30,7 @@ void Uart::Init()
     HAL_UART_Init(&sUart);
 }
 
-void Uart::Transmit(const uint8_t* txData, size_t size) const
+void Uart::Transmit(const uint8_t *txData, size_t size) const
 {
     HAL_UART_Transmit(&sUart,
                       txData,
@@ -43,11 +43,11 @@ void Uart::SetCallback(ReceiveInterruptCallbackInterface *callback) const
     sCallback = callback;
 }
 
-extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart)
+extern "C" void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
-    if(huart->Instance==USART2)
+    if (huart->Instance == USART2)
     {
         PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
         PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
@@ -83,12 +83,12 @@ extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     }
 }
 
-extern "C" void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
+extern "C" void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
 {
-    if(huart->Instance==USART2)
+    if (huart->Instance == USART2)
     {
         __HAL_RCC_USART2_CLK_DISABLE();
-        HAL_GPIO_DeInit(GPIOA, UartTxPin|UartRxPin);
+        HAL_GPIO_DeInit(GPIOA, UartTxPin | UartRxPin);
     }
 }
 

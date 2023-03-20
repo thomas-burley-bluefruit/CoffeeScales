@@ -4,16 +4,16 @@ enable_language(C CXX)
 set(SOURCES
         Time.cpp
         Time.h
-    DelayTimer.cpp
-    DelayTimer.h
-    HalInit.cpp
-    HalInit.h
-    HX711Gpio.cpp
-    HX711Gpio.h
-    System.cpp
-    System.h
-    Uart.cpp
-    Uart.h)
+        DelayTimer.cpp
+        DelayTimer.h
+        HalInit.cpp
+        HalInit.h
+        HX711Gpio.cpp
+        HX711Gpio.h
+        System.cpp
+        System.h
+        Uart.cpp
+        Uart.h)
 
 set(INCLUDES .)
 

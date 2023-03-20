@@ -5,7 +5,8 @@ using namespace ::drivers;
 using namespace ::halwrapper;
 using namespace ::terminal;
 
-Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem), mScales(mHx711, mSystem, mTerminal)
+Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
+                                 mScales(mHx711, mSystem, mTerminal)
 {
 }
 
@@ -22,7 +23,7 @@ System &Instantiation::System()
     return mSystem;
 }
 
-Terminal& Instantiation::Terminal()
+Terminal &Instantiation::Terminal()
 {
     return mTerminal;
 }
