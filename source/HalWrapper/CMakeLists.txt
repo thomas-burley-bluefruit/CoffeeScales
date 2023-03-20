@@ -6,6 +6,8 @@ set(SOURCES
         Time.h
         DelayTimer.cpp
         DelayTimer.h
+        HalErrorHandler.c
+        HalErrorHandler.h
         HalInit.cpp
         HalInit.h
         HX711Gpio.cpp

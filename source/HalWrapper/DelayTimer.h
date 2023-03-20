@@ -13,9 +13,6 @@ public:
 protected:
     static void ResetCounter();
     static uint16_t GetCounter();
-
-private:
-    static void ErrorHandler();
 };
 
 }

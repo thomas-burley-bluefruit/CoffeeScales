@@ -1,3 +1,4 @@
+#include "HalErrorHandler.h"
 #include "Uart.h"
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_uart.h"
@@ -27,7 +28,8 @@ void Uart::Init()
     sUart.Init.OverSampling = UART_OVERSAMPLING_16;
     sUart.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
     sUart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-    HAL_UART_Init(&sUart);
+    if (HAL_UART_Init(&sUart) != HAL_OK)
+        ErrorHandler();
 }
 
 void Uart::Transmit(const uint8_t *txData, size_t size) const

@@ -9,7 +9,6 @@ public:
     void Init();
 
 private:
-    static void ErrorHandler();
     void SystemClockConfig();
     static void MxGpioInit();
 };

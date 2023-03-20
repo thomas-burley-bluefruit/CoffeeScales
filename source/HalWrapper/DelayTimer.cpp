@@ -1,4 +1,5 @@
 #include "DelayTimer.h"
+#include "HalErrorHandler.h"
 #include "stm32l4xx_hal.h"
 #include "stm32l4xx_hal_tim.h"
 
@@ -38,12 +39,6 @@ void DelayTimer::ResetCounter()
 uint16_t DelayTimer::GetCounter()
 {
     return __HAL_TIM_GET_COUNTER(&sTimer);
-}
-
-void DelayTimer::ErrorHandler()
-{
-    while (true)
-    {}
 }
 
 extern "C" void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim_base)
