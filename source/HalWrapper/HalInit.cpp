@@ -13,7 +13,7 @@ void HalInit::Init()
     MxGpioInit();
 }
 
-void HalInit::SystemClockConfig(void)
+void HalInit::SystemClockConfig()
 {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -52,7 +52,7 @@ void HalInit::SystemClockConfig(void)
     HAL_RCCEx_EnableMSIPLLMode();
 }
 
-void HalInit::MxGpioInit(void)
+void HalInit::MxGpioInit()
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -72,5 +72,5 @@ void HalInit::MxGpioInit(void)
 
 void HalInit::ErrorHandler()
 {
-    while (1) {}
+    while (true) {}
 }

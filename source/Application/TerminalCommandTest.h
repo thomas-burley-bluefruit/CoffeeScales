@@ -9,9 +9,9 @@ namespace coffeescales::terminal
 class TerminalCommandTest final : public TerminalCallbackInterface
 {
 public:
-    TerminalCommandTest(TerminalInterface& terminal);
+    explicit TerminalCommandTest(TerminalInterface& terminal);
     bool TerminalCommand(CommandArgs &args) override;
-    const char *CommandName() const override;
+    [[nodiscard]] const char *CommandName() const override;
 
 private:
     TerminalInterface& mTerminal;

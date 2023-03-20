@@ -2,7 +2,7 @@
 
 #include "AdcSpy.h"
 #include "GenericTerminalCommands.h"
-#include "Scales.cpp"
+#include "Scales.h"
 #include "ScalesTerminalMessages.h"
 #include "Terminal.h"
 #include "TerminalSpy.h"
@@ -15,6 +15,7 @@
 using namespace ::coffeescales::halwrapper;
 using namespace ::coffeescales::drivers;
 using namespace ::coffeescales::terminal;
+using namespace ::coffeescales::weight;
 
 using std::vector;
 
@@ -56,7 +57,7 @@ public:
     void Tare()
     {
         mScales.StartTare();
-        RepeatAdcValue(0, mScales.AveragingCount);
+        RepeatAdcValue(0, ScalesTestObject::AveragingCount);
     }
 
     void CalibrationStartSequence()
@@ -66,11 +67,11 @@ public:
         SetCommandArg(calibrateStartArgs, 0, ScalesTerminalCommands::Calibrate);
         calibrateStartArgs.Count++;
         ASSERT_TRUE(mScales.TerminalCommand(calibrateStartArgs));
-        RepeatAdcValue(0, mScales.AveragingCount);
+        RepeatAdcValue(0, ScalesTestObject::AveragingCount);
         mScales.Task();
     }
 
-    void SetCommandArg(CommandArgs &args, size_t index, const char *arg)
+    static void SetCommandArg(CommandArgs &args, size_t index, const char *arg)
     {
         if (index > CommandArgs::MaxArguments - 1)
             return;
@@ -96,7 +97,7 @@ TEST_F(ScalesTests, Can_register_callback)
 TEST_F(ScalesTests, Can_only_register_up_to_max_callbacks)
 {
     // Given, when
-    for (size_t i = 0; i < mScales.MaxCallbacks; ++i)
+    for (size_t i = 0; i < ScalesTestObject::MaxCallbacks; ++i)
         ASSERT_TRUE(mScales.RegisterCallback(&mCallback));
 
     // Then
@@ -208,7 +209,7 @@ TEST_F(ScalesTests, Adc_readings_are_scaled_by_calibration_factor_when_passed_to
 
     const int32_t adcValue = 1'000'000;
     mAdc.ReadValue = adcValue;
-    const int32_t expectedWeight = adcValue / mScales.CalibrationFactor;
+    const auto expectedWeight = static_cast<int32_t>(adcValue / mScales.CalibrationFactor);
 
     // When
     TriggerAdcRead();
@@ -246,7 +247,7 @@ TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
     mAdc.ReadValue += additionalAdcValue;
     TriggerAdcRead();
 
-    const int32_t expectedWeight = additionalAdcValue / mScales.CalibrationFactor;
+    const auto expectedWeight = static_cast<int32_t>(additionalAdcValue / mScales.CalibrationFactor);
     ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
 }
 
@@ -265,7 +266,7 @@ TEST_F(ScalesTests, task_after_calibrate_terminal_command_performs_tare)
 
     // When
     ASSERT_TRUE(mScales.TerminalCommand(args));
-    RepeatAdcValue(adcValue, mScales.AveragingCount);
+    RepeatAdcValue(adcValue, ScalesTestObject::AveragingCount);
     mScales.Task();
 
     // Then
@@ -285,7 +286,7 @@ TEST_F(ScalesTests,
 
     // When
     ASSERT_TRUE(mScales.TerminalCommand(args));
-    for (int i = 0; i < mScales.AveragingCount; ++i)
+    for (int i = 0; i < ScalesTestObject::AveragingCount; ++i)
     {
         TriggerAdcRead();
         ASSERT_FALSE(mTerminal.TextOutCalled);
@@ -351,8 +352,6 @@ TEST_F(ScalesTests,
     int32_t averageCalibrateAdcReading = 0;
     for (auto reading: calibrateAdcReadings)
         averageCalibrateAdcReading += reading;
-    averageCalibrateAdcReading = static_cast<int32_t>(averageCalibrateAdcReading /
-                                                      calibrateAdcReadings.size());
 
     // When: n calibration readings read
     ASSERT_FALSE(mScales.TerminalCommand(setArgs));

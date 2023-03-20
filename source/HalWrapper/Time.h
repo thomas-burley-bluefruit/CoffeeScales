@@ -11,9 +11,9 @@ namespace coffeescales::halwrapper
 class Time : public DelayTimer, public TimeInterface
 {
 public:
-    void DelayUs(const uint16_t delayUs) override;
+    void DelayUs(uint16_t delayUs) override;
     void DelayMs(uint32_t delayMs) override;
-    uint32_t GetTick() const override;
+    [[nodiscard]] uint32_t GetTick() const override;
 };
 
 }

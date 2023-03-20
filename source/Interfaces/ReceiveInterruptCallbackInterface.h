@@ -9,10 +9,9 @@ namespace coffeescales::halwrapper
 class ReceiveInterruptCallbackInterface
 {
 public:
-    virtual ~ReceiveInterruptCallbackInterface()
-    {}
+    virtual ~ReceiveInterruptCallbackInterface() = default;
 
-    virtual void OnReceiveInterrupt(const uint8_t byte) = 0;
+    virtual void OnReceiveInterrupt(uint8_t byte) = 0;
     virtual void OnReceiveError() = 0;
 };
 

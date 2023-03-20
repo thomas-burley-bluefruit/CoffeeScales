@@ -8,9 +8,9 @@ namespace coffeescales::halwrapper
 class HX711Gpio : public GpioInterface
 {
 public:
-    void Init();
-    GpioPinState GetPinState() const override;
-    void SetPinState(const GpioPinState state) override;
+    static void Init();
+    [[nodiscard]] GpioPinState GetPinState() const override;
+    void SetPinState(GpioPinState state) override;
 };
 
 }

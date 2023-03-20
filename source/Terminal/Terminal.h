@@ -11,11 +11,11 @@ namespace coffeescales::terminal
 class Terminal : public TerminalInterface, public halwrapper::ReceiveInterruptCallbackInterface
 {
 public:
-    Terminal(halwrapper::UartInterface& uart);
+    explicit Terminal(halwrapper::UartInterface& uart);
     void Start();
     void Task();
     void TextOut(const char* text) const override;
-    void OnReceiveInterrupt(const uint8_t byte) override;
+    void OnReceiveInterrupt(uint8_t byte) override;
     void OnReceiveError() override;
     bool RegisterCommandHandler(TerminalCallbackInterface* callback) override;
 
@@ -31,7 +31,7 @@ private:
     size_t mCommandHandlerCount = 0;
     std::array<TerminalCallbackInterface*, MaxCommandHandlers> mCommandHandlers {nullptr};
     halwrapper::UartInterface& mUart;
-    std::array<char, TerminalBufferSize> mCommandBuffer;
+    std::array<char, TerminalBufferSize> mCommandBuffer{};
     size_t mCommandCharacterCount = 0;
     static constexpr char CommandTerminator = '\n';
 };

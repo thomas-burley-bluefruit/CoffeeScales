@@ -42,7 +42,7 @@ uint16_t DelayTimer::GetCounter()
 
 void DelayTimer::ErrorHandler()
 {
-    while (1) {}
+    while (true) {}
 }
 
 extern "C" void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)

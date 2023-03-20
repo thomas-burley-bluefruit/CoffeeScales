@@ -15,7 +15,7 @@ public:
     TerminalTests() : mTerminal(mUart) {}
 
 protected:
-    void SendCommand(string command)
+    void SendCommand(const string& command)
     {
         for (auto ch : command)
             mTerminal.OnReceiveInterrupt(static_cast<uint8_t>(ch));

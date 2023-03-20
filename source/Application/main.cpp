@@ -1,9 +1,8 @@
 #include "Application.h"
 
-static coffeescales::Application mApplication;
-
 int main()
 {
-    mApplication.Init();
-    mApplication.Loop();
+    coffeescales::Application::Init();
+    coffeescales::Application::Loop();
+    return 0;
 }

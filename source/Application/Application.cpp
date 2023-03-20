@@ -12,7 +12,7 @@ void Application::Init()
 
 void Application::Loop()
 {
-    while (1)
+    while (true)
     {
         mInstantiation.Terminal().Task();
         mInstantiation.Scales().Task();

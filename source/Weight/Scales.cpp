@@ -74,7 +74,7 @@ void Scales::Tare()
 
     if (mAverageCount >= AveragingCount)
     {
-        mTareAdcReading = mAverageSum / AveragingCount;
+        mTareAdcReading = mAverageSum / static_cast<int32_t>(AveragingCount);
         ConvertWeight();
         UpdateSubscribers();
 
@@ -101,7 +101,7 @@ void Scales::CalibrateSet()
 
     if (mAverageCount >= AveragingCount)
     {
-        const int32_t averageReading = mAverageSum / mAverageCount;
+        const int32_t averageReading = mAverageSum / static_cast<int32_t>(mAverageCount);
         mCalibrationFactor = (averageReading - mTareAdcReading) / CalibrationWeightMg;
         mTerminal.TextOut(ScalesTerminalMessages::CalibrateComplete);
         mState = State::Weigh;
@@ -129,7 +129,7 @@ bool Scales::ReadAdc()
 void Scales::ConvertWeight()
 {
     const auto adcReadingDelta = mLastAdcReading - mTareAdcReading;
-    mLastWeightConversionMg = adcReadingDelta / mCalibrationFactor;
+    mLastWeightConversionMg = static_cast<int32_t>(adcReadingDelta / mCalibrationFactor);
 }
 
 void Scales::UpdateSubscribers()

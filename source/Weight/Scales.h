@@ -27,7 +27,7 @@ public:
     // TerminalCallbackInterface
     bool TerminalCommand(terminal::CommandArgs &args) override;
 
-    const char *CommandName() const override
+    [[nodiscard]] const char *CommandName() const override
     { return ScalesTerminalCommands::CommandName; }
 
     enum class State

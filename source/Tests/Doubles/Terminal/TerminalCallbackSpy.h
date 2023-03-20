@@ -9,7 +9,7 @@ class TerminalCallbackSpy : public TerminalCallbackInterface
 {
 public:
     bool TerminalCommand(CommandArgs &args) override;
-    const char *CommandName() const override;
+    [[nodiscard]] const char *CommandName() const override;
 
     CommandArgs CallbackArgs;
     size_t CallbackCount = 0;

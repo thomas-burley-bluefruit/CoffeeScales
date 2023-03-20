@@ -36,9 +36,9 @@ class SystemMock final : public SystemInterface
 {
 public:
     GpioPinState GetPinState() const override;
-    void SetPinState(const GpioPinState state) override;
-    void DelayMs(const uint32_t delayMs) override;
-    void DelayUs(const uint16_t delayUs) override;
+    void SetPinState(GpioPinState state) override;
+    void DelayMs(uint32_t delayMs) override;
+    void DelayUs(uint16_t delayUs) override;
     uint32_t GetTick() const override;
 
     mutable std::vector<SystemInterfaceCall> Calls;

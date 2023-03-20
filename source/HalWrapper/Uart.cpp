@@ -13,8 +13,7 @@ static constexpr uint32_t TimeoutMs = 10;
 
 
 Uart::Uart()
-{
-}
+= default;
 
 void Uart::Init()
 {

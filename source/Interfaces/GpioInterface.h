@@ -11,8 +11,8 @@ class GpioInterface
 {
 public:
     ~GpioInterface() = default;
-    virtual GpioPinState GetPinState() const = 0;
-    virtual void SetPinState(const GpioPinState state) = 0;
+    [[nodiscard]] virtual GpioPinState GetPinState() const = 0;
+    virtual void SetPinState(GpioPinState state) = 0;
 };
 
 }

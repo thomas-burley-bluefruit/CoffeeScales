@@ -1,6 +1,6 @@
 #include "Terminal.h"
 #include <cstdint>
-#include <string.h>
+#include <cstring>
 
 using namespace ::coffeescales::halwrapper;
 using namespace ::coffeescales::terminal;
