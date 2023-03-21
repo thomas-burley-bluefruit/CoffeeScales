@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CMakeSharedSettings">
     <configurations>
-      <configuration PROFILE_NAME="Tests Debug" ENABLED="true" CONFIG_NAME="Debug" GENERATION_OPTIONS="-G Ninja -DTESTING=1" />
+      <configuration PROFILE_NAME="Tests Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-G Ninja -DTESTING=1" />
       <configuration PROFILE_NAME="Firmware Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="GNU ARM" GENERATION_OPTIONS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=arm-none-eabi-gcc.cmake -DFIRMWARE=1">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
