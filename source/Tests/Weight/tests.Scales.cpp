@@ -56,7 +56,7 @@ public:
 
     void Tare()
     {
-        mScales.StartTare();
+        mScales.TareInit();
         RepeatAdcValue(0, ScalesTestObject::AveragingCount);
     }
 
@@ -66,7 +66,7 @@ public:
         CommandArgs calibrateStartArgs;
         SetCommandArg(calibrateStartArgs, 0, ScalesTerminalCommands::Calibrate);
         calibrateStartArgs.Count++;
-        ASSERT_TRUE(mScales.TerminalCommand(calibrateStartArgs));
+        mScales.CalibrateInit();
         RepeatAdcValue(0, ScalesTestObject::AveragingCount);
         mScales.Task();
     }
@@ -231,7 +231,7 @@ TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
     averageTareAdcReading = static_cast<int32_t>(averageTareAdcReading / tareAdcReadings.size());
 
     // When: tared
-    mScales.StartTare();
+    mScales.TareInit();
     for (auto reading: tareAdcReadings)
     {
         mAdc.ReadValue = reading;
@@ -252,21 +252,16 @@ TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
     ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
 }
 
-TEST_F(ScalesTests, task_after_calibrate_terminal_command_performs_tare)
+TEST_F(ScalesTests, task_after_CalibrateInit_command_performs_tare)
 {
     // Given
     Tare();
     mScales.RegisterCallback(&mCallback);
 
-    CommandArgs args;
-    strncpy_s(args.Arguments[0].data(), CommandArgs::MaxArgLength,
-              "calibrate", CommandArgs::MaxArgLength);
-    args.Count++;
-
     const int32_t adcValue = 123456;
 
     // When
-    ASSERT_TRUE(mScales.TerminalCommand(args));
+    mScales.CalibrateInit();
     RepeatAdcValue(adcValue, ScalesTestObject::AveragingCount);
     mScales.Task();
 
@@ -276,17 +271,13 @@ TEST_F(ScalesTests, task_after_calibrate_terminal_command_performs_tare)
 }
 
 TEST_F(ScalesTests,
-       task_after_calibrate_terminal_command_instructs_user_to_place_weight_on_scale_when_taring_complete)
+       task_after_CalibrateInit_instructs_user_to_place_weight_on_scale_when_taring_complete)
 {
     // Given
     Tare();
-    CommandArgs args;
-    strncpy_s(args.Arguments[0].data(), CommandArgs::MaxArgLength,
-              ScalesTerminalCommands::Calibrate, CommandArgs::MaxArgLength);
-    args.Count++;
 
     // When
-    ASSERT_TRUE(mScales.TerminalCommand(args));
+    mScales.CalibrateInit();
     for (int i = 0; i < ScalesTestObject::AveragingCount; ++i)
     {
         TriggerAdcRead();
@@ -300,16 +291,10 @@ TEST_F(ScalesTests,
 }
 
 TEST_F(ScalesTests,
-       task_after_calibrate_set_terminal_command_updates_calibration_factor_to_average_of_next_n_reading_if_calibration_started)
+       task_after_CalibrateSet_updates_calibration_factor_to_average_of_next_n_reading_if_calibration_started)
 {
     // Given
     CalibrationStartSequence();
-
-    CommandArgs setArgs;
-    SetCommandArg(setArgs, 0, ScalesTerminalCommands::Calibrate);
-    setArgs.Count++;
-    SetCommandArg(setArgs, 1, ScalesTerminalCommands::Set);
-    setArgs.Count++;
 
     vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
                                             58000, 59000};
@@ -320,7 +305,7 @@ TEST_F(ScalesTests,
                                                       calibrateAdcReadings.size());
 
     // When: n calibration readings read
-    ASSERT_TRUE(mScales.TerminalCommand(setArgs));
+    mScales.CalibrateSet();
     for (auto reading: calibrateAdcReadings)
     {
         mAdc.ReadValue = reading;
@@ -335,18 +320,12 @@ TEST_F(ScalesTests,
 }
 
 TEST_F(ScalesTests,
-       task_after_calibrate_set_terminal_command_does_not_update_calibration_factor_if_calibration_not_started)
+       task_after_CalibrateSet_does_not_update_calibration_factor_if_calibration_not_started)
 {
     // Given
     Tare();
 
     const auto initialCalibrationFactor = mScales.CalibrationFactor;
-
-    CommandArgs setArgs;
-    SetCommandArg(setArgs, 0, ScalesTerminalCommands::Calibrate);
-    setArgs.Count++;
-    SetCommandArg(setArgs, 1, ScalesTerminalCommands::Set);
-    setArgs.Count++;
 
     vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
                                             58000, 59000};
@@ -355,7 +334,7 @@ TEST_F(ScalesTests,
         averageCalibrateAdcReading += reading;
 
     // When: n calibration readings read
-    ASSERT_FALSE(mScales.TerminalCommand(setArgs));
+    mScales.CalibrateSet();
     for (auto reading: calibrateAdcReadings)
     {
         mAdc.ReadValue = reading;
@@ -372,17 +351,11 @@ TEST_F(ScalesTests, confirmation_message_printed_to_terminal_after_calibration_c
     CalibrationStartSequence();
     mTerminal.TextOutCalled = false;
 
-    CommandArgs setArgs;
-    SetCommandArg(setArgs, 0, ScalesTerminalCommands::Calibrate);
-    setArgs.Count++;
-    SetCommandArg(setArgs, 1, ScalesTerminalCommands::Set);
-    setArgs.Count++;
-
     vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
                                             58000, 59000};
 
     // When: n calibration readings read
-    ASSERT_TRUE(mScales.TerminalCommand(setArgs));
+    mScales.CalibrateSet();
     for (auto reading: calibrateAdcReadings)
     {
         mAdc.ReadValue = reading;
@@ -394,15 +367,9 @@ TEST_F(ScalesTests, confirmation_message_printed_to_terminal_after_calibration_c
     ASSERT_STREQ(ScalesTerminalMessages::CalibrateComplete, mTerminal.TextOutValue);
 }
 
-TEST_F(ScalesTests, adc_on_terminal_command_prints_adc_value_on_next_task)
+TEST_F(ScalesTests, AdcDebugPrint_on_prints_adc_value_on_next_task)
 {
     // Given
-    CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Adc);
-    args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::On);
-    args.Count++;
-
     mAdc.ReadValue = 123456;
 
     char expectedMessage[Terminal::TerminalBufferSize];
@@ -410,7 +377,7 @@ TEST_F(ScalesTests, adc_on_terminal_command_prints_adc_value_on_next_task)
              mAdc.ReadValue);
 
     // When
-    mScales.TerminalCommand(args);
+    mScales.AdcDebugPrint(true);
     TriggerAdcRead();
 
     // Then
@@ -418,22 +385,16 @@ TEST_F(ScalesTests, adc_on_terminal_command_prints_adc_value_on_next_task)
     ASSERT_STREQ(expectedMessage, mTerminal.TextOutValue);
 }
 
-TEST_F(ScalesTests, adc_off_terminal_command_stops_printing_adc_values_on_task)
+TEST_F(ScalesTests, AdcDebugPrint_off_stops_printing_adc_values_on_task)
 {
     // Given
-    CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Adc);
-    args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::On);
-    args.Count++;
-
     mAdc.ReadValue = 123456;
 
     char expectedMessage[Terminal::TerminalBufferSize];
     snprintf(expectedMessage, Terminal::TerminalBufferSize, ScalesTerminalMessages::AdcPrintFormat,
              mAdc.ReadValue);
 
-    mScales.TerminalCommand(args);
+    mScales.AdcDebugPrint(true);
     TriggerAdcRead();
 
     ASSERT_TRUE(mTerminal.TextOutCalled);
@@ -441,25 +402,18 @@ TEST_F(ScalesTests, adc_off_terminal_command_stops_printing_adc_values_on_task)
 
     // When
     mTerminal.TextOutCalled = false;
-    SetCommandArg(args, 1, GenericTerminalCommands::Off);
-    mScales.TerminalCommand(args);
+    mScales.AdcDebugPrint(false);
     TriggerAdcRead();
 
     // Then
     ASSERT_FALSE(mTerminal.TextOutCalled);
 }
 
-TEST_F(ScalesTests, weight_on_terminal_command_prints_weight_value_on_next_task)
+TEST_F(ScalesTests, WeightDebugPrint_on_prints_weight_value_on_next_task)
 {
     // Given
     Tare();
     mScales.RegisterCallback(&mCallback);
-
-    CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Weight);
-    args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::On);
-    args.Count++;
 
     mAdc.ReadValue = 123456;
     TriggerAdcRead();
@@ -470,7 +424,7 @@ TEST_F(ScalesTests, weight_on_terminal_command_prints_weight_value_on_next_task)
              mCallback.LastWeightReading);
 
     // When
-    mScales.TerminalCommand(args);
+    mScales.WeightDebugPrint(true);
     TriggerAdcRead();
 
     // Then
@@ -478,17 +432,11 @@ TEST_F(ScalesTests, weight_on_terminal_command_prints_weight_value_on_next_task)
     ASSERT_STREQ(expectedMessage, mTerminal.TextOutValue);
 }
 
-TEST_F(ScalesTests, weight_off_terminal_command_stops_printing_weight_values_on_task)
+TEST_F(ScalesTests, WeightDebugPrint_off_stops_printing_weight_values_on_task)
 {
     // Given
     Tare();
     mScales.RegisterCallback(&mCallback);
-
-    CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Weight);
-    args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::On);
-    args.Count++;
 
     mAdc.ReadValue = 123456;
     TriggerAdcRead();
@@ -498,7 +446,7 @@ TEST_F(ScalesTests, weight_off_terminal_command_stops_printing_weight_values_on_
              ScalesTerminalMessages::WeightPrintFormat,
              mCallback.LastWeightReading);
 
-    mScales.TerminalCommand(args);
+    mScales.WeightDebugPrint(true);
     TriggerAdcRead();
 
     ASSERT_TRUE(mTerminal.TextOutCalled);
@@ -506,26 +454,21 @@ TEST_F(ScalesTests, weight_off_terminal_command_stops_printing_weight_values_on_
 
     // When
     mTerminal.TextOutCalled = false;
-    SetCommandArg(args, 1, GenericTerminalCommands::Off);
-    mScales.TerminalCommand(args);
+    mScales.WeightDebugPrint(false);
     TriggerAdcRead();
 
     // Then
     ASSERT_FALSE(mTerminal.TextOutCalled);
 }
 
-TEST_F(ScalesTests, tare_command_starts_tare_process)
+TEST_F(ScalesTests, TareInit_starts_tare_process)
 {
     // Given
     Tare();
     ASSERT_EQ(Scales::State::Weigh, mScales.State);
 
-    CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Tare);
-    args.Count++;
-
     // When
-    ASSERT_TRUE(mScales.TerminalCommand(args));
+    mScales.TareInit();
 
     // Then
     ASSERT_EQ(Scales::State::Tare, mScales.State);

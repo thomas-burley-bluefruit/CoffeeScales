@@ -17,7 +17,6 @@ Scales::Scales(AdcDriverInterface &adc, SystemInterface &system, TerminalInterfa
 {
     mCallbacks.fill(nullptr);
     memset(mPrintBuffer, 0, Terminal::TerminalBufferSize);
-    mTerminal.RegisterCommandHandler(this);
 }
 
 void Scales::Task()
@@ -28,21 +27,21 @@ void Scales::Task()
     {
         case State::Weigh:
             if (readSuccess)
-                Weigh();
+                StateWeigh();
             break;
 
         case State::Tare:
             if (readSuccess)
-                Tare();
+                StateTare();
             break;
 
         case State::CalibrateStart:
-            CalibrateStart();
+            StateCalibrateStart();
             break;
 
         case State::CalibrateSet:
             if (readSuccess)
-                CalibrateSet();
+                StateCalibrateSet();
             break;
 
         case State::CalibrateWait:
@@ -52,14 +51,7 @@ void Scales::Task()
     }
 }
 
-void Scales::StartTare()
-{
-    mState = State::Tare;
-    mAverageSum = 0;
-    mAverageCount = 0;
-}
-
-void Scales::Weigh()
+void Scales::StateWeigh()
 {
     ConvertWeight();
     UpdateSubscribers();
@@ -67,7 +59,7 @@ void Scales::Weigh()
         PrintWeightValue();
 }
 
-void Scales::Tare()
+void Scales::StateTare()
 {
     mAverageSum += mLastAdcReading;
     mAverageCount++;
@@ -85,7 +77,7 @@ void Scales::Tare()
     }
 }
 
-void Scales::CalibrateStart()
+void Scales::StateCalibrateStart()
 {
     mTerminal.TextOut(ScalesTerminalMessages::CalibratePlaceWeight);
     mCalibrationStartRequested = false;
@@ -94,7 +86,7 @@ void Scales::CalibrateStart()
     mState = State::CalibrateWait;
 }
 
-void Scales::CalibrateSet()
+void Scales::StateCalibrateSet()
 {
     mAverageSum += mLastAdcReading;
     mAverageCount++;
@@ -156,6 +148,13 @@ void Scales::PrintWeightValue()
     mTerminal.TextOut(mPrintBuffer);
 }
 
+void Scales::TareInit()
+{
+    mState = State::Tare;
+    mAverageSum = 0;
+    mAverageCount = 0;
+}
+
 bool Scales::RegisterCallback(WeightReadingCallbackInterface *callback)
 {
     if (mCallbackCount >= MaxCallbacks)
@@ -165,66 +164,26 @@ bool Scales::RegisterCallback(WeightReadingCallbackInterface *callback)
     return true;
 }
 
-bool Scales::TerminalCommand(CommandArgs &args)
+void Scales::CalibrateInit()
 {
-    if (args.Arg0Is(ScalesTerminalCommands::Calibrate))
-    {
-        if (args.Count == 1)
-        {
-            StartTare();
-            mCalibrationStartRequested = true;
-            return true;
-        }
+    TareInit();
+    mCalibrationStartRequested = true;
+}
 
-        if (args.Count == 2 && args.Arg1Is(ScalesTerminalCommands::Set) &&
-            mState == State::CalibrateWait)
-        {
-            mState = State::CalibrateSet;
-            return true;
-        }
-    }
+void Scales::CalibrateSet()
+{
+    if (mState != State::CalibrateWait)
+        return;
 
-    if (args.Arg0Is(ScalesTerminalCommands::Adc))
-    {
-        if (args.Count != 2)
-            return false;
+    mState = State::CalibrateSet;
+}
 
-        if (args.Arg1Is(GenericTerminalCommands::On))
-        {
-            mAdcDebugPrint = true;
-            return true;
-        }
+void Scales::AdcDebugPrint(bool on)
+{
+    mAdcDebugPrint = on;
+}
 
-        if (args.Arg1Is(GenericTerminalCommands::Off))
-        {
-            mAdcDebugPrint = false;
-            return true;
-        }
-    }
-
-    if (args.Arg0Is(ScalesTerminalCommands::Weight))
-    {
-        if (args.Count != 2)
-            return false;
-
-        if (args.Arg1Is(GenericTerminalCommands::On))
-        {
-            mWeightDebugPrint = true;
-            return true;
-        }
-
-        if (args.Arg1Is(GenericTerminalCommands::Off))
-        {
-            mWeightDebugPrint = false;
-            return true;
-        }
-    }
-
-    if (args.Count == 1 && args.Arg0Is(ScalesTerminalCommands::Tare))
-    {
-        StartTare();
-        return true;
-    }
-
-    return false;
+void Scales::WeightDebugPrint(bool on)
+{
+    mWeightDebugPrint = on;
 }

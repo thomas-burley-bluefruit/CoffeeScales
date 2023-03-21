@@ -12,23 +12,21 @@
 namespace coffeescales::weight
 {
 
-class Scales : public coffeescales::weight::ScalesInterface,
-               public terminal::TerminalCallbackInterface
+class Scales : public coffeescales::weight::ScalesInterface
 {
 public:
     Scales(drivers::AdcDriverInterface &adc, halwrapper::SystemInterface &system,
            terminal::TerminalInterface &terminal);
+
     void Task();
 
     // ScalesInterface
-    void StartTare() override;
+    void TareInit() override;
     bool RegisterCallback(WeightReadingCallbackInterface *callback) override;
-
-    // TerminalCallbackInterface
-    bool TerminalCommand(terminal::CommandArgs &args) override;
-
-    [[nodiscard]] const char *CommandName() const override
-    { return ScalesTerminalCommands::CommandName; }
+    void CalibrateInit() override;
+    void CalibrateSet() override;
+    void AdcDebugPrint(bool on) override;
+    void WeightDebugPrint(bool on) override;
 
     enum class State
     {
@@ -41,15 +39,16 @@ public:
     };
 
 private:
+    void StateWeigh();
+    void StateTare();
+    void StateCalibrateStart();
+    void StateCalibrateSet();
+
     bool ReadAdc();
     void ConvertWeight();
     void UpdateSubscribers();
-    void CalibrateStart();
-    void CalibrateSet();
     void PrintAdcValue();
     void PrintWeightValue();
-    void Weigh();
-    void Tare();
 
     const drivers::AdcDriverInterface &mAdc;
     const halwrapper::SystemInterface &mSystem;
@@ -57,7 +56,6 @@ private:
 
     static constexpr uint32_t LoadCellRangeMg = 1'000'000;
     static constexpr uint32_t AdcReadIntervalMs = 100;
-
 
     uint32_t mLastReadTick = 0;
     int32_t mLastWeightConversionMg = 0.0f;
