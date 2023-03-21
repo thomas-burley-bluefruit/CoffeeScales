@@ -1,7 +1,8 @@
 set(NAME Tests.Weight)
 
 set(SOURCES
-        tests.Scales.cpp)
+        tests.Scales.cpp
+        tests.ScalesCommand.cpp)
 
 set(INCLUDES .)
 

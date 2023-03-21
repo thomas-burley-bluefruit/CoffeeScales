@@ -3,6 +3,7 @@
 #include "HalInit.h"
 #include "HX711Driver.h"
 #include "Scales.h"
+#include "ScalesCommand.h"
 #include "System.h"
 #include "Terminal.h"
 #include "Uart.h"
@@ -28,6 +29,7 @@ private:
     terminal::Terminal mTerminal;
     drivers::HX711Driver mHx711;
     weight::Scales mScales;
+    weight::ScalesCommand mScalesCommand;
 };
 
 }

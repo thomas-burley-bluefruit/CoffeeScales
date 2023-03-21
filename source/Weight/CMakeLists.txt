@@ -4,6 +4,8 @@ enable_language(C CXX)
 set(SOURCES
         Scales.cpp
         Scales.h
+        ScalesCommand.cpp
+        ScalesCommand.h
         )
 
 set(INCLUDES .)

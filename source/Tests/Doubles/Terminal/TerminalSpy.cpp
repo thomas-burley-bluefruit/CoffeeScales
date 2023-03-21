@@ -13,5 +13,7 @@ void TerminalSpy::TextOut(const char *text) const
 
 bool TerminalSpy::RegisterCommandHandler(TerminalCallbackInterface *callback)
 {
+    RegisterCommandHandlerCalled = true;
+    TerminalCallback = callback;
     return true;
 }

@@ -14,6 +14,8 @@ public:
 
     mutable bool TextOutCalled = false;
     mutable char TextOutValue[Terminal::TerminalBufferSize]{0};
+    bool RegisterCommandHandlerCalled = false;
+    TerminalCallbackInterface *TerminalCallback = nullptr;
 };
 
 }

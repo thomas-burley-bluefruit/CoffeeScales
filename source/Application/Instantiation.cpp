@@ -6,7 +6,8 @@ using namespace ::halwrapper;
 using namespace ::terminal;
 
 Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
-                                 mScales(mHx711, mSystem, mTerminal)
+                                 mScales(mHx711, mSystem, mTerminal),
+                                 mScalesCommand(mScales, mTerminal)
 {
 }
 
