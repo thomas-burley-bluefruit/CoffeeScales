@@ -6,7 +6,7 @@ set(SOURCES
         Time.h
         DelayTimer.cpp
         DelayTimer.h
-        HalErrorHandler.c
+        HalErrorHandler.cpp
         HalErrorHandler.h
         HalInit.cpp
         HalInit.h
