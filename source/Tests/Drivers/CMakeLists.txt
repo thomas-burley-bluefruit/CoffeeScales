@@ -1,6 +1,7 @@
 set(NAME Tests.Drivers)
 
 set(SOURCES
+        tests.EepromDriver.cpp
         tests.HX711Driver.cpp
         tests.Utilities.cpp)
 

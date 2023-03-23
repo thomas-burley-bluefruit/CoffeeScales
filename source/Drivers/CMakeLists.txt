@@ -2,6 +2,8 @@ set(NAME Drivers)
 enable_language(C CXX)
 
 set(SOURCES
+        EepromDriver.cpp
+        EepromDriver.h
         HX711Driver.cpp
         HX711Driver.h
         Utilities.h
