@@ -30,8 +30,8 @@ public:
     static constexpr size_t AveragingCount = Scales::AveragingCount;
     std::array<WeightReadingCallbackInterface *, MaxCallbacks> &Callbacks = mCallbacks;
     uint32_t &CallbackCount = mCallbackCount;
-    double &CalibrationFactor = mCalibrationFactor;
-    static constexpr double CalibrationWeight = Scales::CalibrationWeightMg;
+    float &CalibrationFactor = mCalibrationFactor;
+    static constexpr float CalibrationWeight = Scales::CalibrationWeightMg;
     State &State = Scales::mState;
 };
 
@@ -311,7 +311,7 @@ TEST_F(ScalesTests,
         mAdc.ReadValue = reading;
         TriggerAdcRead();
     }
-    const double expectedCalibrationFactor =
+    const float expectedCalibrationFactor =
             averageCalibrateAdcReading / ScalesTestObject::CalibrationWeight;
 
 

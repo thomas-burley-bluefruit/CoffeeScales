@@ -78,7 +78,7 @@ protected:
     static constexpr size_t AveragingCount = 10;
     uint32_t mCallbackCount = 0;
     std::array<WeightReadingCallbackInterface *, MaxCallbacks> mCallbacks;
-    double mCalibrationFactor;
+    float mCalibrationFactor;
 };
 
 }

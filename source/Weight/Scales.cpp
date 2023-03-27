@@ -13,7 +13,7 @@ using namespace ::coffeescales::weight;
 Scales::Scales(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal) :
         mAdc(adc), mSystem(system),
         mTerminal(terminal),
-        mCalibrationFactor(static_cast<double>(mAdc.MaxValue()) / LoadCellRangeMg)
+        mCalibrationFactor(static_cast<float>(mAdc.MaxValue()) / LoadCellRangeMg)
 {
     mCallbacks.fill(nullptr);
     memset(mPrintBuffer, 0, Terminal::TerminalBufferSize);
