@@ -14,6 +14,10 @@ class EepromDriver final : public EepromInterface
 public:
     explicit EepromDriver(halwrapper::SpiInterface &spi);
     bool ReadStatusRegister(StatusRegister &status) override;
+    bool Write(uint16_t address, const uint8_t *data, size_t size) override;
+    bool Read(uint16_t address, uint8_t *data, size_t size) override;
+
+    static constexpr size_t PageSizeBytes = 16;
 
     struct Instructions
     {
@@ -25,6 +29,7 @@ public:
         static constexpr uint8_t WriteStatusRegister = 0b0000'0001;
 
         static constexpr size_t InstructionSize = 1;
+        static constexpr size_t AddressSize = 2;
         static constexpr size_t StatusRegisterSize = 1;
     };
 
@@ -37,6 +42,10 @@ public:
     };
 
 private:
+    bool TransmitInstruction(const uint8_t instruction) const;
+    void SetChipSelect() const;
+    void ResetChipSelect() const;
+
     halwrapper::SpiInterface &mSpi;
 };
 
