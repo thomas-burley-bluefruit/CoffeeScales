@@ -15,6 +15,7 @@ public:
     void SetCalibrationFactor(float factor) override;
 
     static constexpr uint16_t Address = 0x0000;
+    static constexpr float DefaultCalibrationFactor = 8.0f;
 
 private:
     void Get();

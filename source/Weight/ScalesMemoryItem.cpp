@@ -10,6 +10,11 @@ ScalesMemoryItem::ScalesMemoryItem(const drivers::PersistentMemoryInterface &eep
 void ScalesMemoryItem::Init()
 {
     Get();
+    if (mCalibrationFactor == 0)
+    {
+        mCalibrationFactor = DefaultCalibrationFactor;
+        Set();
+    }
 }
 
 float ScalesMemoryItem::GetCalibrationFactor() const

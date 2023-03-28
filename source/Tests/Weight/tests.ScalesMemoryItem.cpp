@@ -32,6 +32,22 @@ TEST_F(ScalesMemoryItemTests, Init_restores_calibration_factor_value_from_memory
     ASSERT_EQ(mScalesMemoryItem.GetCalibrationFactor(), expectedCalibrationFactor);
 }
 
+TEST_F(ScalesMemoryItemTests, Init_sets_default_if_stored_value_is_zero)
+{
+// Given
+    const uint8_t data[sizeof(float)]{0};
+    mEepromDriver.SetReadData(data, sizeof(float));
+
+    // When
+    mScalesMemoryItem.Init();
+
+    // Then
+    ASSERT_TRUE(mEepromDriver.ReadCalled);
+    ASSERT_EQ(mEepromDriver.ReadAddress, ScalesMemoryItem::Address);
+    ASSERT_EQ(mScalesMemoryItem.GetCalibrationFactor(), ScalesMemoryItem::DefaultCalibrationFactor);
+}
+
+
 TEST_F(ScalesMemoryItemTests, SetCalibrationFactor_updates_stored_calibration_factor)
 {
     // Given
