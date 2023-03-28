@@ -13,9 +13,9 @@ class EepromDriver final : public EepromInterface
 {
 public:
     explicit EepromDriver(halwrapper::SpiInterface &spi);
-    bool ReadStatusRegister(StatusRegister &status) override;
-    bool Write(uint16_t address, const uint8_t *data, size_t size) override;
-    bool Read(uint16_t address, uint8_t *data, size_t size) override;
+    bool ReadStatusRegister(StatusRegister &status) const override;
+    bool Write(uint16_t address, const uint8_t *data, size_t size) const override;
+    bool Read(uint16_t address, uint8_t *data, size_t size) const override;
 
     static constexpr size_t PageSizeBytes = 16;
 

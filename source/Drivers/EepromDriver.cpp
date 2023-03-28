@@ -7,7 +7,7 @@ using namespace ::coffeescales::halwrapper;
 EepromDriver::EepromDriver(halwrapper::SpiInterface &spi) : mSpi(spi)
 {}
 
-bool EepromDriver::ReadStatusRegister(StatusRegister &status)
+bool EepromDriver::ReadStatusRegister(StatusRegister &status) const
 {
     ResetChipSelect();
 
@@ -28,7 +28,7 @@ bool EepromDriver::ReadStatusRegister(StatusRegister &status)
     return true;
 }
 
-bool EepromDriver::Write(uint16_t address, const uint8_t *data, size_t size)
+bool EepromDriver::Write(uint16_t address, const uint8_t *data, size_t size) const
 {
     assert((address + size) <= PageSizeBytes); // Restrict to first page until more space needed
 
@@ -58,7 +58,7 @@ bool EepromDriver::Write(uint16_t address, const uint8_t *data, size_t size)
     return true;
 }
 
-bool EepromDriver::Read(uint16_t address, uint8_t *data, size_t size)
+bool EepromDriver::Read(uint16_t address, uint8_t *data, size_t size) const
 {
     ResetChipSelect();
 

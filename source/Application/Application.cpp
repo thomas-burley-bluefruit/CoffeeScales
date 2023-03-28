@@ -10,7 +10,7 @@ void Application::Init()
     mInstantiation.Init();
 }
 
-void Application::Loop()
+[[noreturn]] void Application::Loop()
 {
     while (true)
     {
