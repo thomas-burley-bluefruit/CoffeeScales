@@ -3,6 +3,7 @@
 #include "AdcSpy.h"
 #include "GenericTerminalCommands.h"
 #include "Scales.h"
+#include "ScalesMemoryItemSpy.h"
 #include "ScalesTerminalMessages.h"
 #include "Terminal.h"
 #include "TerminalSpy.h"
@@ -22,8 +23,9 @@ using std::vector;
 class ScalesTestObject : public Scales
 {
 public:
-    ScalesTestObject(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal)
-            : Scales(adc, system, terminal)
+    ScalesTestObject(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal,
+                     ScalesMemoryItemInterface &memory)
+            : Scales(adc, system, terminal, memory)
     {}
 
     static constexpr size_t MaxCallbacks = Scales::MaxCallbacks;
@@ -38,7 +40,7 @@ public:
 class ScalesTests : public testing::Test
 {
 public:
-    ScalesTests() : mScales(mAdc, mSystem, mTerminal)
+    ScalesTests() : mScales(mAdc, mSystem, mTerminal, mMemory)
     {}
 
     void TriggerAdcRead()
@@ -84,6 +86,7 @@ public:
     AdcSpy mAdc;
     TerminalSpy mTerminal;
     SystemMock mSystem;
+    ScalesMemoryItemSpy mMemory;
     ScalesTestObject mScales;
 };
 
@@ -199,6 +202,20 @@ TEST_F(ScalesTests, Task_calls_all_registered_callbacks_after_successful_ADC_rea
     // Then
     for (auto &callback: callbacks)
         ASSERT_EQ(1, callback.CallCount);
+}
+
+TEST_F(ScalesTests, Calibration_factor_is_restored_from_memory_on_construction)
+{
+    // Given
+    float expectedCalibrationFactor = 1.23f;
+    mMemory.GetCalibrationFactorValue = expectedCalibrationFactor;
+
+    // When
+    ScalesTestObject scales(mAdc, mSystem, mTerminal, mMemory);
+
+    // Then
+    ASSERT_TRUE(mMemory.GetCalibrationFactorCalled);
+    ASSERT_EQ(scales.CalibrationFactor, expectedCalibrationFactor);
 }
 
 TEST_F(ScalesTests, Adc_readings_are_scaled_by_calibration_factor_when_passed_to_callback)
@@ -317,6 +334,36 @@ TEST_F(ScalesTests,
 
     // Then
     ASSERT_EQ(expectedCalibrationFactor, mScales.CalibrationFactor);
+}
+
+TEST_F(ScalesTests,
+       new_calibration_factor_is_stored_to_memory)
+{
+    // Given
+    CalibrationStartSequence();
+
+    vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
+                                            58000, 59000};
+    int32_t averageCalibrateAdcReading = 0;
+    for (auto reading: calibrateAdcReadings)
+        averageCalibrateAdcReading += reading;
+    averageCalibrateAdcReading = static_cast<int32_t>(averageCalibrateAdcReading /
+                                                      calibrateAdcReadings.size());
+
+    // When: n calibration readings read
+    mScales.CalibrateSet();
+    for (auto reading: calibrateAdcReadings)
+    {
+        mAdc.ReadValue = reading;
+        TriggerAdcRead();
+    }
+    const float expectedCalibrationFactor =
+            averageCalibrateAdcReading / ScalesTestObject::CalibrationWeight;
+
+
+    // Then
+    ASSERT_TRUE(mMemory.SetCalibrationFactorCalled);
+    ASSERT_EQ(expectedCalibrationFactor, mMemory.SetCalibrationFactorValue);
 }
 
 TEST_F(ScalesTests,

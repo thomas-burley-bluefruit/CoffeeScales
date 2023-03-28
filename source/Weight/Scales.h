@@ -3,11 +3,12 @@
 #include <array>
 
 #include "AdcDriverInterface.h"
-#include "ScalesTerminalCommands.h"
 #include "ScalesInterface.h"
-#include "TerminalCallbackInterface.h"
-#include "Terminal.h"
+#include "ScalesMemoryItem.h"
+#include "ScalesTerminalCommands.h"
 #include "SystemInterface.h"
+#include "Terminal.h"
+#include "TerminalCallbackInterface.h"
 
 namespace coffeescales::weight
 {
@@ -16,7 +17,7 @@ class Scales : public coffeescales::weight::ScalesInterface
 {
 public:
     Scales(drivers::AdcDriverInterface &adc, halwrapper::SystemInterface &system,
-           terminal::TerminalInterface &terminal);
+           terminal::TerminalInterface &terminal, ScalesMemoryItemInterface &memory);
 
     void Task();
 
@@ -53,8 +54,8 @@ private:
     const drivers::AdcDriverInterface &mAdc;
     const halwrapper::SystemInterface &mSystem;
     terminal::TerminalInterface &mTerminal;
+    ScalesMemoryItemInterface &mMemory;
 
-    static constexpr uint32_t LoadCellRangeMg = 1'000'000;
     static constexpr uint32_t AdcReadIntervalMs = 100;
 
     uint32_t mLastReadTick = 0;
