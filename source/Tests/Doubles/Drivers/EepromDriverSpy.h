@@ -9,7 +9,6 @@ class EepromDriverSpy final : public PersistentMemoryInterface
 {
 public:
     // EepromInterface
-    bool ReadStatusRegister(StatusRegister &status) const override;
     bool Write(uint16_t address, const uint8_t *data, size_t size) const override;
     bool Read(uint16_t address, uint8_t *data, size_t size) const override;
 

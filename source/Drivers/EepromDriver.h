@@ -13,7 +13,6 @@ class EepromDriver final : public PersistentMemoryInterface
 {
 public:
     explicit EepromDriver(halwrapper::SpiInterface &spi);
-    bool ReadStatusRegister(StatusRegister &status) const override;
     bool Write(uint16_t address, const uint8_t *data, size_t size) const override;
     bool Read(uint16_t address, uint8_t *data, size_t size) const override;
 
@@ -30,15 +29,6 @@ public:
 
         static constexpr size_t InstructionSize = 1;
         static constexpr size_t AddressSize = 2;
-        static constexpr size_t StatusRegisterSize = 1;
-    };
-
-    struct StatusRegisterMask
-    {
-        static constexpr uint8_t WriteInProcess = 0b0000'0001;
-        static constexpr uint8_t WriteEnable = 0b0000'0010;
-        static constexpr uint8_t BlockProtection0 = 0b0000'0100;
-        static constexpr uint8_t BlockProtection1 = 0b0000'1000;
     };
 
 private:

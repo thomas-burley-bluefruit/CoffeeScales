@@ -7,27 +7,6 @@ using namespace ::coffeescales::halwrapper;
 EepromDriver::EepromDriver(halwrapper::SpiInterface &spi) : mSpi(spi)
 {}
 
-bool EepromDriver::ReadStatusRegister(StatusRegister &status) const
-{
-    ResetChipSelect();
-
-    if (!TransmitInstruction(Instructions::ReadStatusRegister))
-        return false;
-
-    uint8_t rxData = 0;
-    if (!mSpi.Receive(&rxData, Instructions::StatusRegisterSize))
-        return false;
-
-    SetChipSelect();
-
-    status.WriteInProcess = rxData & StatusRegisterMask::WriteInProcess;
-    status.WriteEnable = rxData & StatusRegisterMask::WriteEnable;
-    status.BlockProtection0 = rxData & StatusRegisterMask::BlockProtection0;
-    status.BlockProtection1 = rxData & StatusRegisterMask::BlockProtection1;
-
-    return true;
-}
-
 bool EepromDriver::Write(uint16_t address, const uint8_t *data, size_t size) const
 {
     assert((address + size) <= PageSizeBytes); // Restrict to first page until more space needed

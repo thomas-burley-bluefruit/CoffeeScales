@@ -3,11 +3,6 @@
 
 using namespace coffeescales::drivers;
 
-bool EepromDriverSpy::ReadStatusRegister(PersistentMemoryInterface::StatusRegister &status) const
-{
-    return false;
-}
-
 bool EepromDriverSpy::Write(uint16_t address, const uint8_t *data, size_t size) const
 {
     WriteCalled = true;
