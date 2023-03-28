@@ -2,7 +2,8 @@
 
 using namespace coffeescales::weight;
 
-ScalesMemoryItem::ScalesMemoryItem(const drivers::EepromInterface &eeprom) : mEeprom(eeprom)
+ScalesMemoryItem::ScalesMemoryItem(const drivers::PersistentMemoryInterface &eeprom) : mEeprom(
+        eeprom)
 {
 }
 

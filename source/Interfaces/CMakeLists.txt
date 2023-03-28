@@ -4,7 +4,7 @@ enable_language(C CXX)
 set(SOURCES
         TimeInterface.h
         AdcDriverInterface.h
-        EepromInterface.h
+        PersistentMemoryInterface.h
         GpioInterface.h
         ReceiveInterruptCallbackInterface.h
         SpiInterface.h

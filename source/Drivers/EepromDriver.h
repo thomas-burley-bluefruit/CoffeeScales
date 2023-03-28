@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EepromInterface.h"
+#include "PersistentMemoryInterface.h"
 #include "SpiInterface.h"
 
 #include <cstdint>
@@ -9,7 +9,7 @@
 namespace coffeescales::drivers
 {
 
-class EepromDriver final : public EepromInterface
+class EepromDriver final : public PersistentMemoryInterface
 {
 public:
     explicit EepromDriver(halwrapper::SpiInterface &spi);

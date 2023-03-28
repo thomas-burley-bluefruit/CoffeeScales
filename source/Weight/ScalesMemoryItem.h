@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ScalesMemoryItemInterface.h"
-#include "EepromInterface.h"
+#include "PersistentMemoryInterface.h"
 
 namespace coffeescales::weight
 {
@@ -9,7 +9,7 @@ namespace coffeescales::weight
 class ScalesMemoryItem final : public ScalesMemoryItemInterface
 {
 public:
-    explicit ScalesMemoryItem(const drivers::EepromInterface &eeprom);
+    explicit ScalesMemoryItem(const drivers::PersistentMemoryInterface &eeprom);
     void Init() override;
     [[nodiscard]] float GetCalibrationFactor() const override;
     void SetCalibrationFactor(float factor) override;
@@ -20,7 +20,7 @@ private:
     void Get();
     void Set();
 
-    const drivers::EepromInterface &mEeprom;
+    const drivers::PersistentMemoryInterface &mEeprom;
     float mCalibrationFactor = 0.0f;
 };
 

@@ -3,7 +3,7 @@
 
 using namespace coffeescales::drivers;
 
-bool EepromDriverSpy::ReadStatusRegister(EepromInterface::StatusRegister &status) const
+bool EepromDriverSpy::ReadStatusRegister(PersistentMemoryInterface::StatusRegister &status) const
 {
     return false;
 }

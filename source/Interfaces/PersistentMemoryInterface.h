@@ -6,10 +6,10 @@
 namespace coffeescales::drivers
 {
 
-class EepromInterface
+class PersistentMemoryInterface
 {
 public:
-    ~EepromInterface() = default;
+    ~PersistentMemoryInterface() = default;
 
     struct StatusRegister
     {

@@ -5,7 +5,7 @@
 namespace coffeescales::drivers
 {
 
-class EepromDriverSpy final : public EepromInterface
+class EepromDriverSpy final : public PersistentMemoryInterface
 {
 public:
     // EepromInterface
