@@ -7,7 +7,8 @@ using namespace ::terminal;
 
 Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
                                  mEeprom(mSpi),
-                                 mScales(mHx711, mSystem, mTerminal),
+                                 mScalesMemoryItem(mEeprom),
+                                 mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem),
                                  mScalesCommand(mScales, mTerminal)
 {
 }
@@ -18,7 +19,8 @@ void Instantiation::Init()
     mSystem.Init();
     mSpi.Init();
     mTerminal.Start();
-    mScales.TareInit();
+    mScalesMemoryItem.Init();
+    mScales.Init();
 }
 
 System &Instantiation::System()

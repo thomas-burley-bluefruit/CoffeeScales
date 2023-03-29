@@ -18,7 +18,12 @@ Scales::Scales(AdcDriverInterface &adc, SystemInterface &system, TerminalInterfa
 {
     mCallbacks.fill(nullptr);
     memset(mPrintBuffer, 0, Terminal::TerminalBufferSize);
+}
+
+void Scales::Init()
+{
     mCalibrationFactor = mMemory.GetCalibrationFactor();
+    TareInit();
 }
 
 void Scales::Task()

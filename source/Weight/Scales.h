@@ -19,6 +19,7 @@ public:
     Scales(drivers::AdcDriverInterface &adc, halwrapper::SystemInterface &system,
            terminal::TerminalInterface &terminal, ScalesMemoryItemInterface &memory);
 
+    void Init();
     void Task();
 
     // ScalesInterface

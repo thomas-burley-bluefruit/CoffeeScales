@@ -5,6 +5,7 @@
 #include "HX711Driver.h"
 #include "Scales.h"
 #include "ScalesCommand.h"
+#include "ScalesMemoryItem.h"
 #include "Spi.h"
 #include "System.h"
 #include "Terminal.h"
@@ -32,6 +33,7 @@ private:
     drivers::HX711Driver mHx711;
     halwrapper::Spi mSpi;
     drivers::EepromDriver mEeprom;
+    weight::ScalesMemoryItem mScalesMemoryItem;
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
 };
