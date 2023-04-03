@@ -53,7 +53,7 @@
 
 // Options that (should where relevant) apply to all operating systems
 //    #define GFX_NO_INLINE                            GFXOFF
-//    #define GFX_COMPILER                             GFX_COMPILER_UNKNOWN
+#define GFX_COMPILER                             GFX_COMPILER_ARMCC
 //    #define GFX_SHOW_COMPILER                        GFXOFF
 //    #define GFX_CPU                                  GFX_CPU_UNKNOWN
 //    #define GFX_CPU_NO_ALIGNMENT_FAULTS              GFXOFF
@@ -74,8 +74,10 @@
 // GDISP                                                                 //
 ///////////////////////////////////////////////////////////////////////////
 #define GFX_USE_GDISP                                GFXON
+#define GDISP_NEED_TEXT                              GFXON
+#define GDISP_INCLUDE_FONT_UI2                   GFXON        // The smallest preferred font.
 
-//#define GDISP_NEED_AUTOFLUSH                         GFXOFF
+#define GDISP_NEED_AUTOFLUSH                         GFXON
 //#define GDISP_NEED_TIMERFLUSH                        GFXOFF
 //#define GDISP_NEED_VALIDATION                        GFXON
 //#define GDISP_NEED_CLIP                              GFXON
@@ -91,7 +93,6 @@
 //#define GDISP_NEED_QUERY                             GFXOFF
 //#define GDISP_NEED_MULTITHREAD                       GFXOFF
 //#define GDISP_NEED_STREAMING                         GFXOFF
-//#define GDISP_NEED_TEXT                              GFXOFF
 //    #define GDISP_NEED_TEXT_WORDWRAP                 GFXOFF
 //    #define GDISP_NEED_TEXT_BOXPADLR                 1
 //    #define GDISP_NEED_TEXT_BOXPADTB                 1
@@ -99,7 +100,6 @@
 //    #define GDISP_NEED_UTF8                          GFXOFF
 //    #define GDISP_NEED_TEXT_KERNING                  GFXOFF
 //    #define GDISP_INCLUDE_FONT_UI1                   GFXOFF
-//    #define GDISP_INCLUDE_FONT_UI2                   GFXOFF		// The smallest preferred font.
 //    #define GDISP_INCLUDE_FONT_LARGENUMBERS          GFXOFF
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS10          GFXOFF
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS12          GFXOFF

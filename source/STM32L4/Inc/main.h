@@ -73,8 +73,10 @@ void Error_Handler(void);
 #define SWCLK_GPIO_Port GPIOA
 #define VCP_RX_Pin GPIO_PIN_15
 #define VCP_RX_GPIO_Port GPIOA
-#define LD3_Pin GPIO_PIN_3
-#define LD3_GPIO_Port GPIOB
+#define SPI3_CS_Pin GPIO_PIN_4
+#define SPI3_CS_GPIO_Port GPIOB
+#define DISPLAY_RESET_Pin GPIO_PIN_6
+#define DISPLAY_RESET_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

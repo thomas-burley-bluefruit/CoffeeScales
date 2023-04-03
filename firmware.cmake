@@ -39,7 +39,8 @@ set(LINK_OPTIONS
         -lm
         -lnosys
         -Wl,-Map=${PROJECT_NAME}.map,--cref
-        -Wl,--gc-sections)
+        -Wl,--gc-sections
+        -uHAL_SPI_MspInit)
 target_link_options(${EXECUTABLE} PRIVATE ${LINK_OPTIONS})
 
 set_target_properties(${EXECUTABLE} PROPERTIES ADDITIONAL_CLEAN_FILES
@@ -49,8 +50,9 @@ target_link_libraries(${EXECUTABLE} PUBLIC
         Application)
 
 add_subdirectory(source/Application)
-add_subdirectory(source/HalWrapper)
+add_subdirectory(source/Display/ugfx)
 add_subdirectory(source/STM32L4)
+add_subdirectory(source/HalWrapper)
 
 # Print executable size
 add_custom_command(TARGET ${EXECUTABLE}
