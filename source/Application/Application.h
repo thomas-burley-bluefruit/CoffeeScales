@@ -1,7 +1,5 @@
 #pragma once
 
-extern "C" void TestFunc();
-
 namespace coffeescales
 {
 
