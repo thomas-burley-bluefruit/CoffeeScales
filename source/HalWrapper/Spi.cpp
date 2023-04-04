@@ -54,29 +54,26 @@ void Spi::SetChipSelect(GpioPinState state)
                       HalPinState(state));
 }
 
-extern "C" void HAL_SPI_MspInit(SPI_HandleTypeDef *spiHandle)
+extern "C" void Spi1_MspInit()
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    if (spiHandle->Instance == SPI1)
-    {
-        __HAL_RCC_SPI1_CLK_ENABLE();
+    __HAL_RCC_SPI1_CLK_ENABLE();
 
-        __HAL_RCC_GPIOA_CLK_ENABLE();
-        GPIO_InitStruct.Pin = SpiSckPin | SpiMosiPin;
-        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-        GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
-        HAL_GPIO_Init(SpiSckMosiPort, &GPIO_InitStruct);
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    GPIO_InitStruct.Pin = SpiSckPin | SpiMosiPin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
+    HAL_GPIO_Init(SpiSckMosiPort, &GPIO_InitStruct);
 
-        HAL_GPIO_WritePin(SpiCsPort, SpiCsPin, GPIO_PIN_SET);
-        __HAL_RCC_GPIOB_CLK_ENABLE();
-        GPIO_InitStruct.Pin = SpiCsPin;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-        HAL_GPIO_Init(SpiCsPort, &GPIO_InitStruct);
-    }
+    HAL_GPIO_WritePin(SpiCsPort, SpiCsPin, GPIO_PIN_SET);
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    GPIO_InitStruct.Pin = SpiCsPin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    HAL_GPIO_Init(SpiCsPort, &GPIO_InitStruct);
 }
 
 extern "C" void HAL_SPI_MspDeInit(SPI_HandleTypeDef *spiHandle)

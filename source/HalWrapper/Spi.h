@@ -2,6 +2,8 @@
 
 #include "SpiInterface.h"
 
+extern "C" void Spi1_MspInit(void);
+
 namespace coffeescales::halwrapper
 {
 

@@ -1,0 +1,3 @@
+[submodule "source/External/ugfx/ugfx"]
+	path = source/External/ugfx/ugfx
+	url = https://git.ugfx.io/uGFX/ugfx.git

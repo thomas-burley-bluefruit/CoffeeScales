@@ -6,10 +6,14 @@ set(SOURCES
         Time.h
         DelayTimer.cpp
         DelayTimer.h
+        DisplayGpio.cpp
+        DisplayGpio.h
         HalErrorHandler.cpp
         HalErrorHandler.h
         HalInit.cpp
         HalInit.h
+        HalMsp.cpp
+        HalMsp.h
         HX711Gpio.cpp
         HX711Gpio.h
         Spi.cpp
@@ -17,7 +21,8 @@ set(SOURCES
         System.cpp
         System.h
         Uart.cpp
-        Uart.h)
+        Uart.h
+        )
 
 set(INCLUDES .)
 

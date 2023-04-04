@@ -18,3 +18,8 @@ uint32_t Time::GetTick() const
 {
     return HAL_GetTick();
 }
+
+uint32_t Time::GetTickStatic()
+{
+    return HAL_GetTick();
+}
