@@ -4,7 +4,6 @@ enable_language(C CXX)
 set(SOURCES
         AdcDriverInterface.h
         DisplayGpioInterface.h
-        DisplayInterface.cpp
         DisplayInterface.h
         GpioInterface.h
         PersistentMemoryInterface.h
