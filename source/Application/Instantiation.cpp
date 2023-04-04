@@ -1,4 +1,6 @@
 #include "Instantiation.h"
+#include "gfx.h"
+#include "DisplayGpio.h"
 
 using namespace ::coffeescales;
 using namespace ::drivers;
@@ -21,6 +23,8 @@ void Instantiation::Init()
     mTerminal.Start();
     mScalesMemoryItem.Init();
     mScales.Init();
+    DisplayGpio_Init();
+    gfxInit();
 }
 
 System &Instantiation::System()
@@ -41,4 +45,9 @@ weight::Scales &Instantiation::Scales()
 drivers::HX711Driver &Instantiation::Hx711()
 {
     return mHx711;
+}
+
+display::UgfxWrapper &Instantiation::UgfxWrapper()
+{
+    return mUgfxWrapper;
 }

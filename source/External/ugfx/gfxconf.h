@@ -53,7 +53,7 @@
 
 // Options that (should where relevant) apply to all operating systems
 //    #define GFX_NO_INLINE                            GFXOFF
-#define GFX_COMPILER                             GFX_COMPILER_ARMCC
+#define GFX_COMPILER                             GFX_COMPILER_UNKNOWN
 //    #define GFX_SHOW_COMPILER                        GFXOFF
 //    #define GFX_CPU                                  GFX_CPU_UNKNOWN
 //    #define GFX_CPU_NO_ALIGNMENT_FAULTS              GFXOFF

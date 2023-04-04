@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stm32l4xx_hal.h"
-#include "Types.h"
+#include "GpioPinState.h"
 
 namespace coffeescales::halwrapper
 {

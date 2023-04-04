@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "Types.h"
+#include "GpioPinState.h"
 
 namespace coffeescales::halwrapper
 {

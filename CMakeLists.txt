@@ -18,6 +18,7 @@ if (TESTING)
     include(testing.cmake)
 endif ()
 
+add_subdirectory(source/Display)
 add_subdirectory(source/Drivers)
 add_subdirectory(source/Interfaces)
 add_subdirectory(source/Terminal)

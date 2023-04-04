@@ -10,6 +10,7 @@
 #include "System.h"
 #include "Terminal.h"
 #include "Uart.h"
+#include "UgfxWrapper.h"
 #include "TerminalCommandTest.h"
 
 namespace coffeescales
@@ -24,6 +25,7 @@ public:
     halwrapper::System &System();
     drivers::HX711Driver &Hx711();
     weight::Scales &Scales();
+    display::UgfxWrapper &UgfxWrapper();
 
 private:
     halwrapper::HalInit mHalInit;
@@ -36,6 +38,7 @@ private:
     weight::ScalesMemoryItem mScalesMemoryItem;
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
+    display::UgfxWrapper mUgfxWrapper;
 };
 
 }

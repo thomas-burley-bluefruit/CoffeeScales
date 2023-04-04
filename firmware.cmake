@@ -50,7 +50,7 @@ target_link_libraries(${EXECUTABLE} PUBLIC
         Application)
 
 add_subdirectory(source/Application)
-add_subdirectory(source/Display/ugfx)
+add_subdirectory(source/External/ugfx)
 add_subdirectory(source/STM32L4)
 add_subdirectory(source/HalWrapper)
 

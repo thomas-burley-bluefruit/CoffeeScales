@@ -2,16 +2,18 @@ set(NAME Interfaces)
 enable_language(C CXX)
 
 set(SOURCES
-        TimeInterface.h
         AdcDriverInterface.h
         DisplayGpioInterface.h
-        PersistentMemoryInterface.h
+        DisplayInterface.cpp
+        DisplayInterface.h
         GpioInterface.h
+        PersistentMemoryInterface.h
         ReceiveInterruptCallbackInterface.h
         SpiInterface.h
         SystemInterface.h
         TerminalCallbackInterface.h
         TerminalInterface.h
+        TimeInterface.h
         UartInterface.h)
 
 set(INCLUDES .)

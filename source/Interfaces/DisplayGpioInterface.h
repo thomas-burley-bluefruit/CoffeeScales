@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SpiInterface.h"
-#include "Types.h"
+#include "GpioPinState.h"
 
 namespace coffeescales::halwrapper
 {

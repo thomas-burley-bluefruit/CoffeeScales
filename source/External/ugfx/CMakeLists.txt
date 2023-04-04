@@ -1,11 +1,12 @@
-set(NAME Display)
+set(NAME Ugfx)
 enable_language(C CXX)
 
 set(SOURCES
         board_SSD1306.cpp
         board_SSD1306.h
         UgfxTick.cpp
-        ugfx/src/gfx_mk.c)
+        ugfx/src/gfx_mk.c
+        UgfxUtilities.h)
 
 set(SSD1306_DRIVER_DIR ugfx/drivers/gdisp/SSD1306)
 
@@ -22,4 +23,4 @@ add_library(${NAME} STATIC ${SOURCES} ${SSD1306_DRIVER_SOURCES})
 target_compile_options(${NAME} PRIVATE ${COMPILE_OPTIONS})
 target_compile_definitions(${NAME} PRIVATE ${COMPILE_DEFINITIONS})
 target_include_directories(${NAME} PUBLIC ${INCLUDES})
-target_link_libraries(${NAME} PUBLIC HalWrapper)
+target_link_libraries(${NAME} PUBLIC HalWrapper Types)

@@ -2,7 +2,8 @@ set(NAME Types)
 enable_language(C CXX)
 
 set(SOURCES
-        Types.h)
+        DisplayJustify.h
+        GpioPinState.h)
 
 set(INCLUDES .)
 
