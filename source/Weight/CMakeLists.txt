@@ -6,7 +6,8 @@ set(SOURCES
         Scales.h
         ScalesCommand.cpp
         ScalesCommand.h
-        )
+        ScalesMemoryItem.cpp
+        ScalesMemoryItem.h)
 
 set(INCLUDES .)
 

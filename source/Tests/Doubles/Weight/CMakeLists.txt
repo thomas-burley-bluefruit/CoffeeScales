@@ -6,7 +6,9 @@ set(SOURCES
         ScalesSpy.cpp
         ScalesSpy.h
         WeightReadingCallbackSpy.cpp
-        WeightReadingCallbackSpy.h)
+        WeightReadingCallbackSpy.h
+        ScalesMemoryItemSpy.cpp
+        ScalesMemoryItemSpy.h)
 
 set(INCLUDES .)
 

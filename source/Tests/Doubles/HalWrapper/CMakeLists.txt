@@ -5,6 +5,8 @@ enable_language(C CXX)
 set(SOURCES
         SystemMock.cpp
         SystemMock.h
+        SpiSpy.cpp
+        SpiSpy.h
         UartSpy.cpp
         UartSpy.h)
 

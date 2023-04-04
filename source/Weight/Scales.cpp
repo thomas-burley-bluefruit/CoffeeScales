@@ -10,13 +10,20 @@ using namespace ::coffeescales::halwrapper;
 using namespace ::coffeescales::terminal;
 using namespace ::coffeescales::weight;
 
-Scales::Scales(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal) :
+Scales::Scales(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal,
+               ScalesMemoryItemInterface &memory) :
         mAdc(adc), mSystem(system),
         mTerminal(terminal),
-        mCalibrationFactor(static_cast<double>(mAdc.MaxValue()) / LoadCellRangeMg)
+        mMemory(memory)
 {
     mCallbacks.fill(nullptr);
     memset(mPrintBuffer, 0, Terminal::TerminalBufferSize);
+}
+
+void Scales::Init()
+{
+    mCalibrationFactor = mMemory.GetCalibrationFactor();
+    TareInit();
 }
 
 void Scales::Task()
@@ -94,7 +101,9 @@ void Scales::StateCalibrateSet()
     if (mAverageCount >= AveragingCount)
     {
         const int32_t averageReading = mAverageSum / static_cast<int32_t>(mAverageCount);
-        mCalibrationFactor = (averageReading - mTareAdcReading) / CalibrationWeightMg;
+        mCalibrationFactor = static_cast<float>((averageReading - mTareAdcReading) /
+                                                CalibrationWeightMg);
+        mMemory.SetCalibrationFactor(mCalibrationFactor);
         mTerminal.TextOut(ScalesTerminalMessages::CalibrateComplete);
         mState = State::Weigh;
     }

@@ -4,5 +4,5 @@
 void ErrorHandler()
 {
     __disable_irq();
-    while (1);
+    while (true);
 }

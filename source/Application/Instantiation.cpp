@@ -6,7 +6,9 @@ using namespace ::halwrapper;
 using namespace ::terminal;
 
 Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
-                                 mScales(mHx711, mSystem, mTerminal),
+                                 mEeprom(mSpi),
+                                 mScalesMemoryItem(mEeprom),
+                                 mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem),
                                  mScalesCommand(mScales, mTerminal)
 {
 }
@@ -15,8 +17,10 @@ void Instantiation::Init()
 {
     mHalInit.Init();
     mSystem.Init();
+    mSpi.Init();
     mTerminal.Start();
-    mScales.TareInit();
+    mScalesMemoryItem.Init();
+    mScales.Init();
 }
 
 System &Instantiation::System()

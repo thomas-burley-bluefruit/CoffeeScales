@@ -12,6 +12,8 @@ set(SOURCES
         HalInit.h
         HX711Gpio.cpp
         HX711Gpio.h
+        Spi.cpp
+        Spi.h
         System.cpp
         System.h
         Uart.cpp
