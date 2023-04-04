@@ -53,7 +53,7 @@
 
 // Options that (should where relevant) apply to all operating systems
 //    #define GFX_NO_INLINE                            GFXOFF
-#define GFX_COMPILER                             GFX_COMPILER_UNKNOWN
+//    #define GFX_COMPILER                             GFX_COMPILER_UNKNOWN
 //    #define GFX_SHOW_COMPILER                        GFXOFF
 //    #define GFX_CPU                                  GFX_CPU_UNKNOWN
 //    #define GFX_CPU_NO_ALIGNMENT_FAULTS              GFXOFF
@@ -75,9 +75,9 @@
 ///////////////////////////////////////////////////////////////////////////
 #define GFX_USE_GDISP                                GFXON
 #define GDISP_NEED_TEXT                              GFXON
-#define GDISP_INCLUDE_FONT_UI2                   GFXON        // The smallest preferred font.
-
+#define GDISP_INCLUDE_FONT_UI2                       GFXON        // The smallest preferred font.
 #define GDISP_NEED_AUTOFLUSH                         GFXON
+
 //#define GDISP_NEED_TIMERFLUSH                        GFXOFF
 //#define GDISP_NEED_VALIDATION                        GFXON
 //#define GDISP_NEED_CLIP                              GFXON
