@@ -101,7 +101,8 @@ void Scales::StateCalibrateSet()
     if (mAverageCount >= AveragingCount)
     {
         const int32_t averageReading = mAverageSum / static_cast<int32_t>(mAverageCount);
-        mCalibrationFactor = (averageReading - mTareAdcReading) / CalibrationWeightMg;
+        mCalibrationFactor = static_cast<float>((averageReading - mTareAdcReading) /
+                                                CalibrationWeightMg);
         mMemory.SetCalibrationFactor(mCalibrationFactor);
         mTerminal.TextOut(ScalesTerminalMessages::CalibrateComplete);
         mState = State::Weigh;

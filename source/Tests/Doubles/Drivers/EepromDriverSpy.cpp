@@ -22,7 +22,7 @@ bool EepromDriverSpy::Read(uint16_t address, uint8_t *data, size_t size) const
     return true;
 }
 
-bool EepromDriverSpy::WriteDataEquals(const uint8_t *data, size_t size)
+bool EepromDriverSpy::WriteDataEquals(const uint8_t *data, size_t size) const
 {
     if (size != mWriteSize)
         return false;

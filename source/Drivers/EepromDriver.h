@@ -32,7 +32,7 @@ public:
     };
 
 private:
-    bool TransmitInstruction(const uint8_t instruction) const;
+    bool TransmitInstruction(uint8_t instruction) const;
     void SetChipSelect() const;
     void ResetChipSelect() const;
 
