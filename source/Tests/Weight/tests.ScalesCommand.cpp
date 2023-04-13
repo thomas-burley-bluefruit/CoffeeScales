@@ -17,15 +17,6 @@ public:
     ScalesCommandTests() : mScalesCommand(mScales, mTerminal)
     {}
 
-    static void SetCommandArg(CommandArgs &args, size_t index, const char *arg)
-    {
-        if (index > CommandArgs::MaxArguments - 1)
-            return;
-
-        strncpy_s(args.Arguments[index].data(), CommandArgs::MaxArgLength,
-                  arg, CommandArgs::MaxArgLength);
-    }
-
     TerminalSpy mTerminal;
     ScalesSpy mScales;
     ScalesCommand mScalesCommand;
@@ -42,7 +33,7 @@ TEST_F(ScalesCommandTests,
 {
     // Given
     CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Calibrate);
+    args.SetCommandArg(0, ScalesTerminalCommands::Calibrate);
     args.Count++;
 
     // When
@@ -57,7 +48,7 @@ TEST_F(ScalesCommandTests,
 {
     // Given
     CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Tare);
+    args.SetCommandArg(0, ScalesTerminalCommands::Tare);
     args.Count++;
 
     // When
@@ -72,9 +63,9 @@ TEST_F(ScalesCommandTests,
 {
     // Given
     CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Calibrate);
+    args.SetCommandArg(0, ScalesTerminalCommands::Calibrate);
     args.Count++;
-    SetCommandArg(args, 1, ScalesTerminalCommands::Set);
+    args.SetCommandArg(1, ScalesTerminalCommands::Set);
     args.Count++;
 
     // When
@@ -89,9 +80,9 @@ TEST_F(ScalesCommandTests,
 {
     // Given
     CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Adc);
+    args.SetCommandArg(0, ScalesTerminalCommands::Adc);
     args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::On);
+    args.SetCommandArg(1, GenericTerminalCommands::On);
     args.Count++;
 
     // When
@@ -107,9 +98,9 @@ TEST_F(ScalesCommandTests,
 {
     // Given
     CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Adc);
+    args.SetCommandArg(0, ScalesTerminalCommands::Adc);
     args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::Off);
+    args.SetCommandArg(1, GenericTerminalCommands::Off);
     args.Count++;
 
     // When
@@ -125,9 +116,9 @@ TEST_F(ScalesCommandTests,
 {
     // Given
     CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Weight);
+    args.SetCommandArg(0, ScalesTerminalCommands::Weight);
     args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::On);
+    args.SetCommandArg(1, GenericTerminalCommands::On);
     args.Count++;
 
     // When
@@ -143,9 +134,9 @@ TEST_F(ScalesCommandTests,
 {
     // Given
     CommandArgs args;
-    SetCommandArg(args, 0, ScalesTerminalCommands::Weight);
+    args.SetCommandArg(0, ScalesTerminalCommands::Weight);
     args.Count++;
-    SetCommandArg(args, 1, GenericTerminalCommands::Off);
+    args.SetCommandArg(1, GenericTerminalCommands::Off);
     args.Count++;
 
     // When

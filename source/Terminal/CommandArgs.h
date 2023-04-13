@@ -14,6 +14,7 @@ struct CommandArgs
     size_t Count = 0;
     std::array<std::array<char, MaxArgLength>, MaxArguments> Arguments{};
 
+    void SetCommandArg(size_t index, const char *arg);
     bool ArgIs(size_t index, const char *value) const;
     bool Arg0Is(const char *value) const;
     bool Arg1Is(const char *value) const;
