@@ -21,6 +21,7 @@ public:
     bool AdcDebugPrintCalled = false;
     bool WeightDebugPrintCalled = false;
     bool RegisterCallbackCalled = false;
+    WeightReadingCallbackInterface *RegisteredCallback = nullptr;
     bool AdcDebugPrintValue = false;
     bool WeightDebugPrintValue = false;
 };

@@ -204,18 +204,18 @@ TEST_F(ScalesTests, Task_calls_all_registered_callbacks_after_successful_ADC_rea
         ASSERT_EQ(1, callback.CallCount);
 }
 
-TEST_F(ScalesTests, Calibration_factor_is_restored_from_memory_on_construction)
+TEST_F(ScalesTests, Calibration_factor_is_restored_from_memory_on_init)
 {
     // Given
     float expectedCalibrationFactor = 1.23f;
     mMemory.GetCalibrationFactorValue = expectedCalibrationFactor;
 
     // When
-    ScalesTestObject scales(mAdc, mSystem, mTerminal, mMemory);
+    mScales.Init();
 
     // Then
     ASSERT_TRUE(mMemory.GetCalibrationFactorCalled);
-    ASSERT_EQ(scales.CalibrationFactor, expectedCalibrationFactor);
+    ASSERT_EQ(mScales.CalibrationFactor, expectedCalibrationFactor);
 }
 
 TEST_F(ScalesTests, Adc_readings_are_scaled_by_calibration_factor_when_passed_to_callback)

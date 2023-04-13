@@ -2,10 +2,11 @@ set(NAME Display)
 enable_language(C CXX)
 
 set(SOURCES
-        UgfxWrapper.cpp
-        UgfxWrapper.h
+        DisplayCommand.cpp
+        DisplayCommand.h
         WeightDisplayItem.cpp
-        WeightDisplayItem.h)
+        WeightDisplayItem.h
+        )
 
 set(INCLUDES .)
 
@@ -17,5 +18,4 @@ target_include_directories(${NAME} PUBLIC ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
         Interfaces
         Terminal
-        Types
-        Ugfx)
+        Types)
