@@ -6,7 +6,9 @@ set(SOURCES
         board_SSD1306.h
         UgfxTick.cpp
         ugfx/src/gfx_mk.c
-        UgfxUtilities.h)
+        UgfxUtilities.h
+        UgfxWrapper.cpp
+        UgfxWrapper.h)
 
 set(SSD1306_DRIVER_DIR ugfx/drivers/gdisp/SSD1306)
 

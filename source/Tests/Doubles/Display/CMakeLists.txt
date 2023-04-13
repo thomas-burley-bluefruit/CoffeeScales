@@ -4,7 +4,9 @@ enable_language(C CXX)
 
 set(SOURCES
         DisplaySpy.cpp
-        DisplaySpy.h)
+        DisplaySpy.h
+        DisplayItemSpy.cpp
+        DisplayItemSpy.h)
 
 set(INCLUDES .)
 

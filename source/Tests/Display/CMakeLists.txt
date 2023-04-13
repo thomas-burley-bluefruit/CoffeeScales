@@ -1,6 +1,7 @@
 set(NAME Tests.Display)
 
 set(SOURCES
+        tests.DisplayCommand.cpp
         tests.WeightDisplayitem.cpp)
 
 set(INCLUDES .)

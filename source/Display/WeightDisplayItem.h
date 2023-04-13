@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DisplayInterface.h"
+#include "DisplayItemInterface.h"
 #include "ScalesInterface.h"
 #include "TerminalInterface.h"
 #include "WeightReadingCallbackInterface.h"
@@ -10,13 +11,13 @@
 namespace coffeescales::display
 {
 
-class WeightDisplayItem : public weight::WeightReadingCallbackInterface
+class WeightDisplayItem : public weight::WeightReadingCallbackInterface, public DisplayItemInterface
 {
 public:
     WeightDisplayItem(DisplayInterface &display, weight::ScalesInterface &scales,
                       terminal::TerminalInterface &terminal);
     void Init();
-    void WeightDebugPrint(bool on);
+    void DebugPrint(bool on) override;
     void NewWeightReadingMg(int32_t weightMg) override;
 
 private:

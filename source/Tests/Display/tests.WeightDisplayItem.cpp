@@ -122,7 +122,7 @@ TEST_F(WeightDisplayItemTests, weight_is_printed_to_terminal_when_debug_print_tu
     // When
     weightReading = 1200;
     const char *expectedText = "1.2g\n";
-    mWeightDisplayItem.WeightDebugPrint(true);
+    mWeightDisplayItem.DebugPrint(true);
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
 
     // Then

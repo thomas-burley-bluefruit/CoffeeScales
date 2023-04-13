@@ -1,6 +1,7 @@
 #include "WeightDisplayItem.h"
 
 #include <cmath>
+#include <cstring>
 
 using namespace ::coffeescales::display;
 
@@ -58,7 +59,7 @@ void WeightDisplayItem::DisplayWeightString(const char *string)
     }
 }
 
-void WeightDisplayItem::WeightDebugPrint(bool on)
+void WeightDisplayItem::DebugPrint(bool on)
 {
     mDebugPrintWeight = on;
 }

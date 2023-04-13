@@ -9,8 +9,8 @@ void CommandArgs::SetCommandArg(size_t index, const char *arg)
     if (index > MaxArguments - 1)
         return;
 
-    strncpy_s(Arguments[index].data(), CommandArgs::MaxArgLength,
-              arg, CommandArgs::MaxArgLength);
+    strncpy(Arguments[index].data(),
+            arg, CommandArgs::MaxArgLength);
 }
 
 bool CommandArgs::ArgIs(size_t index, const char *value) const
