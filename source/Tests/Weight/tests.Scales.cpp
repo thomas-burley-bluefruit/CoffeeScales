@@ -43,6 +43,12 @@ public:
     ScalesTests() : mScales(mAdc, mSystem, mTerminal, mMemory)
     {}
 
+    void SetUp() override
+    {
+        mMemory.GetCalibrationFactorValue = 1.0f;
+        mScales.Init();
+    }
+
     void TriggerAdcRead()
     {
         mSystem.SysTick += 100;
@@ -66,20 +72,11 @@ public:
     {
         Tare();
         CommandArgs calibrateStartArgs;
-        SetCommandArg(calibrateStartArgs, 0, ScalesTerminalCommands::Calibrate);
+        calibrateStartArgs.SetCommandArg(0, ScalesTerminalCommands::Calibrate);
         calibrateStartArgs.Count++;
         mScales.CalibrateInit();
         RepeatAdcValue(0, ScalesTestObject::AveragingCount);
         mScales.Task();
-    }
-
-    static void SetCommandArg(CommandArgs &args, size_t index, const char *arg)
-    {
-        if (index > CommandArgs::MaxArguments - 1)
-            return;
-
-        strncpy_s(args.Arguments[index].data(), CommandArgs::MaxArgLength,
-                  arg, CommandArgs::MaxArgLength);
     }
 
     WeightReadingCallbackSpy mCallback;
@@ -229,10 +226,10 @@ TEST_F(ScalesTests, Adc_readings_are_scaled_by_calibration_factor_when_passed_to
     const auto expectedWeight = static_cast<int32_t>(adcValue / mScales.CalibrationFactor);
 
     // When
-    TriggerAdcRead();
+    RepeatAdcValue(adcValue, mScales.AveragingCount);
 
     // Then
-    ASSERT_EQ(1, mCallback.CallCount);
+    ASSERT_EQ(mScales.AveragingCount, mCallback.CallCount);
     ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
 }
 
@@ -255,14 +252,13 @@ TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
         TriggerAdcRead();
     }
 
-    mAdc.ReadValue = averageTareAdcReading;
-    TriggerAdcRead();
+    RepeatAdcValue(averageTareAdcReading, mScales.AveragingCount);
     ASSERT_EQ(0, mCallback.LastWeightReading);
 
     // When: ADC value subsequently increases
     const int32_t additionalAdcValue = 333'300;
     mAdc.ReadValue += additionalAdcValue;
-    TriggerAdcRead();
+    RepeatAdcValue(mAdc.ReadValue, mScales.AveragingCount);
 
     const auto expectedWeight = static_cast<int32_t>(additionalAdcValue /
                                                      mScales.CalibrationFactor);
@@ -462,8 +458,7 @@ TEST_F(ScalesTests, WeightDebugPrint_on_prints_weight_value_on_next_task)
     Tare();
     mScales.RegisterCallback(&mCallback);
 
-    mAdc.ReadValue = 123456;
-    TriggerAdcRead();
+    RepeatAdcValue(123456, mScales.AveragingCount);
 
     char expectedMessage[Terminal::TerminalBufferSize];
     snprintf(expectedMessage, Terminal::TerminalBufferSize,
@@ -485,8 +480,7 @@ TEST_F(ScalesTests, WeightDebugPrint_off_stops_printing_weight_values_on_task)
     Tare();
     mScales.RegisterCallback(&mCallback);
 
-    mAdc.ReadValue = 123456;
-    TriggerAdcRead();
+    RepeatAdcValue(123456, mScales.AveragingCount);
 
     char expectedMessage[Terminal::TerminalBufferSize];
     snprintf(expectedMessage, Terminal::TerminalBufferSize,
@@ -519,4 +513,24 @@ TEST_F(ScalesTests, TareInit_starts_tare_process)
 
     // Then
     ASSERT_EQ(Scales::State::Tare, mScales.State);
+}
+
+TEST_F(ScalesTests, Weight_readings_are_filtered)
+{
+    // Given
+    Tare();
+    mScales.RegisterCallback(&mCallback);
+
+    vector<int32_t> adcReadings = {57000, 58000, 59000};
+    const int32_t expectedWeight = 58833;
+
+    // When
+    for (auto reading: adcReadings)
+    {
+        mAdc.ReadValue = reading;
+        TriggerAdcRead();
+    }
+
+    // Then
+    ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
 }
