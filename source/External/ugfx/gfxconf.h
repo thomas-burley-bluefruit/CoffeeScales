@@ -76,7 +76,7 @@
 #define GFX_USE_GDISP                                GFXON
 #define GDISP_NEED_TEXT                              GFXON
 #define GDISP_INCLUDE_FONT_UI2                       GFXON        // The smallest preferred font.
-#define GDISP_NEED_AUTOFLUSH                         GFXON
+#define GDISP_NEED_AUTOFLUSH                         GFXOFF
 
 //#define GDISP_NEED_TIMERFLUSH                        GFXOFF
 //#define GDISP_NEED_VALIDATION                        GFXON
@@ -104,7 +104,7 @@
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS10          GFXOFF
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS12          GFXOFF
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS16          GFXOFF
-//    #define GDISP_INCLUDE_FONT_DEJAVUSANS20          GFXOFF
+#define GDISP_INCLUDE_FONT_DEJAVUSANS20          GFXON
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS24          GFXOFF
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS32          GFXOFF
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANSBOLD12      GFXOFF
