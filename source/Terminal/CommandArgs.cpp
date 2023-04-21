@@ -4,6 +4,15 @@
 
 using namespace ::coffeescales::terminal;
 
+void CommandArgs::SetCommandArg(size_t index, const char *arg)
+{
+    if (index > MaxArguments - 1)
+        return;
+
+    strncpy(Arguments[index].data(),
+            arg, CommandArgs::MaxArgLength);
+}
+
 bool CommandArgs::ArgIs(size_t index, const char *value) const
 {
     return Count > index && strncmp(value, Arguments[index].data(), MaxArgLength) == 0;

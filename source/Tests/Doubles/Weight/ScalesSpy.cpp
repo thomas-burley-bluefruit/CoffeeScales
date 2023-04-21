@@ -33,5 +33,6 @@ bool ScalesSpy::RegisterCallback(
         WeightReadingCallbackInterface *callback)
 {
     RegisterCallbackCalled = true;
+    RegisteredCallback = callback;
     return false;
 }

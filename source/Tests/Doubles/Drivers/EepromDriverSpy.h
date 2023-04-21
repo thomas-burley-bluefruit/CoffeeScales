@@ -12,7 +12,7 @@ public:
     bool Write(uint16_t address, const uint8_t *data, size_t size) const override;
     bool Read(uint16_t address, uint8_t *data, size_t size) const override;
 
-    bool WriteDataEquals(const uint8_t *data, size_t size);
+    bool WriteDataEquals(const uint8_t *data, size_t size) const;
     void SetReadData(const uint8_t *data, size_t size);
 
     mutable bool WriteCalled = false;

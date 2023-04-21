@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DisplayCommand.h"
 #include "EepromDriver.h"
 #include "HalInit.h"
 #include "HX711Driver.h"
@@ -11,7 +12,7 @@
 #include "Terminal.h"
 #include "Uart.h"
 #include "UgfxWrapper.h"
-#include "TerminalCommandTest.h"
+#include "WeightDisplayItem.h"
 
 namespace coffeescales
 {
@@ -39,6 +40,8 @@ private:
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
     display::UgfxWrapper mUgfxWrapper;
+    display::WeightDisplayItem mWeightDisplayItem;
+    display::DisplayCommand mDisplayCommand;
 };
 
 }

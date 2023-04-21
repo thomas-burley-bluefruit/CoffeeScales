@@ -2,6 +2,7 @@
 #include "Scales.h"
 #include "ScalesTerminalMessages.h"
 
+#include <cmath>
 #include <cstring>
 #include <string>
 
@@ -81,6 +82,7 @@ void Scales::StateTare()
             mState = State::CalibrateStart;
         else
             mState = State::Weigh;
+
     }
 }
 
@@ -130,7 +132,15 @@ bool Scales::ReadAdc()
 void Scales::ConvertWeight()
 {
     const auto adcReadingDelta = mLastAdcReading - mTareAdcReading;
-    mLastWeightConversionMg = static_cast<int32_t>(adcReadingDelta / mCalibrationFactor);
+    FilterWeight(static_cast<float>(adcReadingDelta) / mCalibrationFactor);
+}
+
+void Scales::FilterWeight(float newReadingMg)
+{
+    mLastWeightConversionMg = static_cast<int32_t>(roundf(
+            FilterTimeConstant * static_cast<float>(mLastWeightConversionMg) +
+            (1.0f - FilterTimeConstant) *
+            newReadingMg));
 }
 
 void Scales::UpdateSubscribers()

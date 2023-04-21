@@ -11,7 +11,9 @@ Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
                                  mEeprom(mSpi),
                                  mScalesMemoryItem(mEeprom),
                                  mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem),
-                                 mScalesCommand(mScales, mTerminal)
+                                 mScalesCommand(mScales, mTerminal),
+                                 mWeightDisplayItem(mUgfxWrapper, mScales, mTerminal),
+                                 mDisplayCommand(mTerminal, mWeightDisplayItem)
 {
 }
 
@@ -25,6 +27,7 @@ void Instantiation::Init()
     mScales.Init();
     DisplayGpio_Init();
     gfxInit();
+    mWeightDisplayItem.Init();
 }
 
 System &Instantiation::System()

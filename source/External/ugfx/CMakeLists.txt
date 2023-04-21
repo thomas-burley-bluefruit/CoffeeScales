@@ -2,23 +2,24 @@ set(NAME Ugfx)
 enable_language(C CXX)
 
 set(SOURCES
-        board_SSD1306.cpp
-        board_SSD1306.h
+        SSD1322/board_SSD1322.cpp
+        SSD1322/board_SSD1322.h
+        SSD1322/gdisp_lld_SSD1322.c
         UgfxTick.cpp
         ugfx/src/gfx_mk.c
-        UgfxUtilities.h)
+        UgfxUtilities.h
+        UgfxWrapper.cpp
+        UgfxWrapper.h)
 
-set(SSD1306_DRIVER_DIR ugfx/drivers/gdisp/SSD1306)
-
-set(SSD1306_DRIVER_SOURCES
-        ${SSD1306_DRIVER_DIR}/gdisp_lld_SSD1306.c
-        ${SSD1306_DRIVER_DIR}/gdisp_lld_config.h
-        ${SSD1306_DRIVER_DIR}/SSD1306.h
+set(SSD1322_DRIVER_DIR ugfx/drivers/gdisp/SSD1322)
+set(SSD1322_DRIVER_SOURCES
+        ${SSD1322_DRIVER_DIR}/gdisp_lld_config.h
+        ${SSD1322_DRIVER_DIR}/SSD1322.h
         )
 
-set(INCLUDES . ugfx ${SSD1306_DRIVER_DIR})
+set(INCLUDES . ugfx ${SSD1322_DRIVER_DIR})
 
-add_library(${NAME} STATIC ${SOURCES} ${SSD1306_DRIVER_SOURCES})
+add_library(${NAME} STATIC ${SOURCES} ${SSD1322_DRIVER_SOURCES})
 
 target_compile_options(${NAME} PRIVATE ${COMPILE_OPTIONS})
 target_compile_definitions(${NAME} PRIVATE ${COMPILE_DEFINITIONS})

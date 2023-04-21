@@ -8,9 +8,14 @@
 #ifndef _GDISP_LLD_BOARD_H
 #define _GDISP_LLD_BOARD_H
 
-#include "gfx.h"
+//Optional
+//#define SSD1322_USE_DMA
 
-//#define SSD1306_PAGE_PREFIX		0x40
+#ifndef SSD1322_USE_DMA
+#define SSD1322_USE_DMA            GFXOFF
+#endif
+
+#include "gfx.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,12 +26,18 @@ void setpin_reset(GDisplay *g, gBool state);
 void acquire_bus(GDisplay *g);
 void release_bus(GDisplay *g);
 void write_cmd(GDisplay *g, gU8 cmd);
-void write_data(GDisplay *g, gU8 *data, gU16 length);
+void write_data(GDisplay *g, gU8 data);
 void post_init_board(GDisplay *g);
 
 #ifdef __cplusplus
 }
 #endif
 
+#if SSD1322_USE_DMA
+void write_data_DMA(GDisplay *g, gU8* data) {
+    (void) g;
+    (void) data;
+}
+#endif    // Use DMA
 
 #endif /* _GDISP_LLD_BOARD_H */

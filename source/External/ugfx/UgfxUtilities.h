@@ -22,6 +22,8 @@ static constexpr gJustify UgfxJustify(Justify justify)
             return gJustify::gJustifyMiddle;
         case Justify::Bottom:
             return gJustify::gJustifyBottom;
+        default:
+            return gJustify::gJustifyCenter;
     }
 }
 

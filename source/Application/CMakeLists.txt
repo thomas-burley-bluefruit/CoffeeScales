@@ -6,8 +6,6 @@ set(SOURCES
         Application.h
         Instantiation.cpp
         Instantiation.h
-        TerminalCommandTest.cpp
-        TerminalCommandTest.h
         main.cpp)
 
 set(INCLUDES .)

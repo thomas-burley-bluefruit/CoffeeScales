@@ -51,13 +51,25 @@ private:
     void UpdateSubscribers();
     void PrintAdcValue();
     void PrintWeightValue();
+    void FilterWeight(float newReadingMg);
 
+protected:
+    State mState = State::Idle;
+    static constexpr size_t MaxCallbacks = 32;
+    static constexpr double CalibrationWeightMg = 200000.0;
+    static constexpr size_t AveragingCount = 10;
+    uint32_t mCallbackCount = 0;
+    std::array<WeightReadingCallbackInterface *, MaxCallbacks> mCallbacks;
+    float mCalibrationFactor;
+
+private:
     const drivers::AdcDriverInterface &mAdc;
     const halwrapper::SystemInterface &mSystem;
     terminal::TerminalInterface &mTerminal;
     ScalesMemoryItemInterface &mMemory;
 
     static constexpr uint32_t AdcReadIntervalMs = 100;
+    static constexpr float FilterTimeConstant = 0.1f;
 
     uint32_t mLastReadTick = 0;
     int32_t mLastWeightConversionMg = 0.0f;
@@ -72,15 +84,6 @@ private:
     char mPrintBuffer[coffeescales::terminal::Terminal::TerminalBufferSize];
     bool mAdcDebugPrint = false;
     bool mWeightDebugPrint = false;
-
-protected:
-    State mState = State::Idle;
-    static constexpr size_t MaxCallbacks = 32;
-    static constexpr double CalibrationWeightMg = 100000.0;
-    static constexpr size_t AveragingCount = 10;
-    uint32_t mCallbackCount = 0;
-    std::array<WeightReadingCallbackInterface *, MaxCallbacks> mCallbacks;
-    float mCalibrationFactor;
 };
 
 }
