@@ -56,7 +56,7 @@ private:
 protected:
     State mState = State::Idle;
     static constexpr size_t MaxCallbacks = 32;
-    static constexpr double CalibrationWeightMg = 100000.0;
+    static constexpr double CalibrationWeightMg = 200000.0;
     static constexpr size_t AveragingCount = 10;
     uint32_t mCallbackCount = 0;
     std::array<WeightReadingCallbackInterface *, MaxCallbacks> mCallbacks;
