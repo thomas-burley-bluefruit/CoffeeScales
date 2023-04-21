@@ -26,7 +26,7 @@ void WeightDisplayItem::NewWeightReadingMg(int32_t weightMg)
 
     auto grams = static_cast<float>(absWeight) / 1000.0f;
     auto deciGrams = static_cast<int32_t>(roundf(grams * 10.0f));
-    float roundedGrams = static_cast<float>(deciGrams) / 10;
+    float roundedGrams = (static_cast<float>(deciGrams) / 10) + 0.001;
     int32_t integerGrams = floor(roundedGrams);
     auto tenthGrams = static_cast<int32_t>((roundedGrams - static_cast<float>(integerGrams)) *
                                            10.0f);

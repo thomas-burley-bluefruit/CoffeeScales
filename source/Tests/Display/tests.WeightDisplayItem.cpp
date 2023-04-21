@@ -110,6 +110,7 @@ TEST_F(WeightDisplayItemTests, weight_is_rounded_correctly)
     AssertTextForWeight("-1.0g", -999);
     AssertTextForWeight("-1.1g", -1050);
     AssertTextForWeight("100.0g", 99950);
+    AssertTextForWeight("15.9g", 15943);
 }
 
 TEST_F(WeightDisplayItemTests, weight_is_printed_to_terminal_when_debug_print_turned_on)
