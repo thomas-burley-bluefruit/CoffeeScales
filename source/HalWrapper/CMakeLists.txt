@@ -20,6 +20,8 @@ set(SOURCES
         Spi.h
         System.cpp
         System.h
+        TareButtonGpio.cpp
+        TareButtonGpio.h
         Uart.cpp
         Uart.h
         )
