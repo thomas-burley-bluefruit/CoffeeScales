@@ -6,6 +6,8 @@ set(SOURCES
         EepromDriver.h
         HX711Driver.cpp
         HX711Driver.h
+        TareButtonDriver.cpp
+        TareButtonDriver.h
         Utilities.h
         )
 

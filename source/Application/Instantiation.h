@@ -9,6 +9,8 @@
 #include "ScalesMemoryItem.h"
 #include "Spi.h"
 #include "System.h"
+#include "TareButtonDriver.h"
+#include "TareButtonGpio.h"
 #include "Terminal.h"
 #include "Uart.h"
 #include "UgfxWrapper.h"
@@ -42,6 +44,8 @@ private:
     display::UgfxWrapper mUgfxWrapper;
     display::WeightDisplayItem mWeightDisplayItem;
     display::DisplayCommand mDisplayCommand;
+    halwrapper::TareButtonGpio mTareButtonGpio;
+    drivers::TareButtonDriver mTareButtonDriver;
 };
 
 }
