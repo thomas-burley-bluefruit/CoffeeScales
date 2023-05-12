@@ -1,16 +1,18 @@
 #pragma once
 
-#include "ExternalInterruptCallbackInterface.h"
 #include "ButtonGpioInterface.h"
 
 namespace coffeescales::halwrapper
 {
 
-class TareButtonGpio final : public ButtonGpioInterface
+class ButtonGpioSpy final : public ButtonGpioInterface
 {
 public:
-    void Init();
     void RegisterCallback(ExternalInterruptCallbackInterface *callback) override;
+
+    bool RegisterCallbackCalled = false;
+    ExternalInterruptCallbackInterface *Callback = nullptr;
 };
 
 }
+

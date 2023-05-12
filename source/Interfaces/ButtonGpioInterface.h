@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GpioInterruptCallbackInterface.h"
+#include "ExternalInterruptCallbackInterface.h"
 
 namespace coffeescales::halwrapper
 {
@@ -8,7 +8,7 @@ namespace coffeescales::halwrapper
 class ButtonGpioInterface
 {
 public:
-    virtual void SetCallback(GpioInterruptCallbackInterface *callback) = 0;
+    virtual void RegisterCallback(ExternalInterruptCallbackInterface *callback) = 0;
 };
 
 }

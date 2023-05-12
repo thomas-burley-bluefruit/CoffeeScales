@@ -3,12 +3,15 @@ set(NAME HalWrapper.Doubles)
 enable_language(C CXX)
 
 set(SOURCES
+        ButtonGpioSpy.cpp
+        ButtonGpioSpy.h
         SystemMock.cpp
         SystemMock.h
         SpiSpy.cpp
         SpiSpy.h
         UartSpy.cpp
-        UartSpy.h)
+        UartSpy.h
+        )
 
 set(INCLUDES .)
 

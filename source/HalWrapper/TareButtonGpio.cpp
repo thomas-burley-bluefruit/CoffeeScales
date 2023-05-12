@@ -7,7 +7,7 @@ static constexpr uint32_t TareButtonPin = GPIO_PIN_0;
 static GPIO_TypeDef *TareButtonGpioPort = GPIOA;
 static constexpr IRQn_Type TareButtonExtiIrqn = EXTI0_IRQn;
 
-GpioInterruptCallbackInterface *mCallback = nullptr;
+ExternalInterruptCallbackInterface *mCallback = nullptr;
 
 void TareButtonGpio::Init()
 {
@@ -21,7 +21,7 @@ void TareButtonGpio::Init()
     HAL_NVIC_EnableIRQ(TareButtonExtiIrqn);
 }
 
-void TareButtonGpio::SetCallback(GpioInterruptCallbackInterface *callback)
+void TareButtonGpio::RegisterCallback(ExternalInterruptCallbackInterface *callback)
 {
     mCallback = callback;
 }
@@ -31,6 +31,6 @@ extern "C" void EXTI0_IRQHandler(void)
     if (__HAL_GPIO_EXTI_GET_IT(TareButtonPin) != RESET)
     {
         __HAL_GPIO_EXTI_CLEAR_IT(TareButtonPin);
-        mCallback->OnReceiveInterrupt();
+        mCallback->OnExternalInterrupt();
     }
 }

@@ -206,3 +206,8 @@ void Scales::WeightDebugPrint(bool on)
 {
     mWeightDebugPrint = on;
 }
+
+void Scales::OnButtonPress(drivers::buttons::Button button)
+{
+
+}

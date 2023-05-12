@@ -2,12 +2,12 @@ set(NAME Drivers)
 enable_language(C CXX)
 
 set(SOURCES
+        ButtonDriver.cpp
+        ButtonDriver.h
         EepromDriver.cpp
         EepromDriver.h
         HX711Driver.cpp
         HX711Driver.h
-        TareButtonDriver.cpp
-        TareButtonDriver.h
         Utilities.h
         )
 

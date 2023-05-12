@@ -7,7 +7,7 @@ set(SOURCES
         DisplayInterface.h
         DisplayItemInterface.h
         GpioInterface.h
-        GpioInterruptCallbackInterface.h
+        ExternalInterruptCallbackInterface.h
         PersistentMemoryInterface.h
         ReceiveInterruptCallbackInterface.h
         SpiInterface.h

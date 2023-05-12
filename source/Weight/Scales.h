@@ -3,6 +3,7 @@
 #include <array>
 
 #include "AdcDriverInterface.h"
+#include "ButtonPressCallbackInterface.h"
 #include "ScalesInterface.h"
 #include "ScalesMemoryItem.h"
 #include "ScalesTerminalCommands.h"
@@ -13,7 +14,8 @@
 namespace coffeescales::weight
 {
 
-class Scales : public coffeescales::weight::ScalesInterface
+class Scales
+        : public coffeescales::weight::ScalesInterface, public drivers::ButtonPressCallbackInterface
 {
 public:
     Scales(drivers::AdcDriverInterface &adc, halwrapper::SystemInterface &system,
@@ -29,6 +31,7 @@ public:
     void CalibrateSet() override;
     void AdcDebugPrint(bool on) override;
     void WeightDebugPrint(bool on) override;
+    void OnButtonPress(drivers::buttons::Button button) override;
 
     enum class State
     {

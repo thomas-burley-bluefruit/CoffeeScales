@@ -14,7 +14,7 @@ Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
                                  mScalesCommand(mScales, mTerminal),
                                  mWeightDisplayItem(mUgfxWrapper, mScales, mTerminal),
                                  mDisplayCommand(mTerminal, mWeightDisplayItem),
-                                 mTareButtonDriver(mTareButtonGpio, mSystem, mTerminal)
+                                 mTareButton(buttons::Button::Tare, mTareButtonGpio, mSystem)
 {
 }
 
@@ -30,6 +30,7 @@ void Instantiation::Init()
     gfxInit();
     mWeightDisplayItem.Init();
     mTareButtonGpio.Init();
+    mTareButton.Init();
 }
 
 System &Instantiation::System()
