@@ -1,0 +1,14 @@
+{
+  "testMate.cpp.debug.configTemplate": {
+      "args": "${argsArray}",
+      "cwd": "${cwd}",
+      "env": "${envObj}",
+      "externalConsole": false,
+      "program": "${exec}",
+      "request": "launch",
+      "sourceFileMap": "${sourceFileMapObj}",
+      "stopAtEntry": false,
+      "type": "cppvsdbg"
+  },
+  "testMate.cpp.test.executables": "${workspaceFolder}/cmake-build/**/*{Tests.}*"
+}
