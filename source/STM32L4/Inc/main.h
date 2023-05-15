@@ -57,8 +57,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define MCO_Pin GPIO_PIN_0
-#define MCO_GPIO_Port GPIOA
+#define TARE_BUTTON_Pin GPIO_PIN_0
+#define TARE_BUTTON_GPIO_Port GPIOA
+#define TARE_BUTTON_EXTI_IRQn EXTI0_IRQn
 #define VCP_TX_Pin GPIO_PIN_2
 #define VCP_TX_GPIO_Port GPIOA
 #define HX711_DOUT_Pin GPIO_PIN_3
@@ -77,6 +78,8 @@ void Error_Handler(void);
 #define SPI3_CS_GPIO_Port GPIOB
 #define DISPLAY_RESET_Pin GPIO_PIN_6
 #define DISPLAY_RESET_GPIO_Port GPIOB
+#define DISPLAY_DC_Pin GPIO_PIN_7
+#define DISPLAY_DC_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

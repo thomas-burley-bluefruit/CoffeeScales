@@ -6,8 +6,6 @@ set(SOURCES
         Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c
         Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c
         Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c
-        Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c
-        Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c
         Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c
         Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.c
         Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash.c

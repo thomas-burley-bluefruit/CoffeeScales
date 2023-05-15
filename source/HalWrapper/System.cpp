@@ -1,4 +1,5 @@
 #include "System.h"
+#include "stm32l4xx_hal.h"
 
 using namespace ::coffeescales::halwrapper;
 
@@ -31,4 +32,9 @@ GpioPinState System::GetPinState() const
 void System::SetPinState(const halwrapper::GpioPinState state)
 {
     HX711Gpio::SetPinState(state);
+}
+
+extern "C" void SysTick_Handler(void)
+{
+    HAL_IncTick();
 }

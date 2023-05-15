@@ -9,6 +9,8 @@
 #include "ScalesMemoryItem.h"
 #include "Spi.h"
 #include "System.h"
+#include "ButtonDriver.h"
+#include "TareButtonGpio.h"
 #include "Terminal.h"
 #include "Uart.h"
 #include "UgfxWrapper.h"
@@ -37,6 +39,8 @@ private:
     halwrapper::Spi mSpi;
     drivers::EepromDriver mEeprom;
     weight::ScalesMemoryItem mScalesMemoryItem;
+    halwrapper::TareButtonGpio mTareButtonGpio;
+    drivers::ButtonDriver mTareButton;
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
     display::UgfxWrapper mUgfxWrapper;

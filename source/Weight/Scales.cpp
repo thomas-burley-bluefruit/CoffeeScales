@@ -12,10 +12,11 @@ using namespace ::coffeescales::terminal;
 using namespace ::coffeescales::weight;
 
 Scales::Scales(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal,
-               ScalesMemoryItemInterface &memory) :
+               ScalesMemoryItemInterface &memory, ButtonDriverInterface &tareButton) :
         mAdc(adc), mSystem(system),
         mTerminal(terminal),
-        mMemory(memory)
+        mMemory(memory),
+        mTareButton(tareButton)
 {
     mCallbacks.fill(nullptr);
     memset(mPrintBuffer, 0, Terminal::TerminalBufferSize);
@@ -25,11 +26,15 @@ void Scales::Init()
 {
     mCalibrationFactor = mMemory.GetCalibrationFactor();
     TareInit();
+    mTareButton.RegisterCallback(this);
 }
 
 void Scales::Task()
 {
     bool readSuccess = ReadAdc();
+
+    if (mTareInitRequested)
+        TareInit();
 
     switch (mState)
     {
@@ -169,6 +174,9 @@ void Scales::PrintWeightValue()
 
 void Scales::TareInit()
 {
+    mTareInitRequested = false;
+    mLastWeightConversionMg = 0;
+    UpdateSubscribers();
     mState = State::Tare;
     mAverageSum = 0;
     mAverageCount = 0;
@@ -205,4 +213,10 @@ void Scales::AdcDebugPrint(bool on)
 void Scales::WeightDebugPrint(bool on)
 {
     mWeightDebugPrint = on;
+}
+
+void Scales::OnButtonPress(drivers::buttons::Button button)
+{
+    if (button == drivers::buttons::Button::Tare && mState == State::Weigh)
+        mTareInitRequested = true;
 }

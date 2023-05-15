@@ -4,7 +4,6 @@ set(EXECUTABLE ${PROJECT_NAME}.out)
 set(SOURCES
         source/STM32L4/Inc/stm32l4xx_hal_conf.h
         source/Application/main.cpp
-        source/STM32L4/Src/stm32l4xx_it.c
         source/STM32L4/Src/system_stm32l4xx.c
         source/STM32L4/startup_stm32l432xx.s)
 
