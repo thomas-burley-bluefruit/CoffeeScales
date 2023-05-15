@@ -10,11 +10,12 @@ using namespace ::terminal;
 Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
                                  mEeprom(mSpi),
                                  mScalesMemoryItem(mEeprom),
-                                 mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem),
+                                 mTareButton(buttons::Button::Tare, mTareButtonGpio, mSystem),
+                                 mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem,
+                                         mTareButton),
                                  mScalesCommand(mScales, mTerminal),
                                  mWeightDisplayItem(mUgfxWrapper, mScales, mTerminal),
-                                 mDisplayCommand(mTerminal, mWeightDisplayItem),
-                                 mTareButton(buttons::Button::Tare, mTareButtonGpio, mSystem)
+                                 mDisplayCommand(mTerminal, mWeightDisplayItem)
 {
 }
 
@@ -25,12 +26,12 @@ void Instantiation::Init()
     mSpi.Init();
     mTerminal.Start();
     mScalesMemoryItem.Init();
+    mTareButtonGpio.Init();
+    mTareButton.Init();
     mScales.Init();
     DisplayGpio_Init();
     gfxInit();
     mWeightDisplayItem.Init();
-    mTareButtonGpio.Init();
-    mTareButton.Init();
 }
 
 System &Instantiation::System()

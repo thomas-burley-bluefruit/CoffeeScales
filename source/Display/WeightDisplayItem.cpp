@@ -1,6 +1,7 @@
 #include "WeightDisplayItem.h"
 
 #include <cmath>
+#include <cstdio>
 #include <cstring>
 
 using namespace ::coffeescales::display;

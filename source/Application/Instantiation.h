@@ -39,13 +39,13 @@ private:
     halwrapper::Spi mSpi;
     drivers::EepromDriver mEeprom;
     weight::ScalesMemoryItem mScalesMemoryItem;
+    halwrapper::TareButtonGpio mTareButtonGpio;
+    drivers::ButtonDriver mTareButton;
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
     display::UgfxWrapper mUgfxWrapper;
     display::WeightDisplayItem mWeightDisplayItem;
     display::DisplayCommand mDisplayCommand;
-    halwrapper::TareButtonGpio mTareButtonGpio;
-    drivers::ButtonDriver mTareButton;
 };
 
 }

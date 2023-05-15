@@ -5,6 +5,8 @@ enable_language(C CXX)
 set(SOURCES
         AdcSpy.cpp
         AdcSpy.h
+        ButtonDriverSpy.cpp
+        ButtonDriverSpy.h
         ButtonPressCallbackSpy.cpp
         ButtonPressCallbackSpy.h
         EepromDriverSpy.cpp

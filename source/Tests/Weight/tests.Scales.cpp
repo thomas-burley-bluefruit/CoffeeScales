@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "AdcSpy.h"
+#include "ButtonDriverSpy.h"
 #include "GenericTerminalCommands.h"
 #include "Scales.h"
 #include "ScalesMemoryItemSpy.h"
@@ -24,8 +25,8 @@ class ScalesTestObject : public Scales
 {
 public:
     ScalesTestObject(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal,
-                     ScalesMemoryItemInterface &memory)
-            : Scales(adc, system, terminal, memory)
+                     ScalesMemoryItemInterface &memory, ButtonDriverInterface &tareButton)
+            : Scales(adc, system, terminal, memory, tareButton)
     {}
 
     static constexpr size_t MaxCallbacks = Scales::MaxCallbacks;
@@ -40,7 +41,7 @@ public:
 class ScalesTests : public testing::Test
 {
 public:
-    ScalesTests() : mScales(mAdc, mSystem, mTerminal, mMemory)
+    ScalesTests() : mScales(mAdc, mSystem, mTerminal, mMemory, mTareButton)
     {}
 
     void SetUp() override
@@ -71,9 +72,6 @@ public:
     void CalibrationStartSequence()
     {
         Tare();
-        CommandArgs calibrateStartArgs;
-        calibrateStartArgs.SetCommandArg(0, ScalesTerminalCommands::Calibrate);
-        calibrateStartArgs.Count++;
         mScales.CalibrateInit();
         RepeatAdcValue(0, ScalesTestObject::AveragingCount);
         mScales.Task();
@@ -84,6 +82,7 @@ public:
     TerminalSpy mTerminal;
     SystemMock mSystem;
     ScalesMemoryItemSpy mMemory;
+    ButtonDriverSpy mTareButton;
     ScalesTestObject mScales;
 };
 
@@ -233,6 +232,21 @@ TEST_F(ScalesTests, Adc_readings_are_scaled_by_calibration_factor_when_passed_to
     ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
 }
 
+TEST_F(ScalesTests, TareInit_sets_weight_to_zero_while_taring)
+{
+    // Given
+    Tare();
+    mScales.RegisterCallback(&mCallback);
+    RepeatAdcValue(123456, 10);
+    ASSERT_NE(0, mCallback.LastWeightReading);
+
+    // When
+    mScales.TareInit();
+
+    // Then
+    ASSERT_EQ(0, mCallback.LastWeightReading);
+}
+
 TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
 {
     // Given
@@ -279,7 +293,7 @@ TEST_F(ScalesTests, task_after_CalibrateInit_command_performs_tare)
     mScales.Task();
 
     // Then
-    ASSERT_EQ(mCallback.CallCount, 1);
+    ASSERT_EQ(mCallback.CallCount, 2);
     ASSERT_EQ(mCallback.LastWeightReading, 0);
 }
 
@@ -533,4 +547,70 @@ TEST_F(ScalesTests, Weight_readings_are_filtered)
 
     // Then
     ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
+}
+
+TEST_F(ScalesTests, Init_registers_callback_with_tare_button)
+{
+    ASSERT_TRUE(mTareButton.RegisterCallbackCalled);
+    ASSERT_EQ(&mScales, mTareButton.Callback);
+}
+
+TEST_F(ScalesTests, OnButtonPress_with_tare_argument_inits_tare_process_on_next_task_if_current_state_is_Weigh)
+{
+    // Given
+    Tare();
+    ASSERT_EQ(Scales::State::Weigh, mScales.State);
+
+    // When
+    mScales.OnButtonPress(buttons::Button::Tare);
+    ASSERT_EQ(Scales::State::Weigh, mScales.State);
+    mScales.Task();
+
+    // Then
+    ASSERT_EQ(Scales::State::Tare, mScales.State);
+}
+
+TEST_F(ScalesTests, OnButtonPress_with_wrong_argument_does_not_init_tare)
+{
+    // Given
+    Tare();
+    ASSERT_EQ(Scales::State::Weigh, mScales.State);
+
+    // When
+    mScales.OnButtonPress(buttons::Button::Count);
+    mScales.Task();
+
+    // Then
+    ASSERT_EQ(Scales::State::Weigh, mScales.State);
+}
+
+TEST_F(ScalesTests, OnButtonPress_with_tare_argument_does_not_init_tare_if_state_is_calibrate)
+{
+    // Given
+    Tare();
+    CalibrationStartSequence();
+    ASSERT_EQ(Scales::State::CalibrateWait, mScales.State);
+
+    // When
+    mScales.OnButtonPress(buttons::Button::Tare);
+    mScales.Task();
+
+    // Then
+    ASSERT_EQ(Scales::State::CalibrateWait, mScales.State);
+}
+
+TEST_F(ScalesTests, Next_task_after_tare_init_actioned_does_not_reinit)
+{
+    // Given
+    Tare();
+    ASSERT_EQ(Scales::State::Weigh, mScales.State);
+
+    // When
+    mScales.OnButtonPress(buttons::Button::Tare);
+    mScales.Task();
+    ASSERT_EQ(Scales::State::Tare, mScales.State);
+    RepeatAdcValue(0, mScales.AveragingCount);
+
+    // Then
+    ASSERT_EQ(Scales::State::Weigh, mScales.State);
 }
