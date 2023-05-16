@@ -16,6 +16,7 @@ public:
     size_t DisplayHeight() const override;
     size_t DisplayWidth() const override;
     void ClearDisplay() const override;
+    void ClearArea(int16_t x, int16_t y, int16_t width, int16_t height) const override;
 
     bool DisplayTextBoxCalled = false;
     int16_t DisplayTextBoxX = 0;
@@ -30,6 +31,12 @@ public:
     size_t DisplayWidthValue = 128;
 
     mutable bool ClearDisplayCalled = false;
+
+    mutable bool ClearAreaCalled = false;
+    mutable int16_t ClearAreaX = 0;
+    mutable int16_t ClearAreaY = 0;
+    mutable int16_t ClearAreaWidth = 0;
+    mutable int16_t ClearAreaHeight = 0;
 };
 
 }

@@ -20,10 +20,16 @@ public:
     void DebugPrint(bool on) override;
     void NewWeightReadingMg(int32_t weightMg) override;
 
+    static constexpr int16_t LocationX = 128;
+    static constexpr int16_t LocationY = 0;
+    static constexpr int16_t WidthPx = 128;
+    static constexpr int16_t HeightPx = 64;
+
 private:
     DisplayInterface &mDisplay;
     weight::ScalesInterface &mScales;
     terminal::TerminalInterface &mTerminal;
+
 
     static constexpr size_t PrintBufferSize = 8;
     char mPrintBuffer[PrintBufferSize]{0};

@@ -17,7 +17,7 @@ public:
         mWeightDisplayItem.NewWeightReadingMg(weightReadingMg);
         ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
         ASSERT_STREQ(mDisplay.StringBuffer, text);
-        ASSERT_TRUE(mDisplay.ClearDisplayCalled);
+        ASSERT_TRUE(mDisplay.ClearAreaCalled);
     }
 
     weight::ScalesSpy mScales;
@@ -61,7 +61,11 @@ TEST_F(WeightDisplayItemTests, display_cleared_and_new_weight_shown_on_weight_re
     // Then
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
-    ASSERT_TRUE(mDisplay.ClearDisplayCalled);
+    ASSERT_TRUE(mDisplay.ClearAreaCalled);
+    ASSERT_EQ(mDisplay.ClearAreaX, display::WeightDisplayItem::LocationX);
+    ASSERT_EQ(mDisplay.ClearAreaY, display::WeightDisplayItem::LocationY);
+    ASSERT_EQ(mDisplay.ClearAreaWidth, display::WeightDisplayItem::WidthPx);
+    ASSERT_EQ(mDisplay.ClearAreaHeight, display::WeightDisplayItem::HeightPx);
 }
 
 TEST_F(WeightDisplayItemTests, negative_weights_displayed_correctly)
@@ -76,7 +80,7 @@ TEST_F(WeightDisplayItemTests, negative_weights_displayed_correctly)
     // Then
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
-    ASSERT_TRUE(mDisplay.ClearDisplayCalled);
+    ASSERT_TRUE(mDisplay.ClearAreaCalled);
 }
 
 TEST_F(WeightDisplayItemTests, display_not_updated_if_weight_unchanged)
@@ -88,7 +92,7 @@ TEST_F(WeightDisplayItemTests, display_not_updated_if_weight_unchanged)
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
-    ASSERT_TRUE(mDisplay.ClearDisplayCalled);
+    ASSERT_TRUE(mDisplay.ClearAreaCalled);
 
     mDisplay.DisplayTextBoxCalled = false;
 
