@@ -6,6 +6,7 @@ add_subdirectory(Doubles/Terminal)
 add_subdirectory(Doubles/Weight)
 add_subdirectory(Drivers)
 add_subdirectory(Terminal)
+add_subdirectory(Time)
 add_subdirectory(Weight)
 
 # add_custom_target(AllTests)

@@ -1,20 +1,15 @@
-set(NAME Tests.Weight)
+set(NAME Tests.Time)
 
 set(SOURCES
-        tests.Scales.cpp
-        tests.ScalesCommand.cpp
-        tests.ScalesMemoryItem.cpp)
+        tests.BrewTimer.cpp)
 
 set(INCLUDES .)
 
 add_executable(${NAME} ${SOURCES})
 target_include_directories(${NAME} PRIVATE ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
-        Drivers.Doubles
         HalWrapper.Doubles
-        Terminal.Doubles
-        Weight
-        Weight.Doubles
+        Time
         gtest_main)
 
 include(GoogleTest)
