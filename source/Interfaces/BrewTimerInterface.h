@@ -9,8 +9,8 @@ class BrewTimerInterface
 {
 public:
   ~BrewTimerInterface() = default;
-  virtual void StartTimer() = 0;
-  virtual void ResetTimer() = 0;
+  virtual void Start() = 0;
+  virtual void Reset() = 0;
   virtual bool RegisterCallback(TimerIncrementCallbackInterface *callback) = 0;
 };
 

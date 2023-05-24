@@ -9,22 +9,29 @@
 namespace coffeescales::time
 {
 
-class BrewTimer final : public BrewTimerInterface
+class BrewTimer : public BrewTimerInterface
 {
-public:
-  BrewTimer(halwrapper::SystemInterface& system);
-  void Task();
-  void StartTimer();
-  void ResetTimer();
-  bool RegisterCallback(TimerIncrementCallbackInterface *callback);
+  public:
+    BrewTimer(halwrapper::SystemInterface& system);
+    void Task();
+    void Start();
+    void Reset();
+    bool RegisterCallback(TimerIncrementCallbackInterface* callback);
 
-protected:
+  protected:
     static constexpr size_t MaxCallbacks = 32;
     uint32_t mCallbackCount = 0;
-    std::array<TimerIncrementCallbackInterface *, MaxCallbacks> mCallbacks;
+    std::array<TimerIncrementCallbackInterface*, MaxCallbacks> mCallbacks;
 
-private:
-  halwrapper::SystemInterface& mSystem;
+  private:
+    void UpdateSubscribers();
+
+  private:
+    halwrapper::SystemInterface& mSystem;
+    bool mRunning = false;
+    uint32_t mStartTick = 0;
+    uint32_t mMinutes = 0;
+    uint32_t mSeconds = 0;
 };
 
 }

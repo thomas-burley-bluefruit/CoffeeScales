@@ -10,6 +10,7 @@ target_include_directories(${NAME} PRIVATE ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
         HalWrapper.Doubles
         Time
+        Time.Doubles
         gtest_main)
 
 include(GoogleTest)
