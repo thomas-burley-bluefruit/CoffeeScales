@@ -1,30 +1,48 @@
-#include "gtest/gtest.h"
+#include "DisplayManagerSpy.h"
 #include "DisplaySpy.h"
 #include "ScalesSpy.h"
 #include "TerminalSpy.h"
 #include "WeightDisplayItem.h"
+#include "gtest/gtest.h"
 
 using namespace ::coffeescales;
 
 class WeightDisplayItemTests : public testing::Test
 {
-public:
-    WeightDisplayItemTests() : mWeightDisplayItem(mDisplay, mScales, mTerminal)
-    {}
-
-    void AssertTextForWeight(const char *text, const int32_t weightReadingMg)
+  public:
+    WeightDisplayItemTests() :
+        mWeightDisplayItem(mDisplayManager, mDisplay, mScales, mTerminal)
     {
+    }
+
+    void AssertTextForWeight(const char* text, const int32_t weightReadingMg)
+    {
+        mWeightDisplayItem.NewWeightReadingMg(0);
         mWeightDisplayItem.NewWeightReadingMg(weightReadingMg);
+        bool redrawRequired = false;
+        mWeightDisplayItem.Update(redrawRequired);
+        ASSERT_TRUE(redrawRequired) << "Weight: " << weightReadingMg;
         ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
         ASSERT_STREQ(mDisplay.StringBuffer, text);
         ASSERT_TRUE(mDisplay.ClearAreaCalled);
     }
 
     weight::ScalesSpy mScales;
+    display::DisplayManagerSpy mDisplayManager;
     display::DisplaySpy mDisplay;
     terminal::TerminalSpy mTerminal;
     display::WeightDisplayItem mWeightDisplayItem;
 };
+
+TEST_F(WeightDisplayItemTests, init_registers_with_display_manager)
+{
+    // Given, when
+    mWeightDisplayItem.Init();
+
+    // Then
+    ASSERT_TRUE(mDisplayManager.RegisterDisplayItemCalled);
+    ASSERT_EQ(mDisplayManager.RegisteredDisplayItem, &mWeightDisplayItem);
+}
 
 TEST_F(WeightDisplayItemTests, init_registers_callback_with_scales)
 {
@@ -39,7 +57,7 @@ TEST_F(WeightDisplayItemTests, init_registers_callback_with_scales)
 TEST_F(WeightDisplayItemTests, zero_grams_printed_to_display_on_init_prior_to_first_weight_reading)
 {
     // Given
-    const char *expectedText = "0.0g";
+    const char* expectedText = "0.0g";
 
     // When
     mWeightDisplayItem.Init();
@@ -49,16 +67,19 @@ TEST_F(WeightDisplayItemTests, zero_grams_printed_to_display_on_init_prior_to_fi
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
 }
 
-TEST_F(WeightDisplayItemTests, display_cleared_and_new_weight_shown_on_weight_reading)
+TEST_F(WeightDisplayItemTests, display_cleared_and_new_weight_shown_on_update_after_weight_reading)
 {
     // Given
     const int32_t weightReading = 1234;
-    const char *expectedText = "1.2g";
+    const char* expectedText = "1.2g";
 
     // When
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
+    bool redrawRequired = false;
+    mWeightDisplayItem.Update(redrawRequired);
 
     // Then
+    ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
     ASSERT_TRUE(mDisplay.ClearAreaCalled);
@@ -72,12 +93,15 @@ TEST_F(WeightDisplayItemTests, negative_weights_displayed_correctly)
 {
     // Given
     const int32_t weightReading = -1234;
-    const char *expectedText = "-1.2g";
+    const char* expectedText = "-1.2g";
 
     // When
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
+    bool redrawRequired = false;
+    mWeightDisplayItem.Update(redrawRequired);
 
     // Then
+    ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
     ASSERT_TRUE(mDisplay.ClearAreaCalled);
@@ -87,9 +111,14 @@ TEST_F(WeightDisplayItemTests, display_not_updated_if_weight_unchanged)
 {
     // Given
     const int32_t weightReading = 1234;
-    const char *expectedText = "1.2g";
+    const char* expectedText = "1.2g";
 
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
+
+    bool redrawRequired = false;
+    mWeightDisplayItem.Update(redrawRequired);
+    ASSERT_TRUE(redrawRequired);
+
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
     ASSERT_TRUE(mDisplay.ClearAreaCalled);
@@ -98,8 +127,11 @@ TEST_F(WeightDisplayItemTests, display_not_updated_if_weight_unchanged)
 
     // When
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
+    redrawRequired = false;
+    mWeightDisplayItem.Update(redrawRequired);
 
     // Then
+    ASSERT_FALSE(redrawRequired);
     ASSERT_FALSE(mDisplay.DisplayTextBoxCalled);
 }
 
@@ -122,13 +154,16 @@ TEST_F(WeightDisplayItemTests, weight_is_printed_to_terminal_when_debug_print_tu
     // Given
     int32_t weightReading = 1000;
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
+    bool redrawRequired = false;
+    mWeightDisplayItem.Update(redrawRequired);
     ASSERT_FALSE(mTerminal.TextOutCalled);
 
     // When
     weightReading = 1200;
-    const char *expectedText = "1.2g\n";
+    const char* expectedText = "1.2g\n";
     mWeightDisplayItem.DebugPrint(true);
     mWeightDisplayItem.NewWeightReadingMg(weightReading);
+    mWeightDisplayItem.Update(redrawRequired);
 
     // Then
     ASSERT_TRUE(mTerminal.TextOutCalled);

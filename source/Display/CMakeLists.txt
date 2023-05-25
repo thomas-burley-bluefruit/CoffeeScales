@@ -4,11 +4,11 @@ enable_language(C CXX)
 set(SOURCES
         DisplayCommand.cpp
         DisplayCommand.h
-        WeightDisplayItem.cpp
-        WeightDisplayItem.h
+        DisplayItems/WeightDisplayItem.cpp
+        DisplayItems/WeightDisplayItem.h
         )
 
-set(INCLUDES .)
+set(INCLUDES . DisplayItems)
 
 add_library(${NAME} STATIC ${SOURCES})
 
