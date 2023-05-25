@@ -4,8 +4,13 @@
 
 using namespace coffeescales::display;
 
+void DisplaySpy::Redraw() const
+{
+    RedrawCalled = true;
+}
+
 void DisplaySpy::DisplayTextBox(int16_t x, int16_t y, int16_t boxWidth, int16_t boxHeight,
-                                const char *string, Justify justify)
+    const char* string, Justify justify)
 {
     DisplayTextBoxCalled = true;
     DisplayTextBoxX = x;

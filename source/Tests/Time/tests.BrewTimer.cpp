@@ -152,7 +152,6 @@ TEST_F(BrewTimerTests, Ticks_are_converted_to_time_correctly)
 {
     mBrewTimer.RegisterCallback(&mCallback);
 
-    //                 Ticks   M  S
     AssertTimeForTicks(60000, 1, 0);
     AssertTimeForTicks(60999, 1, 0);
     AssertTimeForTicks(61000, 1, 1);

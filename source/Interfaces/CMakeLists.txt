@@ -6,6 +6,7 @@ set(SOURCES
         ButtonGpioInterface.h
         DisplayInterface.h
         DisplayItemInterface.h
+        DisplayManagerInterface.h
         GpioInterface.h
         ExternalInterruptCallbackInterface.h
         PersistentMemoryInterface.h
