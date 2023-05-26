@@ -16,5 +16,6 @@ void Application::Init()
     {
         mInstantiation.Terminal().Task();
         mInstantiation.Scales().Task();
+        mInstantiation.DisplayManager().Task();
     }
 }

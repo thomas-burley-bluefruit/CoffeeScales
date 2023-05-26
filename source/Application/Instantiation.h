@@ -1,6 +1,9 @@
 #pragma once
 
+#include "BrewTimer.h"
+#include "ButtonDriver.h"
 #include "DisplayCommand.h"
+#include "DisplayManager.h"
 #include "EepromDriver.h"
 #include "HalInit.h"
 #include "HX711Driver.h"
@@ -9,9 +12,9 @@
 #include "ScalesMemoryItem.h"
 #include "Spi.h"
 #include "System.h"
-#include "ButtonDriver.h"
 #include "TareButtonGpio.h"
 #include "Terminal.h"
+#include "TimeDisplayItem.h"
 #include "Uart.h"
 #include "UgfxWrapper.h"
 #include "WeightDisplayItem.h"
@@ -21,16 +24,14 @@ namespace coffeescales
 
 class Instantiation
 {
-public:
+  public:
     Instantiation();
     void Init();
-    terminal::Terminal &Terminal();
-    halwrapper::System &System();
-    drivers::HX711Driver &Hx711();
-    weight::Scales &Scales();
-    display::UgfxWrapper &UgfxWrapper();
+    terminal::Terminal& Terminal();
+    weight::Scales& Scales();
+    display::DisplayManager& DisplayManager();
 
-private:
+  private:
     halwrapper::HalInit mHalInit;
     halwrapper::System mSystem;
     halwrapper::Uart mUart;
@@ -43,7 +44,10 @@ private:
     drivers::ButtonDriver mTareButton;
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
+    time::BrewTimer mBrewTimer;
     display::UgfxWrapper mUgfxWrapper;
+    display::DisplayManager mDisplayManager;
+    display::TimeDisplayItem mTimeDisplayItem;
     display::WeightDisplayItem mWeightDisplayItem;
     display::DisplayCommand mDisplayCommand;
 };
