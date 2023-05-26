@@ -46,6 +46,7 @@ class WeightDisplayItem : public weight::WeightReadingCallbackInterface, public 
 
     bool mDebugPrintWeight = false;
 
+    void LoadPrintBuffer();
     void DisplayWeightString(const char* string);
 };
 

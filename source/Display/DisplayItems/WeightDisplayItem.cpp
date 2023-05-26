@@ -14,13 +14,14 @@ WeightDisplayItem::WeightDisplayItem(DisplayManagerInterface& displayManager,
     mScales(scales),
     mTerminal(terminal)
 {
+    mDisplayManager.RegisterDisplayItem(this);
 }
 
 void WeightDisplayItem::Init()
 {
-    DisplayWeightString("0.0g");
-    mDisplayManager.RegisterDisplayItem(this);
     mScales.RegisterCallback(this);
+    LoadPrintBuffer();
+    mRedrawRequired = true;
 }
 
 void WeightDisplayItem::NewWeightReadingMg(int32_t weightMg)
@@ -44,9 +45,7 @@ void WeightDisplayItem::NewWeightReadingMg(int32_t weightMg)
     mLastGramsDisplayed = integerGrams;
     mLastDeciGramsDisplayed = tenthGrams;
 
-    snprintf(mPrintBuffer, PrintBufferSize, "%li.%lig", mLastGramsDisplayed,
-        mLastDeciGramsDisplayed);
-
+    LoadPrintBuffer();
     mRedrawRequired = true;
 }
 
@@ -60,6 +59,12 @@ void WeightDisplayItem::DisplayWeightString(const char* string)
         strncat(mPrintBuffer, "\n", PrintBufferSize);
         mTerminal.TextOut(mPrintBuffer);
     }
+}
+
+void WeightDisplayItem::LoadPrintBuffer()
+{
+    snprintf(mPrintBuffer, PrintBufferSize, "%li.%lig", mLastGramsDisplayed,
+        mLastDeciGramsDisplayed);
 }
 
 void WeightDisplayItem::DebugPrint(bool on)

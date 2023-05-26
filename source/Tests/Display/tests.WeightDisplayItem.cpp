@@ -34,12 +34,8 @@ class WeightDisplayItemTests : public testing::Test
     display::WeightDisplayItem mWeightDisplayItem;
 };
 
-TEST_F(WeightDisplayItemTests, init_registers_with_display_manager)
+TEST_F(WeightDisplayItemTests, registers_with_display_manager_on_construction)
 {
-    // Given, when
-    mWeightDisplayItem.Init();
-
-    // Then
     ASSERT_TRUE(mDisplayManager.RegisterDisplayItemCalled);
     ASSERT_EQ(mDisplayManager.RegisteredDisplayItem, &mWeightDisplayItem);
 }
@@ -54,15 +50,18 @@ TEST_F(WeightDisplayItemTests, init_registers_callback_with_scales)
     ASSERT_EQ(mScales.RegisteredCallback, &mWeightDisplayItem);
 }
 
-TEST_F(WeightDisplayItemTests, zero_grams_printed_to_display_on_init_prior_to_first_weight_reading)
+TEST_F(WeightDisplayItemTests, first_update_after_init_draws_zero_grams)
 {
     // Given
     const char* expectedText = "0.0g";
-
-    // When
     mWeightDisplayItem.Init();
 
+    // When
+    bool redrawRequired = false;
+    mWeightDisplayItem.Update(redrawRequired);
+
     // Then
+    ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
     ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
 }
