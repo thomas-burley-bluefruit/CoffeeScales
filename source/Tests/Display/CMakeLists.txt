@@ -3,6 +3,7 @@ set(NAME Tests.Display)
 set(SOURCES
         tests.DisplayCommand.cpp
         tests.DisplayManager.cpp
+        tests.TimeDisplayItem.cpp
         tests.WeightDisplayitem.cpp)
 
 set(INCLUDES .)
@@ -13,6 +14,7 @@ target_link_libraries(${NAME} PUBLIC
         Display
         Display.Doubles
         Terminal.Doubles
+        Time.Doubles
         Weight.Doubles
         gtest_main)
 

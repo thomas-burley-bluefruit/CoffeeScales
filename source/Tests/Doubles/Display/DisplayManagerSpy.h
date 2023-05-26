@@ -10,7 +10,7 @@ class DisplayManagerSpy : public DisplayManagerInterface
   public:
     bool RegisterDisplayItem(DisplayItemInterface* displayItem) override;
 
-    bool RegisterDisplayItemCalled = true;
+    bool RegisterDisplayItemCalled = false;
     DisplayItemInterface* RegisteredDisplayItem = nullptr;
 };
 

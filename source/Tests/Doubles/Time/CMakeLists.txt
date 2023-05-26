@@ -3,6 +3,8 @@ set(NAME Time.Doubles)
 enable_language(C CXX)
 
 set(SOURCES
+        BrewTimerSpy.cpp
+        BrewTimerSpy.h
         TimerIncrementCallbackSpy.cpp
         TimerIncrementCallbackSpy.h
 )
