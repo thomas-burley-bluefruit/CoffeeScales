@@ -18,5 +18,4 @@ target_link_libraries(${NAME} PUBLIC
         gtest_main)
 
 include(GoogleTest)
-# gtest_discover_tests(${NAME})
-add_test(${NAME} ${NAME})
+gtest_discover_tests(${NAME})

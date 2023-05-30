@@ -1,21 +1,26 @@
 #include "Instantiation.h"
-#include "gfx.h"
 #include "DisplayGpio.h"
+#include "gfx.h"
 
 using namespace ::coffeescales;
 using namespace ::drivers;
 using namespace ::halwrapper;
 using namespace ::terminal;
 
-Instantiation::Instantiation() : mTerminal(mUart), mHx711(mSystem),
-                                 mEeprom(mSpi),
-                                 mScalesMemoryItem(mEeprom),
-                                 mTareButton(buttons::Button::Tare, mTareButtonGpio, mSystem),
-                                 mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem,
-                                         mTareButton),
-                                 mScalesCommand(mScales, mTerminal),
-                                 mWeightDisplayItem(mUgfxWrapper, mScales, mTerminal),
-                                 mDisplayCommand(mTerminal, mWeightDisplayItem)
+Instantiation::Instantiation() :
+    mTerminal(mUart),
+    mHx711(mSystem),
+    mEeprom(mSpi),
+    mScalesMemoryItem(mEeprom),
+    mTareButton(buttons::Button::Tare, mTareButtonGpio, mSystem),
+    mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem, mTareButton),
+    mScalesCommand(mScales, mTerminal),
+    mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mSystem),
+    mBrewTimer(mSystem, mTimerButton),
+    mDisplayManager(mUgfxWrapper),
+    mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer),
+    mWeightDisplayItem(mDisplayManager, mUgfxWrapper, mScales, mTerminal),
+    mDisplayCommand(mTerminal, mWeightDisplayItem)
 {
 }
 
@@ -29,32 +34,30 @@ void Instantiation::Init()
     mTareButtonGpio.Init();
     mTareButton.Init();
     mScales.Init();
+    mTimerButtonGpio.Init();
+    mTimerButton.Init();
+    mBrewTimer.Init();
     DisplayGpio_Init();
     gfxInit();
-    mWeightDisplayItem.Init();
+    mDisplayManager.Init();
 }
 
-System &Instantiation::System()
-{
-    return mSystem;
-}
-
-Terminal &Instantiation::Terminal()
+Terminal& Instantiation::Terminal()
 {
     return mTerminal;
 }
 
-weight::Scales &Instantiation::Scales()
+weight::Scales& Instantiation::Scales()
 {
     return mScales;
 }
 
-drivers::HX711Driver &Instantiation::Hx711()
+time::BrewTimer& Instantiation::BrewTimer()
 {
-    return mHx711;
+    return mBrewTimer;
 }
 
-display::UgfxWrapper &Instantiation::UgfxWrapper()
+display::DisplayManager& Instantiation::DisplayManager()
 {
-    return mUgfxWrapper;
+    return mDisplayManager;
 }

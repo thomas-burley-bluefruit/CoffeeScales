@@ -3,10 +3,12 @@ set(NAME Display.Doubles)
 enable_language(C CXX)
 
 set(SOURCES
-        DisplaySpy.cpp
-        DisplaySpy.h
         DisplayItemSpy.cpp
-        DisplayItemSpy.h)
+        DisplayItemSpy.h
+        DisplayManagerSpy.cpp
+        DisplayManagerSpy.h
+        DisplaySpy.cpp
+        DisplaySpy.h)
 
 set(INCLUDES .)
 

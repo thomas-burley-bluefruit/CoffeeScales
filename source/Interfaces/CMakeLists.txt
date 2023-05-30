@@ -6,6 +6,7 @@ set(SOURCES
         ButtonGpioInterface.h
         DisplayInterface.h
         DisplayItemInterface.h
+        DisplayManagerInterface.h
         GpioInterface.h
         ExternalInterruptCallbackInterface.h
         PersistentMemoryInterface.h
@@ -14,6 +15,7 @@ set(SOURCES
         SystemInterface.h
         TerminalCallbackInterface.h
         TerminalInterface.h
+        TimerIncrementCallbackInterface.h
         TimeInterface.h
         UartInterface.h)
 

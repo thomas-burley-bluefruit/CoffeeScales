@@ -22,6 +22,8 @@ set(SOURCES
         System.h
         TareButtonGpio.cpp
         TareButtonGpio.h
+        TimerButtonGpio.cpp
+        TimerButtonGpio.h
         Uart.cpp
         Uart.h
         )
