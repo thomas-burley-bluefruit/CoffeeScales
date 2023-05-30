@@ -15,6 +15,7 @@ set(SOURCES
         SystemInterface.h
         TerminalCallbackInterface.h
         TerminalInterface.h
+        TimerAutoStartCallbackInterface.h
         TimerIncrementCallbackInterface.h
         TimeInterface.h
         UartInterface.h)

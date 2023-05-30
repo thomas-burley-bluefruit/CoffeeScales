@@ -1,7 +1,8 @@
 set(NAME Tests.Time)
 
 set(SOURCES
-        tests.BrewTimer.cpp)
+        tests.BrewTimer.cpp
+        tests.TimerAutoStart.cpp)
 
 set(INCLUDES .)
 
@@ -12,6 +13,7 @@ target_link_libraries(${NAME} PUBLIC
         HalWrapper.Doubles
         Time
         Time.Doubles
+        Weight.Doubles
         gtest_main)
 
 include(GoogleTest)

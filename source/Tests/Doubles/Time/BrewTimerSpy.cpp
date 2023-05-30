@@ -3,7 +3,10 @@
 namespace coffeescales::time
 {
 
-void BrewTimerSpy::Start() {}
+void BrewTimerSpy::Start()
+{
+    StartCalled = true;
+}
 
 void BrewTimerSpy::Reset() {}
 

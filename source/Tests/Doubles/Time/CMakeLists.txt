@@ -5,6 +5,8 @@ enable_language(C CXX)
 set(SOURCES
         BrewTimerSpy.cpp
         BrewTimerSpy.h
+        TimerAutoStartCallbackSpy.cpp
+        TimerAutoStartCallbackSpy.h
         TimerIncrementCallbackSpy.cpp
         TimerIncrementCallbackSpy.h
 )

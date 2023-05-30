@@ -3,7 +3,9 @@ enable_language(C CXX)
 
 set(SOURCES
         BrewTimer.cpp
-        BrewTimer.h)
+        BrewTimer.h
+        TimerAutoStart.cpp
+        TimerAutoStart.h)
 
 set(INCLUDES .)
 
@@ -15,4 +17,5 @@ target_include_directories(${NAME} PUBLIC ${INCLUDES})
 target_link_libraries(${NAME} PUBLIC
         Interfaces
         Terminal
-        Types)
+        Types
+        Weight)
