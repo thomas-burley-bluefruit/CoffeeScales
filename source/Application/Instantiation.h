@@ -15,6 +15,7 @@
 #include "TareButtonGpio.h"
 #include "Terminal.h"
 #include "TimeDisplayItem.h"
+#include "TimerButtonGpio.h"
 #include "Uart.h"
 #include "UgfxWrapper.h"
 #include "WeightDisplayItem.h"
@@ -29,6 +30,7 @@ class Instantiation
     void Init();
     terminal::Terminal& Terminal();
     weight::Scales& Scales();
+    time::BrewTimer& BrewTimer();
     display::DisplayManager& DisplayManager();
 
   private:
@@ -44,6 +46,8 @@ class Instantiation
     drivers::ButtonDriver mTareButton;
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
+    halwrapper::TimerButtonGpio mTimerButtonGpio;
+    drivers::ButtonDriver mTimerButton;
     time::BrewTimer mBrewTimer;
     display::UgfxWrapper mUgfxWrapper;
     display::DisplayManager mDisplayManager;

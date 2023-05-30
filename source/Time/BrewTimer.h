@@ -4,19 +4,29 @@
 #include <cstddef>
 
 #include "BrewTimerInterface.h"
+#include "ButtonDriverInterface.h"
+#include "ButtonPressCallbackInterface.h"
 #include "SystemInterface.h"
+#include "TerminalInterface.h"
 
 namespace coffeescales::time
 {
 
-class BrewTimer : public BrewTimerInterface
+class BrewTimer : public BrewTimerInterface, public drivers::ButtonPressCallbackInterface
 {
   public:
-    BrewTimer(halwrapper::SystemInterface& system);
+    BrewTimer(halwrapper::SystemInterface& system, drivers::ButtonDriverInterface& timerButton);
+
+    void Init();
+
+    // BrewTimerInterface
     void Task();
     void Start();
     void Reset();
     bool RegisterCallback(TimerIncrementCallbackInterface* callback);
+
+    // ButtonPressCallbackInterface
+    void OnButtonPress(drivers::buttons::Button button);
 
   protected:
     static constexpr size_t MaxCallbacks = 32;
@@ -28,7 +38,10 @@ class BrewTimer : public BrewTimerInterface
 
   private:
     halwrapper::SystemInterface& mSystem;
+    drivers::ButtonDriverInterface& mTimerButton;
     bool mRunning = false;
+    bool mStartRequested = false;
+    bool mResetRequested = false;
     uint32_t mStartTick = 0;
     uint32_t mMinutes = 0;
     uint32_t mSeconds = 0;

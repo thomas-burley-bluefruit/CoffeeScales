@@ -15,7 +15,8 @@ Instantiation::Instantiation() :
     mTareButton(buttons::Button::Tare, mTareButtonGpio, mSystem),
     mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem, mTareButton),
     mScalesCommand(mScales, mTerminal),
-    mBrewTimer(mSystem),
+    mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mSystem),
+    mBrewTimer(mSystem, mTimerButton),
     mDisplayManager(mUgfxWrapper),
     mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer),
     mWeightDisplayItem(mDisplayManager, mUgfxWrapper, mScales, mTerminal),
@@ -33,6 +34,9 @@ void Instantiation::Init()
     mTareButtonGpio.Init();
     mTareButton.Init();
     mScales.Init();
+    mTimerButtonGpio.Init();
+    mTimerButton.Init();
+    mBrewTimer.Init();
     DisplayGpio_Init();
     gfxInit();
     mDisplayManager.Init();
@@ -46,6 +50,11 @@ Terminal& Instantiation::Terminal()
 weight::Scales& Instantiation::Scales()
 {
     return mScales;
+}
+
+time::BrewTimer& Instantiation::BrewTimer()
+{
+    return mBrewTimer;
 }
 
 display::DisplayManager& Instantiation::DisplayManager()

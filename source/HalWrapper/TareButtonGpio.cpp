@@ -4,10 +4,10 @@
 using namespace ::coffeescales::halwrapper;
 
 static constexpr uint32_t TareButtonPin = GPIO_PIN_0;
-static GPIO_TypeDef *TareButtonGpioPort = GPIOA;
+static GPIO_TypeDef* TareButtonGpioPort = GPIOA;
 static constexpr IRQn_Type TareButtonExtiIrqn = EXTI0_IRQn;
 
-ExternalInterruptCallbackInterface *mCallback = nullptr;
+static ExternalInterruptCallbackInterface* mCallback = nullptr;
 
 void TareButtonGpio::Init()
 {
@@ -21,7 +21,7 @@ void TareButtonGpio::Init()
     HAL_NVIC_EnableIRQ(TareButtonExtiIrqn);
 }
 
-void TareButtonGpio::RegisterCallback(ExternalInterruptCallbackInterface *callback)
+void TareButtonGpio::RegisterCallback(ExternalInterruptCallbackInterface* callback)
 {
     mCallback = callback;
 }

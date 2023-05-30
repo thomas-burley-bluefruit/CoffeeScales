@@ -2,14 +2,27 @@
 
 using namespace coffeescales::time;
 
-BrewTimer::BrewTimer(halwrapper::SystemInterface& system) :
-    mSystem(system)
+BrewTimer::BrewTimer(halwrapper::SystemInterface& system,
+    drivers::ButtonDriverInterface& timerButton) :
+    mSystem(system),
+    mTimerButton(timerButton)
 {
     mCallbacks.fill(nullptr);
 }
 
+void BrewTimer::Init()
+{
+    mTimerButton.RegisterCallback(this);
+}
+
 void BrewTimer::Task()
 {
+    if (mStartRequested)
+        Start();
+
+    if (mResetRequested)
+        Reset();
+
     if (!mRunning)
         return;
 
@@ -28,12 +41,14 @@ void BrewTimer::Task()
 
 void BrewTimer::Start()
 {
+    mStartRequested = false;
     mRunning = true;
     mStartTick = mSystem.GetTick();
 }
 
 void BrewTimer::Reset()
 {
+    mResetRequested = false;
     mRunning = false;
     mMinutes = 0;
     mSeconds = 0;
@@ -56,5 +71,17 @@ void BrewTimer::UpdateSubscribers()
         if (mCallbacks[i] == nullptr)
             break;
         mCallbacks[i]->TimeUpdate(mMinutes, mSeconds);
+    }
+}
+
+void BrewTimer::OnButtonPress(drivers::buttons::Button button)
+{
+    if (mRunning)
+    {
+        mResetRequested = true;
+    }
+    else
+    {
+        mStartRequested = true;
     }
 }

@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "BrewTimer.h"
+#include "ButtonDriverSpy.h"
 #include "SystemMock.h"
 #include "TimerIncrementCallbackSpy.h"
 
@@ -10,8 +11,9 @@ using namespace ::coffeescales::time;
 class BrewTimerTestObject : public BrewTimer
 {
   public:
-    BrewTimerTestObject(halwrapper::SystemInterface& system) :
-        BrewTimer(system)
+    BrewTimerTestObject(halwrapper::SystemInterface& system,
+        drivers::ButtonDriverInterface& timerButton) :
+        BrewTimer(system, timerButton)
     {
     }
 
@@ -24,13 +26,14 @@ class BrewTimerTests : public testing::Test
 {
   public:
     BrewTimerTests() :
-        mBrewTimer(mSystem)
+        mBrewTimer(mSystem, mTimerButton)
     {
     }
 
   protected:
     TimerIncrementCallbackSpy mCallback;
     halwrapper::SystemMock mSystem;
+    drivers::ButtonDriverSpy mTimerButton;
     BrewTimerTestObject mBrewTimer;
 
   protected:
@@ -44,6 +47,16 @@ class BrewTimerTests : public testing::Test
         ASSERT_EQ(mCallback.LastSeconds, expectedSecs);
     }
 };
+
+TEST_F(BrewTimerTests, Init_registers_with_button_driver)
+{
+    // Given, when
+    mBrewTimer.Init();
+
+    // Then
+    ASSERT_TRUE(mTimerButton.RegisterCallbackCalled);
+    ASSERT_EQ(&mBrewTimer, mTimerButton.Callback);
+}
 
 TEST_F(BrewTimerTests, Can_register_callback)
 {
@@ -157,4 +170,43 @@ TEST_F(BrewTimerTests, Ticks_are_converted_to_time_correctly)
     AssertTimeForTicks(61000, 1, 1);
     AssertTimeForTicks(59999, 0, 59);
     AssertTimeForTicks(119999, 1, 59);
+}
+
+TEST_F(BrewTimerTests, Task_after_timer_button_press_when_stopped_starts_timer)
+{
+    // Given
+    mBrewTimer.RegisterCallback(&mCallback);
+    mBrewTimer.OnButtonPress(drivers::buttons::Button::Timer);
+
+    // When
+    mBrewTimer.Task();
+    mSystem.SysTick += 1000;
+    mBrewTimer.Task();
+
+    // Then
+    ASSERT_EQ(1, mCallback.CallCount);
+    ASSERT_EQ(0, mCallback.LastMinutes);
+    ASSERT_EQ(1, mCallback.LastSeconds);
+}
+
+TEST_F(BrewTimerTests, Task_after_timer_button_press_when_running_resets_timer)
+{
+    // Given: timer started, callback fired once
+    mBrewTimer.RegisterCallback(&mCallback);
+    mBrewTimer.Start();
+    mSystem.SysTick += 1000;
+    mBrewTimer.Task();
+    ASSERT_EQ(1, mCallback.CallCount);
+    mCallback.CallCount = 0;
+
+    // When
+    mBrewTimer.OnButtonPress(drivers::buttons::Button::Timer);
+    mBrewTimer.Task();
+    mSystem.SysTick += 1000;
+    mBrewTimer.Task();
+
+    // Then
+    ASSERT_EQ(1, mCallback.CallCount);
+    ASSERT_EQ(0, mCallback.LastMinutes);
+    ASSERT_EQ(0, mCallback.LastSeconds);
 }

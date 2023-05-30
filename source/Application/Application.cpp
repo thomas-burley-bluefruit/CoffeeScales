@@ -16,6 +16,7 @@ void Application::Init()
     {
         mInstantiation.Terminal().Task();
         mInstantiation.Scales().Task();
+        mInstantiation.BrewTimer().Task();
         mInstantiation.DisplayManager().Task();
     }
 }

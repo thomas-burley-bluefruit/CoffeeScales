@@ -1,8 +1,8 @@
-#include "gtest/gtest.h"
 #include "ButtonDriver.h"
 #include "ButtonGpioSpy.h"
 #include "ButtonPressCallbackSpy.h"
 #include "SystemMock.h"
+#include "gtest/gtest.h"
 
 using namespace ::coffeescales::drivers;
 using namespace ::coffeescales::halwrapper;
@@ -10,11 +10,13 @@ using ::std::vector;
 
 class ButtonDriverTests : public testing::Test
 {
-public:
-    ButtonDriverTests() : mButtonDriver(mButton, mButtonGpio, mSystem)
-    {}
+  public:
+    ButtonDriverTests() :
+        mButtonDriver(mButton, mButtonGpio, mSystem)
+    {
+    }
 
-protected:
+  protected:
     static constexpr buttons::Button mButton = buttons::Button::Tare;
     ButtonGpioSpy mButtonGpio;
     SystemMock mSystem;
@@ -75,4 +77,25 @@ TEST_F(ButtonDriverTests, Button_is_debounced)
     // Then
     mButtonDriver.OnExternalInterrupt();
     ASSERT_TRUE(callbackSpy.OnButtonPressCalled);
+}
+
+TEST_F(ButtonDriverTests, Triple_press_is_handled)
+{
+    // Given
+    ButtonPressCallbackSpy callbackSpy;
+    mButtonDriver.RegisterCallback(&callbackSpy);
+
+    const auto minimumIntervalMs = buttons::MinimumIntervalMs(mButton);
+    mSystem.SysTick = minimumIntervalMs;
+
+    mButtonDriver.OnExternalInterrupt();
+    ASSERT_TRUE(callbackSpy.OnButtonPressCalled);
+
+    // When
+    callbackSpy.Reset();
+    mButtonDriver.OnExternalInterrupt();
+    mButtonDriver.OnExternalInterrupt();
+
+    // Then
+    ASSERT_FALSE(callbackSpy.OnButtonPressCalled);
 }

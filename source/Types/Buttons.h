@@ -8,16 +8,18 @@ namespace coffeescales::drivers::buttons
 enum class Button
 {
     Tare = 0,
-    Count = 1
+    Timer = 1,
+    Count = 2
 };
 
 static constexpr size_t MinimumIntervalMs(Button button)
 {
     switch (button)
     {
-        case Button::Tare:
-        default:
-            return 100;
+    case Button::Tare:
+    case Button::Timer:
+    default:
+        return 150;
     }
 }
 
