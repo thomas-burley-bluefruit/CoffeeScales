@@ -9,6 +9,8 @@ set(SOURCES
         TimerAutoStartCallbackSpy.h
         TimerIncrementCallbackSpy.cpp
         TimerIncrementCallbackSpy.h
+        TimerAutoStartSpy.cpp
+        TimerAutoStartSpy.h
 )
 
 set(INCLUDES .)

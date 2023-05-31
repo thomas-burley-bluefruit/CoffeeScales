@@ -5,7 +5,10 @@ set(SOURCES
         BrewTimer.cpp
         BrewTimer.h
         TimerAutoStart.cpp
-        TimerAutoStart.h)
+        TimerAutoStart.h
+        TimeCommand.cpp
+        TimeCommand.h
+        TimeTerminalCommands.h)
 
 set(INCLUDES .)
 
