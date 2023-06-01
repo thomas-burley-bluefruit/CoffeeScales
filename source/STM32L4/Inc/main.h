@@ -59,7 +59,6 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define TARE_BUTTON_Pin GPIO_PIN_0
 #define TARE_BUTTON_GPIO_Port GPIOA
-#define TARE_BUTTON_EXTI_IRQn EXTI0_IRQn
 #define VCP_TX_Pin GPIO_PIN_2
 #define VCP_TX_GPIO_Port GPIOA
 #define HX711_DOUT_Pin GPIO_PIN_3
@@ -74,9 +73,8 @@ void Error_Handler(void);
 #define SWCLK_GPIO_Port GPIOA
 #define VCP_RX_Pin GPIO_PIN_15
 #define VCP_RX_GPIO_Port GPIOA
-#define TARE_BUTTONB4_Pin GPIO_PIN_4
-#define TARE_BUTTONB4_GPIO_Port GPIOB
-#define TARE_BUTTONB4_EXTI_IRQn EXTI4_IRQn
+#define TIMER_BUTTON_Pin GPIO_PIN_4
+#define TIMER_BUTTON_GPIO_Port GPIOB
 #define DISPLAY_RESET_Pin GPIO_PIN_6
 #define DISPLAY_RESET_GPIO_Port GPIOB
 #define DISPLAY_DC_Pin GPIO_PIN_7
