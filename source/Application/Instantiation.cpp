@@ -17,8 +17,10 @@ Instantiation::Instantiation() :
     mScalesCommand(mScales, mTerminal),
     mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mSystem),
     mBrewTimer(mSystem, mTimerButton),
+    mTimerAutoStart(mBrewTimer, mScales),
+    mTimeCommand(mTimerAutoStart, mTerminal),
     mDisplayManager(mUgfxWrapper),
-    mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer),
+    mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer, mTimerAutoStart),
     mWeightDisplayItem(mDisplayManager, mUgfxWrapper, mScales, mTerminal),
     mDisplayCommand(mTerminal, mWeightDisplayItem)
 {

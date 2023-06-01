@@ -14,7 +14,9 @@
 #include "System.h"
 #include "TareButtonGpio.h"
 #include "Terminal.h"
+#include "TimeCommand.h"
 #include "TimeDisplayItem.h"
+#include "TimerAutoStart.h"
 #include "TimerButtonGpio.h"
 #include "Uart.h"
 #include "UgfxWrapper.h"
@@ -49,6 +51,8 @@ class Instantiation
     halwrapper::TimerButtonGpio mTimerButtonGpio;
     drivers::ButtonDriver mTimerButton;
     time::BrewTimer mBrewTimer;
+    time::TimerAutoStart mTimerAutoStart;
+    time::TimeCommand mTimeCommand;
     display::UgfxWrapper mUgfxWrapper;
     display::DisplayManager mDisplayManager;
     display::TimeDisplayItem mTimeDisplayItem;

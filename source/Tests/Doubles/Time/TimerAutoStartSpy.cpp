@@ -7,4 +7,8 @@ void TimerAutoStartSpy::Enable()
     EnableCalled = true;
 }
 
-void TimerAutoStartSpy::RegisterCallback(TimerAutoStartCallbackInterface* callback) {}
+void TimerAutoStartSpy::RegisterCallback(TimerAutoStartCallbackInterface* callback)
+{
+    RegisterCallbackCalled = true;
+    RegisteredCallback = callback;
+}

@@ -21,7 +21,7 @@ class TimerAutoStart : public TimerAutoStartInterface, public weight::WeightRead
     // WeightReadingCallbackInterface
     void NewWeightReadingMg(int32_t weightMg) override;
 
-    static constexpr uint32_t ThresholdMg = 150;
+    static constexpr int32_t ThresholdMg = 150;
 
   private:
     BrewTimerInterface& mBrewTimer;

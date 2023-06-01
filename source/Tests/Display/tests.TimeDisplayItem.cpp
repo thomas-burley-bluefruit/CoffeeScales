@@ -2,6 +2,7 @@
 #include "DisplayManagerSpy.h"
 #include "DisplaySpy.h"
 #include "TimeDisplayItem.h"
+#include "TimerAutoStartSpy.h"
 #include "gtest/gtest.h"
 
 using namespace ::coffeescales;
@@ -10,7 +11,7 @@ class TimeDisplayItemTests : public testing::Test
 {
   public:
     TimeDisplayItemTests() :
-        mTimeDisplayItem(mDisplayManager, mDisplay, mBrewTimer)
+        mTimeDisplayItem(mDisplayManager, mDisplay, mBrewTimer, mTimerAutoStart)
     {
     }
 
@@ -21,12 +22,13 @@ class TimeDisplayItemTests : public testing::Test
         mTimeDisplayItem.Update(redrawRequired);
         ASSERT_TRUE(redrawRequired);
         ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-        ASSERT_STREQ(mDisplay.StringBuffer, expectedString);
+        ASSERT_STREQ(mDisplay.TextsDisplayed.back().c_str(), expectedString);
     }
 
-    time::BrewTimerSpy mBrewTimer;
     display::DisplayManagerSpy mDisplayManager;
     display::DisplaySpy mDisplay;
+    time::BrewTimerSpy mBrewTimer;
+    time::TimerAutoStartSpy mTimerAutoStart;
     display::TimeDisplayItem mTimeDisplayItem;
 };
 
@@ -50,6 +52,16 @@ TEST_F(TimeDisplayItemTests, init_registers_callback_with_brew_timer)
     ASSERT_EQ(mBrewTimer.RegisteredCallback, &mTimeDisplayItem);
 }
 
+TEST_F(TimeDisplayItemTests, init_registers_callback_with_timer_auto_start)
+{
+    // Given, when
+    mTimeDisplayItem.Init();
+
+    // Then
+    ASSERT_TRUE(mTimerAutoStart.RegisterCallbackCalled);
+    ASSERT_EQ(mTimerAutoStart.RegisteredCallback, &mTimeDisplayItem);
+}
+
 TEST_F(TimeDisplayItemTests, update_after_init_draws_zeroed_timer)
 {
     // Given
@@ -63,7 +75,7 @@ TEST_F(TimeDisplayItemTests, update_after_init_draws_zeroed_timer)
     // Then
     ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-    ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
+    ASSERT_STREQ(mDisplay.TextsDisplayed[0].c_str(), expectedText);
 }
 
 TEST_F(TimeDisplayItemTests, display_cleared_and_new_time_shown_on_update_after_time_update)
@@ -81,12 +93,12 @@ TEST_F(TimeDisplayItemTests, display_cleared_and_new_time_shown_on_update_after_
     // Then
     ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-    ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
+    ASSERT_STREQ(mDisplay.TextsDisplayed[0].c_str(), expectedText);
     ASSERT_TRUE(mDisplay.ClearAreaCalled);
-    ASSERT_EQ(mDisplay.ClearAreaX, mTimeDisplayItem.LocationX);
-    ASSERT_EQ(mDisplay.ClearAreaY, mTimeDisplayItem.LocationY);
-    ASSERT_EQ(mDisplay.ClearAreaWidth, mTimeDisplayItem.WidthPx);
-    ASSERT_EQ(mDisplay.ClearAreaHeight, mTimeDisplayItem.HeightPx);
+    ASSERT_EQ(mDisplay.ClearAreaX, mTimeDisplayItem.TimerLocationX);
+    ASSERT_EQ(mDisplay.ClearAreaY, mTimeDisplayItem.TimerLocationY);
+    ASSERT_EQ(mDisplay.ClearAreaWidth, mTimeDisplayItem.TimerWidthPx);
+    ASSERT_EQ(mDisplay.ClearAreaHeight, mTimeDisplayItem.TimerHeightPx);
 }
 
 TEST_F(TimeDisplayItemTests, Time_is_formatted_correctly)
@@ -95,4 +107,39 @@ TEST_F(TimeDisplayItemTests, Time_is_formatted_correctly)
     AssertFormatForTime(1, 1, "1:01");
     AssertFormatForTime(1, 0, "1:00");
     AssertFormatForTime(10, 1, "10:01");
+}
+
+TEST_F(TimeDisplayItemTests, Update_after_auto_enabled_draws_auto_label)
+{
+    // Given
+    mTimeDisplayItem.TimerAutoStartEnabled(true);
+
+    // When
+    bool redrawRequired = false;
+    mTimeDisplayItem.Update(redrawRequired);
+
+    // Then
+    ASSERT_TRUE(redrawRequired);
+    ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
+    ASSERT_STREQ(mDisplay.TextsDisplayed.back().c_str(), "AUTO");
+    ASSERT_TRUE(mDisplay.ClearAreaCalled);
+    ASSERT_EQ(mDisplay.ClearAreaX, mTimeDisplayItem.TimerLocationX);
+    ASSERT_EQ(mDisplay.ClearAreaY, mTimeDisplayItem.TimerLocationY);
+    ASSERT_EQ(mDisplay.ClearAreaWidth, mTimeDisplayItem.TimerWidthPx);
+    ASSERT_EQ(mDisplay.ClearAreaHeight, mTimeDisplayItem.TimerHeightPx);
+}
+
+TEST_F(TimeDisplayItemTests, Update_after_auto_disabled_redraws_without_label)
+{
+    // Given
+    mTimeDisplayItem.TimerAutoStartEnabled(false);
+
+    // When
+    bool redrawRequired = false;
+    mTimeDisplayItem.Update(redrawRequired);
+
+    // Then
+    ASSERT_TRUE(redrawRequired);
+    ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
+    ASSERT_STRNE(mDisplay.TextsDisplayed.back().c_str(), "AUTO");
 }

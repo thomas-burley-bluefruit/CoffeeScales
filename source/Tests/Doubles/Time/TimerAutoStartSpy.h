@@ -12,6 +12,9 @@ class TimerAutoStartSpy : public TimerAutoStartInterface
     void RegisterCallback(TimerAutoStartCallbackInterface* callback) override;
 
     bool EnableCalled = false;
+
+    bool RegisterCallbackCalled = false;
+    TimerAutoStartCallbackInterface* RegisteredCallback = nullptr;
 };
 
 }

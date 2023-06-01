@@ -6,11 +6,14 @@
 
 using namespace ::coffeescales::display;
 
+static const char* AutoLabel = "AUTO";
+
 TimeDisplayItem::TimeDisplayItem(DisplayManagerInterface& displayManager, DisplayInterface& display,
-    time::BrewTimerInterface& brewTimer) :
+    time::BrewTimerInterface& brewTimer, time::TimerAutoStartInterface& timerAutoStart) :
     mDisplayManager(displayManager),
     mDisplay(display),
-    mBrewTimer(brewTimer)
+    mBrewTimer(brewTimer),
+    mTimerAutoStart(timerAutoStart)
 {
     mDisplayManager.RegisterDisplayItem(this);
 }
@@ -18,6 +21,7 @@ TimeDisplayItem::TimeDisplayItem(DisplayManagerInterface& displayManager, Displa
 void TimeDisplayItem::Init()
 {
     mBrewTimer.RegisterCallback(this);
+    mTimerAutoStart.RegisterCallback(this);
     LoadPrintBuffer();
     mRedrawRequired = true;
 }
@@ -30,6 +34,12 @@ void TimeDisplayItem::TimeUpdate(uint32_t minutes, uint32_t seconds)
     mRedrawRequired = true;
 }
 
+void TimeDisplayItem::TimerAutoStartEnabled(bool enabled)
+{
+    mTimerAutoStartEnabled = enabled;
+    mRedrawRequired = true;
+}
+
 void TimeDisplayItem::LoadPrintBuffer()
 {
     snprintf(mPrintBuffer, PrintBufferSize, "%li:%02li", mDisplayMinutes, mDisplaySeconds);
@@ -37,8 +47,15 @@ void TimeDisplayItem::LoadPrintBuffer()
 
 void TimeDisplayItem::DisplayString()
 {
-    mDisplay.ClearArea(LocationX, LocationY, WidthPx, HeightPx);
-    mDisplay.DisplayTextBox(LocationX, LocationY, WidthPx, HeightPx, mPrintBuffer, Justify::Center);
+    mDisplay.ClearArea(TimerLocationX, TimerLocationY, TimerWidthPx, TimerHeightPx);
+    mDisplay.DisplayTextBox(TimerLocationX, TimerLocationY, TimerWidthPx, TimerHeightPx,
+        mPrintBuffer, Justify::Center);
+
+    if (mTimerAutoStartEnabled)
+    {
+        mDisplay.DisplayTextBox(AutoStatusLocationX, AutoStatusLocationY, AutoStatusWidthPx,
+            AutoStatusHeightPx, AutoLabel, Justify::Center, FontSize::Small);
+    }
 }
 
 void TimeDisplayItem::Update(bool& redrawRequired)
