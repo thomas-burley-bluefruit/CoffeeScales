@@ -3,10 +3,10 @@ enable_language(C CXX)
 
 set(SOURCES
         AdcDriverInterface.h
-        ButtonGpioInterface.h
         DisplayInterface.h
         DisplayItemInterface.h
         DisplayManagerInterface.h
+        ExternalInterruptCallbackRegisterableInterface.h
         GpioInterface.h
         ExternalInterruptCallbackInterface.h
         PersistentMemoryInterface.h

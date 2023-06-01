@@ -2,8 +2,9 @@ set(NAME HalWrapper)
 enable_language(C CXX)
 
 set(SOURCES
-        Time.cpp
-        Time.h
+        ButtonGpio.cpp
+        ButtonGpio.h
+        ButtonMapping.h
         DelayTimer.cpp
         DelayTimer.h
         DisplayGpio.cpp
@@ -16,14 +17,14 @@ set(SOURCES
         HalMsp.h
         HX711Gpio.cpp
         HX711Gpio.h
+        InterruptTimerGpio.cpp
+        InterruptTimerGpio.h
         Spi.cpp
         Spi.h
         System.cpp
         System.h
-        TareButtonGpio.cpp
-        TareButtonGpio.h
-        TimerButtonGpio.cpp
-        TimerButtonGpio.h
+        Time.cpp
+        Time.h
         Uart.cpp
         Uart.h
         )
