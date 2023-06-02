@@ -2,11 +2,12 @@
 
 using namespace coffeescales::time;
 
-TimerAutoStart::TimerAutoStart(BrewTimerInterface& brewTimer, weight::ScalesInterface& scales) :
-    mBrewTimer(brewTimer),
-    mScales(scales)
+TimerAutoStart::TimerAutoStart(BrewTimerInterface& brewTimer, weight::ScalesInterface& scales,
+    drivers::ButtonDriverInterface& timerButton) :
+    mBrewTimer(brewTimer)
 {
-    mScales.RegisterCallback(this);
+    scales.RegisterCallback(this);
+    timerButton.RegisterCallback(this);
 }
 
 void TimerAutoStart::Enable()
@@ -28,16 +29,38 @@ void TimerAutoStart::RegisterCallback(TimerAutoStartCallbackInterface* callback)
 void TimerAutoStart::NewWeightReadingMg(int32_t weightMg)
 {
     mLastWeightReadingMg = weightMg;
-    const int32_t thresholdWeightMg = mLastWeightReadingMg - mReferenceWeightMg;
 
-    if (mEnabled && thresholdWeightMg > ThresholdMg)
+    if (!mEnabled)
     {
-        mBrewTimer.Start();
-        mEnabled = false;
+        return;
     }
+
+    const int32_t thresholdWeightMg = mLastWeightReadingMg - mReferenceWeightMg;
+    if (thresholdWeightMg <= ThresholdMg)
+    {
+        return;
+    }
+
+    mBrewTimer.Start();
+    mEnabled = false;
 
     if (mCallback != nullptr)
     {
         mCallback->TimerAutoStartEnabled(mEnabled);
     }
+}
+
+void TimerAutoStart::OnButtonPress(const drivers::buttons::Button button, const uint32_t tickMs)
+{
+    if (button != drivers::buttons::Button::Timer)
+    {
+        return;
+    }
+
+    if ((tickMs - mLastButtonPressTickMs) < DoubleClickWindowMs)
+    {
+        Enable();
+    }
+
+    mLastButtonPressTickMs = tickMs;
 }

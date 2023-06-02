@@ -20,7 +20,7 @@ Instantiation::Instantiation() :
     mTimerButtonGpio(TimerButtonGpioPort, TimerButtonPin),
     mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mInterruptTimerGpio, mTime),
     mBrewTimer(mSystem, mTimerButton),
-    mTimerAutoStart(mBrewTimer, mScales),
+    mTimerAutoStart(mBrewTimer, mScales, mTimerButton),
     mTimeCommand(mTimerAutoStart, mTerminal),
     mDisplayManager(mUgfxWrapper),
     mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer, mTimerAutoStart),
