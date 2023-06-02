@@ -13,6 +13,7 @@ class BrewTimerSpy : public BrewTimerInterface
     bool RegisterCallback(TimerIncrementCallbackInterface* callback) override;
 
     bool StartCalled = false;
+    bool ResetCalled = false;
 
     bool RegisterCallbackCalled = false;
     TimerIncrementCallbackInterface* RegisteredCallback = nullptr;

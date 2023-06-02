@@ -211,3 +211,12 @@ TEST_F(TimerAutoStartTests, single_click_of_timer_button_does_not_enable_auto)
     // Then
     ASSERT_FALSE(mBrewTimer.StartCalled);
 }
+
+TEST_F(TimerAutoStartTests, enable_resets_brew_timer)
+{
+    // Given, when
+    mTimerAutoStart.Enable();
+
+    // Then
+    ASSERT_TRUE(mBrewTimer.ResetCalled);
+}

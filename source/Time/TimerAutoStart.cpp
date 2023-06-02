@@ -14,6 +14,7 @@ void TimerAutoStart::Enable()
 {
     mEnabled = true;
     mReferenceWeightMg = mLastWeightReadingMg;
+    mBrewTimer.Reset();
 
     if (mCallback != nullptr)
     {

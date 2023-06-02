@@ -40,7 +40,9 @@ class BrewTimerTests : public testing::Test
     void AssertTimeForTicks(uint32_t ticks, uint32_t expectedMins, uint32_t expectedSecs)
     {
         mBrewTimer.Reset();
+        mBrewTimer.Task();
         mBrewTimer.Start();
+        mBrewTimer.Task();
         mSystem.SysTick += ticks;
         mBrewTimer.Task();
         ASSERT_EQ(mCallback.LastMinutes, expectedMins);
@@ -127,12 +129,14 @@ TEST_F(BrewTimerTests, Reset_stops_timer)
     // Given: timer started, callback fired once
     mBrewTimer.RegisterCallback(&mCallback);
     mBrewTimer.Start();
+    mBrewTimer.Task();
     mSystem.SysTick += 1000;
     mBrewTimer.Task();
     ASSERT_EQ(1, mCallback.CallCount);
 
     // When
     mBrewTimer.Reset();
+    mBrewTimer.Task();
     mCallback.CallCount = 0;
     mSystem.SysTick += 1000;
     mBrewTimer.Task();
@@ -146,6 +150,7 @@ TEST_F(BrewTimerTests, Reset_updates_subscribers_with_0_min_0_sec)
     // Given
     mBrewTimer.RegisterCallback(&mCallback);
     mBrewTimer.Start();
+    mBrewTimer.Task();
     mSystem.SysTick += 1000;
     mBrewTimer.Task();
     ASSERT_EQ(1, mCallback.CallCount);
@@ -154,6 +159,7 @@ TEST_F(BrewTimerTests, Reset_updates_subscribers_with_0_min_0_sec)
 
     // When
     mBrewTimer.Reset();
+    mBrewTimer.Task();
 
     // Then
     ASSERT_EQ(2, mCallback.CallCount);
@@ -193,15 +199,20 @@ TEST_F(BrewTimerTests, Task_after_timer_button_press_when_running_resets_timer)
 {
     // Given: timer started, callback fired once
     mBrewTimer.RegisterCallback(&mCallback);
+
     mBrewTimer.Start();
+    mBrewTimer.Task();
+
     mSystem.SysTick += 1000;
     mBrewTimer.Task();
+
     ASSERT_EQ(1, mCallback.CallCount);
     mCallback.CallCount = 0;
 
     // When
     mBrewTimer.OnButtonPress(drivers::buttons::Button::Timer);
     mBrewTimer.Task();
+
     mSystem.SysTick += 1000;
     mBrewTimer.Task();
 
