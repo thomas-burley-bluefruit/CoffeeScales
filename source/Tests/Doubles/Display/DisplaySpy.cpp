@@ -10,7 +10,7 @@ void DisplaySpy::Redraw() const
 }
 
 void DisplaySpy::DisplayTextBox(int16_t x, int16_t y, int16_t boxWidth, int16_t boxHeight,
-    const char* string, Justify justify)
+    const char* string, Justify justify, FontSize fontSize)
 {
     DisplayTextBoxCalled = true;
     DisplayTextBoxX = x;
@@ -19,7 +19,7 @@ void DisplaySpy::DisplayTextBox(int16_t x, int16_t y, int16_t boxWidth, int16_t 
     DisplayTextBoxHeight = boxHeight;
     DisplayTextBoxJustify = justify;
 
-    strncpy_s(StringBuffer, StringBufferSize, string, StringBufferSize);
+    TextsDisplayed.push_back(string);
 }
 
 size_t DisplaySpy::DisplayHeight() const

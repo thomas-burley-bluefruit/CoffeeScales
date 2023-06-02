@@ -3,9 +3,15 @@
 namespace coffeescales::time
 {
 
-void BrewTimerSpy::Start() {}
+void BrewTimerSpy::Start()
+{
+    StartCalled = true;
+}
 
-void BrewTimerSpy::Reset() {}
+void BrewTimerSpy::Reset()
+{
+    ResetCalled = true;
+}
 
 bool BrewTimerSpy::RegisterCallback(TimerIncrementCallbackInterface* callback)
 {

@@ -1,4 +1,5 @@
 #include "Instantiation.h"
+#include "ButtonMapping.h"
 #include "DisplayGpio.h"
 #include "gfx.h"
 
@@ -12,13 +13,17 @@ Instantiation::Instantiation() :
     mHx711(mSystem),
     mEeprom(mSpi),
     mScalesMemoryItem(mEeprom),
-    mTareButton(buttons::Button::Tare, mTareButtonGpio, mSystem),
+    mTareButtonGpio(TareButtonGpioPort, TareButtonPin),
+    mTareButton(buttons::Button::Tare, mTareButtonGpio, mInterruptTimerGpio, mTime),
     mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem, mTareButton),
     mScalesCommand(mScales, mTerminal),
-    mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mSystem),
+    mTimerButtonGpio(TimerButtonGpioPort, TimerButtonPin),
+    mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mInterruptTimerGpio, mTime),
     mBrewTimer(mSystem, mTimerButton),
+    mTimerAutoStart(mBrewTimer, mScales, mTimerButton),
+    mTimeCommand(mTimerAutoStart, mTerminal),
     mDisplayManager(mUgfxWrapper),
-    mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer),
+    mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer, mTimerAutoStart),
     mWeightDisplayItem(mDisplayManager, mUgfxWrapper, mScales, mTerminal),
     mDisplayCommand(mTerminal, mWeightDisplayItem)
 {
@@ -40,6 +45,7 @@ void Instantiation::Init()
     DisplayGpio_Init();
     gfxInit();
     mDisplayManager.Init();
+    mInterruptTimerGpio.Init();
 }
 
 Terminal& Instantiation::Terminal()

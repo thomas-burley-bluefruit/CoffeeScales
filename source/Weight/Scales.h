@@ -15,25 +15,28 @@
 namespace coffeescales::weight
 {
 
-class Scales
-        : public coffeescales::weight::ScalesInterface, public drivers::ButtonPressCallbackInterface
+class Scales :
+    public coffeescales::weight::ScalesInterface,
+    public drivers::ButtonPressCallbackInterface
 {
-public:
-    Scales(drivers::AdcDriverInterface &adc, halwrapper::SystemInterface &system,
-           terminal::TerminalInterface &terminal, ScalesMemoryItemInterface &memory,
-           drivers::ButtonDriverInterface &tareButton);
+  public:
+    Scales(drivers::AdcDriverInterface& adc, halwrapper::SystemInterface& system,
+        terminal::TerminalInterface& terminal, ScalesMemoryItemInterface& memory,
+        drivers::ButtonDriverInterface& tareButton);
 
     void Init();
     void Task();
 
     // ScalesInterface
     void TareInit() override;
-    bool RegisterCallback(WeightReadingCallbackInterface *callback) override;
+    bool RegisterCallback(WeightReadingCallbackInterface* callback) override;
     void CalibrateInit() override;
     void CalibrateSet() override;
     void AdcDebugPrint(bool on) override;
     void WeightDebugPrint(bool on) override;
-    void OnButtonPress(drivers::buttons::Button button) override;
+
+    // ButtonPressCallbackInterface
+    void OnButtonPress(const drivers::buttons::Button button, const uint32_t tickMs = 0) override;
 
     enum class State
     {
@@ -45,7 +48,7 @@ public:
         CalibrateSet
     };
 
-private:
+  private:
     void StateWeigh();
     void StateTare();
     void StateCalibrateStart();
@@ -58,21 +61,21 @@ private:
     void PrintWeightValue();
     void FilterWeight(float newReadingMg);
 
-protected:
+  protected:
     State mState = State::Idle;
     static constexpr size_t MaxCallbacks = 32;
     static constexpr double CalibrationWeightMg = 200000.0;
     static constexpr size_t AveragingCount = 10;
     uint32_t mCallbackCount = 0;
-    std::array<WeightReadingCallbackInterface *, MaxCallbacks> mCallbacks;
+    std::array<WeightReadingCallbackInterface*, MaxCallbacks> mCallbacks;
     float mCalibrationFactor;
 
-private:
-    const drivers::AdcDriverInterface &mAdc;
-    const halwrapper::SystemInterface &mSystem;
-    terminal::TerminalInterface &mTerminal;
-    ScalesMemoryItemInterface &mMemory;
-    drivers::ButtonDriverInterface &mTareButton;
+  private:
+    const drivers::AdcDriverInterface& mAdc;
+    const halwrapper::SystemInterface& mSystem;
+    terminal::TerminalInterface& mTerminal;
+    ScalesMemoryItemInterface& mMemory;
+    drivers::ButtonDriverInterface& mTareButton;
 
     static constexpr uint32_t AdcReadIntervalMs = 100;
     static constexpr float FilterTimeConstant = 0.1f;

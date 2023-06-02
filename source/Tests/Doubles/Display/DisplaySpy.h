@@ -3,6 +3,8 @@
 #include "DisplayInterface.h"
 
 #include <cstddef>
+#include <string>
+#include <vector>
 
 namespace coffeescales::display
 {
@@ -12,7 +14,7 @@ class DisplaySpy final : public DisplayInterface
   public:
     void Redraw() const override;
     void DisplayTextBox(int16_t x, int16_t y, int16_t boxWidth, int16_t boxHeight,
-        const char* string, Justify justify) override;
+        const char* string, Justify justify, FontSize size = FontSize::Large) override;
     size_t DisplayHeight() const override;
     size_t DisplayWidth() const override;
     void ClearDisplay() const override;
@@ -24,8 +26,9 @@ class DisplaySpy final : public DisplayInterface
     int16_t DisplayTextBoxY = 0;
     int16_t DisplayTextBoxWidth = 0;
     int16_t DisplayTextBoxHeight = 0;
-    static constexpr size_t StringBufferSize = 128;
-    char StringBuffer[StringBufferSize] {0};
+    std::vector<std::string> TextsDisplayed;
+    // static constexpr size_t StringBufferSize = 128;
+    // char StringBuffer[StringBufferSize] {0};
     Justify DisplayTextBoxJustify = Justify::Left;
 
     size_t DisplayHeightValue = 64;

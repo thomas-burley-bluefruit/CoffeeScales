@@ -23,7 +23,7 @@ class WeightDisplayItemTests : public testing::Test
         mWeightDisplayItem.Update(redrawRequired);
         ASSERT_TRUE(redrawRequired) << "Weight: " << weightReadingMg;
         ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-        ASSERT_STREQ(mDisplay.StringBuffer, text);
+        ASSERT_STREQ(mDisplay.TextsDisplayed.back().c_str(), text);
         ASSERT_TRUE(mDisplay.ClearAreaCalled);
     }
 
@@ -63,7 +63,7 @@ TEST_F(WeightDisplayItemTests, first_update_after_init_draws_zero_grams)
     // Then
     ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-    ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
+    ASSERT_STREQ(mDisplay.TextsDisplayed.back().c_str(), expectedText);
 }
 
 TEST_F(WeightDisplayItemTests, display_cleared_and_new_weight_shown_on_update_after_weight_reading)
@@ -80,7 +80,7 @@ TEST_F(WeightDisplayItemTests, display_cleared_and_new_weight_shown_on_update_af
     // Then
     ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-    ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
+    ASSERT_STREQ(mDisplay.TextsDisplayed.back().c_str(), expectedText);
     ASSERT_TRUE(mDisplay.ClearAreaCalled);
     ASSERT_EQ(mDisplay.ClearAreaX, display::WeightDisplayItem::LocationX);
     ASSERT_EQ(mDisplay.ClearAreaY, display::WeightDisplayItem::LocationY);
@@ -102,7 +102,7 @@ TEST_F(WeightDisplayItemTests, negative_weights_displayed_correctly)
     // Then
     ASSERT_TRUE(redrawRequired);
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-    ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
+    ASSERT_STREQ(mDisplay.TextsDisplayed.back().c_str(), expectedText);
     ASSERT_TRUE(mDisplay.ClearAreaCalled);
 }
 
@@ -119,7 +119,7 @@ TEST_F(WeightDisplayItemTests, display_not_updated_if_weight_unchanged)
     ASSERT_TRUE(redrawRequired);
 
     ASSERT_TRUE(mDisplay.DisplayTextBoxCalled);
-    ASSERT_STREQ(mDisplay.StringBuffer, expectedText);
+    ASSERT_STREQ(mDisplay.TextsDisplayed.back().c_str(), expectedText);
     ASSERT_TRUE(mDisplay.ClearAreaCalled);
 
     mDisplay.DisplayTextBoxCalled = false;

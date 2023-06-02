@@ -18,10 +18,10 @@ void BrewTimer::Init()
 void BrewTimer::Task()
 {
     if (mStartRequested)
-        Start();
+        ActionStart();
 
     if (mResetRequested)
-        Reset();
+        ActionReset();
 
     if (!mRunning)
         return;
@@ -41,12 +41,22 @@ void BrewTimer::Task()
 
 void BrewTimer::Start()
 {
+    mStartRequested = true;
+}
+
+void BrewTimer::ActionStart()
+{
     mStartRequested = false;
     mRunning = true;
     mStartTick = mSystem.GetTick();
 }
 
 void BrewTimer::Reset()
+{
+    mResetRequested = true;
+}
+
+void BrewTimer::ActionReset()
 {
     mResetRequested = false;
     mRunning = false;
@@ -74,7 +84,7 @@ void BrewTimer::UpdateSubscribers()
     }
 }
 
-void BrewTimer::OnButtonPress(drivers::buttons::Button button)
+void BrewTimer::OnButtonPress(const drivers::buttons::Button button, const uint32_t tickMs)
 {
     if (mRunning)
     {

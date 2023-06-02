@@ -1,39 +1,65 @@
 #include "ButtonDriver.h"
 
+#include <cassert>
+#include <cstdio>
+
 using namespace ::coffeescales::drivers;
 
-ButtonDriver::ButtonDriver(buttons::Button button, halwrapper::ButtonGpioInterface &buttonGpio,
-                           halwrapper::SystemInterface &system)
-        : mButton(button), mButtonGpio(buttonGpio), mSystem(system),
-          MinimumIntervalMs(buttons::MinimumIntervalMs(button))
+ButtonDriver::ButtonDriver(buttons::Button button, halwrapper::GpioInterface& buttonGpio,
+    halwrapper::ExternalInterruptCallbackRegisterableInterface& interruptTimer,
+    halwrapper::TimeInterface& time) :
+    mButton(button),
+    mButtonGpio(buttonGpio),
+    mInterruptTimer(interruptTimer),
+    mTime(time),
+    MinimumIntervalMs(buttons::MinimumIntervalMs(button))
 {
+    mLastPressTimeMs = MinimumIntervalMs;
 }
 
 void ButtonDriver::Init()
 {
-    mButtonGpio.RegisterCallback(this);
+    mInterruptTimer.RegisterCallback(this);
 }
 
 bool ButtonDriver::Debounce()
 {
-    auto timeNowMs = mSystem.GetTick();
-    if (timeNowMs - mLastPressTimeMs < MinimumIntervalMs)
+    const auto timeNowMs = mTime.GetTick();
+
+    if ((timeNowMs - mLastPressTimeMs) < MinimumIntervalMs)
         return false;
 
     mLastPressTimeMs = timeNowMs;
     return true;
 }
 
-void ButtonDriver::RegisterCallback(ButtonPressCallbackInterface *callback)
+void ButtonDriver::RegisterCallback(ButtonPressCallbackInterface* callback)
 {
-    mCallback = callback;
+    assert(mCallbackCount < MaxCallbacks);
+    mCallbacks[mCallbackCount++] = callback;
 }
 
 void ButtonDriver::OnExternalInterrupt()
 {
-    if (!Debounce())
-        return;
+    if (mButtonGpio.GetPinState() == halwrapper::GpioPinState::Reset)
+    {
+        ++mOnTimeMs;
+    }
+    else
+    {
+        mOnTimeMs = 0;
+        mButtonHeld = false;
+    }
 
-    if (mCallback != nullptr)
-        mCallback->OnButtonPress(mButton);
+    if (mButtonHeld || mOnTimeMs < MinimumOnTimeMs || !Debounce())
+    {
+        return;
+    }
+
+    for (uint32_t i = 0; i < mCallbackCount; ++i)
+    {
+        mCallbacks[i]->OnButtonPress(mButton, mTime.GetTick());
+    }
+
+    mButtonHeld = true;
 }

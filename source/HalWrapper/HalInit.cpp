@@ -1,5 +1,5 @@
-#include "HalErrorHandler.h"
 #include "HalInit.h"
+#include "HalErrorHandler.h"
 #include "stm32l4xx_hal.h"
 
 using namespace ::coffeescales::halwrapper;
@@ -37,8 +37,8 @@ void HalInit::SystemClockConfig()
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
         ErrorHandler();
 
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-                                  | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -55,4 +55,33 @@ void HalInit::MxGpioInit()
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
+}
+
+extern "C" void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
+{
+    if (htim_base->Instance == TIM6)
+    {
+        __HAL_RCC_TIM6_CLK_ENABLE();
+    }
+
+    if (htim_base->Instance == TIM7)
+    {
+        __HAL_RCC_TIM7_CLK_ENABLE();
+        HAL_NVIC_SetPriority(TIM7_IRQn, 0, 0);
+        HAL_NVIC_EnableIRQ(TIM7_IRQn);
+    }
+}
+
+extern "C" void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
+{
+    if (htim_base->Instance == TIM6)
+    {
+        __HAL_RCC_TIM6_CLK_DISABLE();
+    }
+
+    if (htim_base->Instance == TIM7)
+    {
+        __HAL_RCC_TIM7_CLK_DISABLE();
+        HAL_NVIC_DisableIRQ(TIM7_IRQn);
+    }
 }
