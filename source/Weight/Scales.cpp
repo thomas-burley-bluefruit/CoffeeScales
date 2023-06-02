@@ -214,7 +214,7 @@ void Scales::WeightDebugPrint(bool on)
     mWeightDebugPrint = on;
 }
 
-void Scales::OnButtonPress(drivers::buttons::Button button)
+void Scales::OnButtonPress(const drivers::buttons::Button button, const uint32_t tickMs)
 {
     if (button == drivers::buttons::Button::Tare && mState == State::Weigh)
         mTareInitRequested = true;

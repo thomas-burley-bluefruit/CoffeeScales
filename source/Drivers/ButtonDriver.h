@@ -2,35 +2,45 @@
 
 #include "ButtonDriverInterface.h"
 #include "ButtonPressCallbackInterface.h"
-#include "ButtonGpioInterface.h"
-#include "SystemInterface.h"
+#include "ExternalInterruptCallbackRegisterableInterface.h"
+#include "GpioInterface.h"
+#include "TerminalInterface.h"
+#include "TimeInterface.h"
 
 #include <cstddef>
 
 namespace coffeescales::drivers
 {
 
-class ButtonDriver
-        : public ButtonDriverInterface, public halwrapper::ExternalInterruptCallbackInterface
+class ButtonDriver :
+    public ButtonDriverInterface,
+    public halwrapper::ExternalInterruptCallbackInterface
 {
-public:
-    ButtonDriver(buttons::Button button, halwrapper::ButtonGpioInterface &buttonGpio,
-                 halwrapper::SystemInterface &system);
+  public:
+    ButtonDriver(buttons::Button button, halwrapper::GpioInterface& buttonGpio,
+        halwrapper::ExternalInterruptCallbackRegisterableInterface& interruptTimer,
+        halwrapper::TimeInterface& time);
     ~ButtonDriver() = default;
     void Init();
-    void RegisterCallback(ButtonPressCallbackInterface *callback) override;
+    void RegisterCallback(ButtonPressCallbackInterface* callback) override;
     void OnExternalInterrupt() override;
 
-private:
+    static constexpr uint32_t MinimumOnTimeMs = 10;
+
+  private:
     bool Debounce();
 
     const buttons::Button mButton;
-    halwrapper::ButtonGpioInterface &mButtonGpio;
-    halwrapper::SystemInterface &mSystem;
-    ButtonPressCallbackInterface *mCallback = nullptr;
-
+    halwrapper::GpioInterface& mButtonGpio;
+    halwrapper::ExternalInterruptCallbackRegisterableInterface& mInterruptTimer;
+    halwrapper::TimeInterface& mTime;
+    ButtonPressCallbackInterface* mCallback = nullptr;
     const size_t MinimumIntervalMs;
-    size_t mLastPressTimeMs = 0;
+
+    uint32_t mOnTimeMs = 0;
+    uint32_t mTickMs = 0;
+    uint32_t mLastPressTimeMs = 0;
+    bool mButtonHeld = false;
 };
 
 }

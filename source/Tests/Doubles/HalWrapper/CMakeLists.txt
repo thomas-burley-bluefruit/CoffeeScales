@@ -3,12 +3,16 @@ set(NAME HalWrapper.Doubles)
 enable_language(C CXX)
 
 set(SOURCES
-        ButtonGpioSpy.cpp
-        ButtonGpioSpy.h
+        ExternalInterruptCallbackRegisterableSpy.cpp
+        ExternalInterruptCallbackRegisterableSpy.h
+        GpioSpy.cpp
+        GpioSpy.h
         SystemMock.cpp
         SystemMock.h
         SpiSpy.cpp
         SpiSpy.h
+        TimeSpy.cpp
+        TimeSpy.h
         UartSpy.cpp
         UartSpy.h
         )

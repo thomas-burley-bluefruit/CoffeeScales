@@ -19,7 +19,7 @@ static constexpr size_t MinimumIntervalMs(Button button)
     case Button::Tare:
     case Button::Timer:
     default:
-        return 150;
+        return 50;
     }
 }
 

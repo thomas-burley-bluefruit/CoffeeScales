@@ -74,7 +74,7 @@ void BrewTimer::UpdateSubscribers()
     }
 }
 
-void BrewTimer::OnButtonPress(drivers::buttons::Button button)
+void BrewTimer::OnButtonPress(const drivers::buttons::Button button, const uint32_t tickMs)
 {
     if (mRunning)
     {

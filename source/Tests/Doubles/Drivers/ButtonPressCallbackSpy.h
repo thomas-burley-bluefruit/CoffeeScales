@@ -7,12 +7,13 @@ namespace coffeescales::drivers
 
 class ButtonPressCallbackSpy final : public ButtonPressCallbackInterface
 {
-public:
+  public:
     void Reset();
-    void OnButtonPress(buttons::Button button) override;
+    void OnButtonPress(const buttons::Button button, const uint32_t tickMs) override;
 
     bool OnButtonPressCalled = false;
     buttons::Button Button = buttons::Button::Count;
+    uint32_t TickMs = 0;
 };
 
 }

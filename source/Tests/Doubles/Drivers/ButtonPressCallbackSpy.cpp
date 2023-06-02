@@ -8,8 +8,9 @@ void ButtonPressCallbackSpy::Reset()
     Button = buttons::Button::Count;
 }
 
-void ButtonPressCallbackSpy::OnButtonPress(buttons::Button button)
+void ButtonPressCallbackSpy::OnButtonPress(buttons::Button button, const uint32_t tick)
 {
     OnButtonPressCalled = true;
     Button = button;
+    TickMs = tick;
 }

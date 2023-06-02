@@ -26,7 +26,7 @@ class BrewTimer : public BrewTimerInterface, public drivers::ButtonPressCallback
     bool RegisterCallback(TimerIncrementCallbackInterface* callback);
 
     // ButtonPressCallbackInterface
-    void OnButtonPress(drivers::buttons::Button button);
+    void OnButtonPress(const drivers::buttons::Button button, const uint32_t tickMs = 0);
 
   protected:
     static constexpr size_t MaxCallbacks = 32;

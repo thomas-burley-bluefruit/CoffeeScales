@@ -1,39 +1,61 @@
 #include "ButtonDriver.h"
 
+#include <cstdio>
+
 using namespace ::coffeescales::drivers;
 
-ButtonDriver::ButtonDriver(buttons::Button button, halwrapper::ButtonGpioInterface &buttonGpio,
-                           halwrapper::SystemInterface &system)
-        : mButton(button), mButtonGpio(buttonGpio), mSystem(system),
-          MinimumIntervalMs(buttons::MinimumIntervalMs(button))
+ButtonDriver::ButtonDriver(buttons::Button button, halwrapper::GpioInterface& buttonGpio,
+    halwrapper::ExternalInterruptCallbackRegisterableInterface& interruptTimer,
+    halwrapper::TimeInterface& time) :
+    mButton(button),
+    mButtonGpio(buttonGpio),
+    mInterruptTimer(interruptTimer),
+    mTime(time),
+    MinimumIntervalMs(buttons::MinimumIntervalMs(button))
 {
+    mLastPressTimeMs = MinimumIntervalMs;
 }
 
 void ButtonDriver::Init()
 {
-    mButtonGpio.RegisterCallback(this);
+    mInterruptTimer.RegisterCallback(this);
 }
 
 bool ButtonDriver::Debounce()
 {
-    auto timeNowMs = mSystem.GetTick();
-    if (timeNowMs - mLastPressTimeMs < MinimumIntervalMs)
+    const auto timeNowMs = mTime.GetTick();
+
+    if ((timeNowMs - mLastPressTimeMs) < MinimumIntervalMs)
         return false;
 
     mLastPressTimeMs = timeNowMs;
     return true;
 }
 
-void ButtonDriver::RegisterCallback(ButtonPressCallbackInterface *callback)
+void ButtonDriver::RegisterCallback(ButtonPressCallbackInterface* callback)
 {
     mCallback = callback;
 }
 
 void ButtonDriver::OnExternalInterrupt()
 {
-    if (!Debounce())
+    if (mButtonGpio.GetPinState() == halwrapper::GpioPinState::Reset)
+    {
+        ++mOnTimeMs;
+    }
+    else
+    {
+        mOnTimeMs = 0;
+        mButtonHeld = false;
+    }
+
+    if (mButtonHeld || mOnTimeMs < MinimumOnTimeMs || !Debounce())
+    {
         return;
+    }
 
     if (mCallback != nullptr)
-        mCallback->OnButtonPress(mButton);
+        mCallback->OnButtonPress(mButton, mTime.GetTick());
+
+    mButtonHeld = true;
 }

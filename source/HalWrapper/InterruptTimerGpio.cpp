@@ -2,10 +2,15 @@
 #include "HalErrorHandler.h"
 #include "stm32l4xx_hal.h"
 
+#include <cassert>
+#include <cstddef>
+
 using namespace ::coffeescales::halwrapper;
 
 static TIM_HandleTypeDef sTimer;
-static ExternalInterruptCallbackInterface* sCallback = nullptr;
+static constexpr size_t MaxCallbacks = 8;
+static size_t sCallbackCount = 0;
+static ExternalInterruptCallbackInterface* sCallbacks[MaxCallbacks] {nullptr};
 
 void InterruptTimerGpio::Init()
 {
@@ -36,7 +41,8 @@ void InterruptTimerGpio::Init()
 
 void InterruptTimerGpio::RegisterCallback(ExternalInterruptCallbackInterface* callback)
 {
-    sCallback = callback;
+    assert(sCallbackCount < MaxCallbacks);
+    sCallbacks[sCallbackCount++] = callback;
 }
 
 extern "C"
@@ -54,9 +60,9 @@ extern "C"
             return;
         }
 
-        if (sCallback != nullptr)
+        for (size_t i = 0; i < sCallbackCount; ++i)
         {
-            sCallback->OnExternalInterrupt();
+            sCallbacks[i]->OnExternalInterrupt();
         }
     }
 }

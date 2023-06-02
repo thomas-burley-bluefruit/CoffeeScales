@@ -6,9 +6,9 @@
 #include "Scales.h"
 #include "ScalesMemoryItemSpy.h"
 #include "ScalesTerminalMessages.h"
+#include "SystemMock.h"
 #include "Terminal.h"
 #include "TerminalSpy.h"
-#include "SystemMock.h"
 #include "WeightReadingCallbackSpy.h"
 
 #include <string>
@@ -23,26 +23,29 @@ using std::vector;
 
 class ScalesTestObject : public Scales
 {
-public:
-    ScalesTestObject(AdcDriverInterface &adc, SystemInterface &system, TerminalInterface &terminal,
-                     ScalesMemoryItemInterface &memory, ButtonDriverInterface &tareButton)
-            : Scales(adc, system, terminal, memory, tareButton)
-    {}
+  public:
+    ScalesTestObject(AdcDriverInterface& adc, SystemInterface& system, TerminalInterface& terminal,
+        ScalesMemoryItemInterface& memory, ButtonDriverInterface& tareButton) :
+        Scales(adc, system, terminal, memory, tareButton)
+    {
+    }
 
     static constexpr size_t MaxCallbacks = Scales::MaxCallbacks;
     static constexpr size_t AveragingCount = Scales::AveragingCount;
-    std::array<WeightReadingCallbackInterface *, MaxCallbacks> &Callbacks = mCallbacks;
-    uint32_t &CallbackCount = mCallbackCount;
-    float &CalibrationFactor = mCalibrationFactor;
+    std::array<WeightReadingCallbackInterface*, MaxCallbacks>& Callbacks = mCallbacks;
+    uint32_t& CallbackCount = mCallbackCount;
+    float& CalibrationFactor = mCalibrationFactor;
     static constexpr float CalibrationWeight = Scales::CalibrationWeightMg;
-    State &State = Scales::mState;
+    State& State = Scales::mState;
 };
 
 class ScalesTests : public testing::Test
 {
-public:
-    ScalesTests() : mScales(mAdc, mSystem, mTerminal, mMemory, mTareButton)
-    {}
+  public:
+    ScalesTests() :
+        mScales(mAdc, mSystem, mTerminal, mMemory, mTareButton)
+    {
+    }
 
     void SetUp() override
     {
@@ -187,7 +190,7 @@ TEST_F(ScalesTests, Task_calls_all_registered_callbacks_after_successful_ADC_rea
     // Given
     Tare();
     std::vector<WeightReadingCallbackSpy> callbacks(5, WeightReadingCallbackSpy());
-    for (auto &callback: callbacks)
+    for (auto& callback : callbacks)
         ASSERT_TRUE(mScales.RegisterCallback(&callback));
 
     mAdc.ReadSuccess = true;
@@ -196,7 +199,7 @@ TEST_F(ScalesTests, Task_calls_all_registered_callbacks_after_successful_ADC_rea
     TriggerAdcRead();
 
     // Then
-    for (auto &callback: callbacks)
+    for (auto& callback : callbacks)
         ASSERT_EQ(1, callback.CallCount);
 }
 
@@ -254,13 +257,13 @@ TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
 
     vector<int32_t> tareAdcReadings = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
     int32_t averageTareAdcReading = 0;
-    for (auto reading: tareAdcReadings)
+    for (auto reading : tareAdcReadings)
         averageTareAdcReading += reading;
     averageTareAdcReading = static_cast<int32_t>(averageTareAdcReading / tareAdcReadings.size());
 
     // When: tared
     mScales.TareInit();
-    for (auto reading: tareAdcReadings)
+    for (auto reading : tareAdcReadings)
     {
         mAdc.ReadValue = reading;
         TriggerAdcRead();
@@ -274,8 +277,8 @@ TEST_F(ScalesTests, Tare_sets_tare_point_as_average_of_next_n_readings)
     mAdc.ReadValue += additionalAdcValue;
     RepeatAdcValue(mAdc.ReadValue, mScales.AveragingCount);
 
-    const auto expectedWeight = static_cast<int32_t>(additionalAdcValue /
-                                                     mScales.CalibrationFactor);
+    const auto expectedWeight =
+        static_cast<int32_t>(additionalAdcValue / mScales.CalibrationFactor);
     ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
 }
 
@@ -324,23 +327,22 @@ TEST_F(ScalesTests,
     CalibrationStartSequence();
 
     vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
-                                            58000, 59000};
+        58000, 59000};
     int32_t averageCalibrateAdcReading = 0;
-    for (auto reading: calibrateAdcReadings)
+    for (auto reading : calibrateAdcReadings)
         averageCalibrateAdcReading += reading;
-    averageCalibrateAdcReading = static_cast<int32_t>(averageCalibrateAdcReading /
-                                                      calibrateAdcReadings.size());
+    averageCalibrateAdcReading =
+        static_cast<int32_t>(averageCalibrateAdcReading / calibrateAdcReadings.size());
 
     // When: n calibration readings read
     mScales.CalibrateSet();
-    for (auto reading: calibrateAdcReadings)
+    for (auto reading : calibrateAdcReadings)
     {
         mAdc.ReadValue = reading;
         TriggerAdcRead();
     }
     const float expectedCalibrationFactor =
-            averageCalibrateAdcReading / ScalesTestObject::CalibrationWeight;
-
+        averageCalibrateAdcReading / ScalesTestObject::CalibrationWeight;
 
     // Then
     ASSERT_EQ(expectedCalibrationFactor, mScales.CalibrationFactor);
@@ -353,23 +355,22 @@ TEST_F(ScalesTests,
     CalibrationStartSequence();
 
     vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
-                                            58000, 59000};
+        58000, 59000};
     int32_t averageCalibrateAdcReading = 0;
-    for (auto reading: calibrateAdcReadings)
+    for (auto reading : calibrateAdcReadings)
         averageCalibrateAdcReading += reading;
-    averageCalibrateAdcReading = static_cast<int32_t>(averageCalibrateAdcReading /
-                                                      calibrateAdcReadings.size());
+    averageCalibrateAdcReading =
+        static_cast<int32_t>(averageCalibrateAdcReading / calibrateAdcReadings.size());
 
     // When: n calibration readings read
     mScales.CalibrateSet();
-    for (auto reading: calibrateAdcReadings)
+    for (auto reading : calibrateAdcReadings)
     {
         mAdc.ReadValue = reading;
         TriggerAdcRead();
     }
     const float expectedCalibrationFactor =
-            averageCalibrateAdcReading / ScalesTestObject::CalibrationWeight;
-
+        averageCalibrateAdcReading / ScalesTestObject::CalibrationWeight;
 
     // Then
     ASSERT_TRUE(mMemory.SetCalibrationFactorCalled);
@@ -385,14 +386,14 @@ TEST_F(ScalesTests,
     const auto initialCalibrationFactor = mScales.CalibrationFactor;
 
     vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
-                                            58000, 59000};
+        58000, 59000};
     int32_t averageCalibrateAdcReading = 0;
-    for (auto reading: calibrateAdcReadings)
+    for (auto reading : calibrateAdcReadings)
         averageCalibrateAdcReading += reading;
 
     // When: n calibration readings read
     mScales.CalibrateSet();
-    for (auto reading: calibrateAdcReadings)
+    for (auto reading : calibrateAdcReadings)
     {
         mAdc.ReadValue = reading;
         TriggerAdcRead();
@@ -409,11 +410,11 @@ TEST_F(ScalesTests, confirmation_message_printed_to_terminal_after_calibration_c
     mTerminal.TextOutCalled = false;
 
     vector<int32_t> calibrateAdcReadings = {50000, 51000, 52000, 53000, 54000, 55000, 56000, 57000,
-                                            58000, 59000};
+        58000, 59000};
 
     // When: n calibration readings read
     mScales.CalibrateSet();
-    for (auto reading: calibrateAdcReadings)
+    for (auto reading : calibrateAdcReadings)
     {
         mAdc.ReadValue = reading;
         TriggerAdcRead();
@@ -431,7 +432,7 @@ TEST_F(ScalesTests, AdcDebugPrint_on_prints_adc_value_on_next_task)
 
     char expectedMessage[Terminal::TerminalBufferSize];
     snprintf(expectedMessage, Terminal::TerminalBufferSize, ScalesTerminalMessages::AdcPrintFormat,
-             mAdc.ReadValue);
+        mAdc.ReadValue);
 
     // When
     mScales.AdcDebugPrint(true);
@@ -449,7 +450,7 @@ TEST_F(ScalesTests, AdcDebugPrint_off_stops_printing_adc_values_on_task)
 
     char expectedMessage[Terminal::TerminalBufferSize];
     snprintf(expectedMessage, Terminal::TerminalBufferSize, ScalesTerminalMessages::AdcPrintFormat,
-             mAdc.ReadValue);
+        mAdc.ReadValue);
 
     mScales.AdcDebugPrint(true);
     TriggerAdcRead();
@@ -476,8 +477,7 @@ TEST_F(ScalesTests, WeightDebugPrint_on_prints_weight_value_on_next_task)
 
     char expectedMessage[Terminal::TerminalBufferSize];
     snprintf(expectedMessage, Terminal::TerminalBufferSize,
-             ScalesTerminalMessages::WeightPrintFormat,
-             mCallback.LastWeightReading);
+        ScalesTerminalMessages::WeightPrintFormat, mCallback.LastWeightReading);
 
     // When
     mScales.WeightDebugPrint(true);
@@ -498,8 +498,7 @@ TEST_F(ScalesTests, WeightDebugPrint_off_stops_printing_weight_values_on_task)
 
     char expectedMessage[Terminal::TerminalBufferSize];
     snprintf(expectedMessage, Terminal::TerminalBufferSize,
-             ScalesTerminalMessages::WeightPrintFormat,
-             mCallback.LastWeightReading);
+        ScalesTerminalMessages::WeightPrintFormat, mCallback.LastWeightReading);
 
     mScales.WeightDebugPrint(true);
     TriggerAdcRead();
@@ -539,7 +538,7 @@ TEST_F(ScalesTests, Weight_readings_are_filtered)
     const int32_t expectedWeight = 58833;
 
     // When
-    for (auto reading: adcReadings)
+    for (auto reading : adcReadings)
     {
         mAdc.ReadValue = reading;
         TriggerAdcRead();
