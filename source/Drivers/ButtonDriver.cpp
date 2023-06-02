@@ -1,5 +1,6 @@
 #include "ButtonDriver.h"
 
+#include <cassert>
 #include <cstdio>
 
 using namespace ::coffeescales::drivers;
@@ -34,7 +35,8 @@ bool ButtonDriver::Debounce()
 
 void ButtonDriver::RegisterCallback(ButtonPressCallbackInterface* callback)
 {
-    mCallback = callback;
+    assert(mCallbackCount < MaxCallbacks);
+    mCallbacks[mCallbackCount++] = callback;
 }
 
 void ButtonDriver::OnExternalInterrupt()
@@ -54,8 +56,10 @@ void ButtonDriver::OnExternalInterrupt()
         return;
     }
 
-    if (mCallback != nullptr)
-        mCallback->OnButtonPress(mButton, mTime.GetTick());
+    for (uint32_t i = 0; i < mCallbackCount; ++i)
+    {
+        mCallbacks[i]->OnButtonPress(mButton, mTime.GetTick());
+    }
 
     mButtonHeld = true;
 }

@@ -5,6 +5,8 @@
 #include "TimeSpy.h"
 #include "gtest/gtest.h"
 
+#include <vector>
+
 using namespace ::coffeescales::drivers;
 using namespace ::coffeescales::halwrapper;
 using ::std::vector;
@@ -190,4 +192,40 @@ TEST_F(ButtonDriverTests, SysTick_is_passed_to_callback)
 
     // Then
     ASSERT_EQ(mTime.GetTickValue, callbackSpy.TickMs);
+}
+
+TEST_F(ButtonDriverTests, Multiple_callbacks_can_be_registered)
+{
+    // Given
+    std::vector<ButtonPressCallbackSpy> callbacks(ButtonDriver::MaxCallbacks,
+        ButtonPressCallbackSpy());
+
+    for (auto& callback : callbacks)
+    {
+        mButtonDriver.RegisterCallback(&callback);
+    }
+
+    // When
+    TriggerButtonPress();
+
+    // Then
+    for (auto& callback : callbacks)
+    {
+        ASSERT_TRUE(callback.OnButtonPressCalled);
+    }
+}
+
+TEST_F(ButtonDriverTests, Can_only_register_max_callbacks)
+{
+    // Given
+    ButtonPressCallbackSpy callback;
+
+    // When
+    for (int i = 0; i < ButtonDriver::MaxCallbacks; ++i)
+    {
+        mButtonDriver.RegisterCallback(&callback);
+    }
+
+    // Then
+    ASSERT_DEATH(mButtonDriver.RegisterCallback(&callback), "");
 }
