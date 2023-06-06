@@ -9,6 +9,7 @@
 #include "HalInit.h"
 #include "HX711Driver.h"
 #include "InterruptTimerGpio.h"
+#include "PourRate.h"
 #include "Scales.h"
 #include "ScalesCommand.h"
 #include "ScalesMemoryItem.h"
@@ -51,6 +52,7 @@ class Instantiation
     drivers::ButtonDriver mTareButton;
     weight::Scales mScales;
     weight::ScalesCommand mScalesCommand;
+    weight::PourRate mPourRate;
     halwrapper::ButtonGpio mTimerButtonGpio;
     drivers::ButtonDriver mTimerButton;
     time::BrewTimer mBrewTimer;

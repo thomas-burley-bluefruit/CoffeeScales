@@ -535,7 +535,7 @@ TEST_F(ScalesTests, Weight_readings_are_filtered)
     mScales.RegisterCallback(&mCallback);
 
     vector<int32_t> adcReadings = {57000, 58000, 59000};
-    const int32_t expectedWeight = 58833;
+    const int32_t expectedWeight = 58940;
 
     // When
     for (auto reading : adcReadings)

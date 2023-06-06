@@ -17,6 +17,7 @@ Instantiation::Instantiation() :
     mTareButton(buttons::Button::Tare, mTareButtonGpio, mInterruptTimerGpio, mTime),
     mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem, mTareButton),
     mScalesCommand(mScales, mTerminal),
+    mPourRate(mScales, mTime),
     mTimerButtonGpio(TimerButtonGpioPort, TimerButtonPin),
     mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mInterruptTimerGpio, mTime),
     mBrewTimer(mSystem, mTimerButton),
