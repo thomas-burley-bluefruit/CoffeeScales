@@ -9,7 +9,7 @@ class PourRateUpdateCallbackInterface
 {
   public:
     ~PourRateUpdateCallbackInterface() = default;
-    virtual void PourRateUpdate(uint32_t gramsPerSecond) = 0;
+    virtual void PourRateUpdate(float gramsPerSecond) = 0;
 };
 
 }

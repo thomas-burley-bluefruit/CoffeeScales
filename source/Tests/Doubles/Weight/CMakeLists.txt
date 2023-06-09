@@ -5,6 +5,8 @@ enable_language(C CXX)
 set(SOURCES
         PourRateUpdateCallbackSpy.cpp
         PourRateUpdateCallbackSpy.h
+        PourRateSpy.cpp
+        PourRateSpy.h
         ScalesSpy.cpp
         ScalesSpy.h
         ScalesMemoryItemSpy.cpp

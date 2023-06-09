@@ -4,10 +4,12 @@
 
 using namespace ::coffeescales::weight;
 
-PourRate::PourRate(ScalesInterface& scales, halwrapper::TimeInterface& time) :
+PourRate::PourRate(ScalesInterface& scales, halwrapper::TimeInterface& time,
+    drivers::ButtonDriverInterface& tareButton) :
     mTime(time)
 {
     scales.RegisterCallback(this);
+    tareButton.RegisterCallback(this);
 }
 
 void PourRate::RegisterCallback(PourRateUpdateCallbackInterface* callback)
@@ -17,24 +19,24 @@ void PourRate::RegisterCallback(PourRateUpdateCallbackInterface* callback)
 
 void PourRate::NewWeightReadingMg(int32_t weightMg)
 {
-    if (mCallback != nullptr && mLastWeightReadingTickMs != 0)
-    {
-        const auto pourRate = CalculatePourRate(weightMg);
-        if (pourRate != mLastPourRateCalculated)
-        {
-            mCallback->PourRateUpdate(pourRate);
-            mLastPourRateCalculated = pourRate;
-        }
-    }
-
+    const float pourRate = FilterPourRate(CalculatePourRate(weightMg));
+    mLastPourRateCalculatedGramsPerSec = pourRate;
     mLastWeightReadingMg = weightMg;
     mLastWeightReadingTickMs = mTime.GetTick();
+
+    const float pourRateRounded = std::round(pourRate * 10) / 10.0f;
+    if (pourRateRounded != mLastPourRateIssuedGramsPerSec && mCallback != nullptr)
+    {
+        mCallback->PourRateUpdate(pourRateRounded);
+        mLastPourRateIssuedGramsPerSec = pourRateRounded;
+    }
 }
 
-uint32_t PourRate::CalculatePourRate(int32_t newReadingMg)
+float PourRate::CalculatePourRate(int32_t newReadingMg)
 {
     if (newReadingMg < mLastWeightReadingMg)
     {
+        mLastPourRateCalculatedGramsPerSec = 0;
         return 0;
     }
 
@@ -43,5 +45,16 @@ uint32_t PourRate::CalculatePourRate(int32_t newReadingMg)
 
     const float weightDifferenceG = (newReadingMg - mLastWeightReadingMg) / 1000.0f;
 
-    return static_cast<uint32_t>(roundf(weightDifferenceG / timeDifferenceSecs));
+    return weightDifferenceG / timeDifferenceSecs;
+}
+
+float PourRate::FilterPourRate(float gramsPerSec)
+{
+    return FilterTimeConstant * static_cast<float>(mLastPourRateCalculatedGramsPerSec)
+        + (1.0f - FilterTimeConstant) * gramsPerSec;
+}
+
+void PourRate::OnButtonPress(const drivers::buttons::Button button, const uint32_t tickMs)
+{
+    mLastWeightReadingMg = 0;
 }

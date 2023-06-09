@@ -2,7 +2,7 @@
 
 using namespace ::coffeescales::weight;
 
-void PourRateUpdateCallbackSpy::PourRateUpdate(uint32_t gramsPerSecond)
+void PourRateUpdateCallbackSpy::PourRateUpdate(float gramsPerSecond)
 {
     PourRateUpdateCalled = true;
     GramsPerSecond = gramsPerSecond;
