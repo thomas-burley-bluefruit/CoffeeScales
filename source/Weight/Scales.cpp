@@ -26,7 +26,7 @@ Scales::Scales(AdcDriverInterface& adc, SystemInterface& system, TerminalInterfa
 void Scales::Init()
 {
     mCalibrationFactor = mMemory.GetCalibrationFactor();
-    TareInit();
+    mTareInitRequested = true;
     mTareButton.RegisterCallback(this);
 }
 
@@ -137,14 +137,8 @@ bool Scales::ReadAdc()
 void Scales::ConvertWeight()
 {
     const auto adcReadingDelta = mLastAdcReading - mTareAdcReading;
-    FilterWeight(static_cast<float>(adcReadingDelta) / mCalibrationFactor);
-}
-
-void Scales::FilterWeight(float newReadingMg)
-{
     mLastWeightConversionMg =
-        static_cast<int32_t>(roundf(FilterTimeConstant * static_cast<float>(mLastWeightConversionMg)
-            + (1.0f - FilterTimeConstant) * newReadingMg));
+        static_cast<int32_t>(static_cast<float>(adcReadingDelta) / mCalibrationFactor);
 }
 
 void Scales::UpdateSubscribers()

@@ -528,26 +528,6 @@ TEST_F(ScalesTests, TareInit_starts_tare_process)
     ASSERT_EQ(Scales::State::Tare, mScales.State);
 }
 
-TEST_F(ScalesTests, Weight_readings_are_filtered)
-{
-    // Given
-    Tare();
-    mScales.RegisterCallback(&mCallback);
-
-    vector<int32_t> adcReadings = {57000, 58000, 59000};
-    const int32_t expectedWeight = 58940;
-
-    // When
-    for (auto reading : adcReadings)
-    {
-        mAdc.ReadValue = reading;
-        TriggerAdcRead();
-    }
-
-    // Then
-    ASSERT_EQ(expectedWeight, mCallback.LastWeightReading);
-}
-
 TEST_F(ScalesTests, Init_registers_callback_with_tare_button)
 {
     ASSERT_TRUE(mTareButton.RegisterCallbackCalled);
