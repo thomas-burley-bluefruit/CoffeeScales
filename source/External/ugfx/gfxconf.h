@@ -105,7 +105,7 @@
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS16          GFXOFF
 #define GDISP_INCLUDE_FONT_DEJAVUSANS20 GFXON
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANS24          GFXOFF
-//    #define GDISP_INCLUDE_FONT_DEJAVUSANS32          GFXOFF
+#define GDISP_INCLUDE_FONT_DEJAVUSANS32 GFXON
 //    #define GDISP_INCLUDE_FONT_DEJAVUSANSBOLD12      GFXOFF
 //    #define GDISP_INCLUDE_FONT_FIXED_10X20           GFXOFF
 //    #define GDISP_INCLUDE_FONT_FIXED_7X14            GFXOFF
@@ -160,7 +160,7 @@
 // #define GDISP_DEFAULT_ORIENTATION                    gOrientationLandscape    // If not defined
 // the native hardware orientation is used. #define GDISP_LINEBUF_SIZE                           128
 // #define GDISP_STARTUP_COLOR                          GFX_BLACK
-// #define GDISP_NEED_STARTUP_LOGO                      GFXON
+#define GDISP_NEED_STARTUP_LOGO GFXOFF
 
 // #define GDISP_TOTAL_DISPLAYS                         1
 
@@ -168,12 +168,12 @@
 //     #ifdef GDISP_DRIVER_LIST
 //         // For code and speed optimization define as GFXON or GFXOFF if all controllers have the
 //         same capability #define GDISP_HARDWARE_STREAM_WRITE          GFXOFF #define
-//         GDISP_HARDWARE_STREAM_READ           GFXOFF #define GDISP_HARDWARE_STREAM_POS GFXOFF #define
-//         GDISP_HARDWARE_DRAWPIXEL             GFXOFF #define GDISP_HARDWARE_CLEARS GFXOFF #define
-//         GDISP_HARDWARE_FILLS                 GFXOFF #define GDISP_HARDWARE_BITFILLS GFXOFF #define
-//         GDISP_HARDWARE_SCROLL                GFXOFF #define GDISP_HARDWARE_PIXELREAD GFXOFF #define
-//         GDISP_HARDWARE_CONTROL               GFXOFF #define GDISP_HARDWARE_QUERY GFXOFF #define
-//         GDISP_HARDWARE_CLIP                  GFXOFF
+//         GDISP_HARDWARE_STREAM_READ           GFXOFF #define GDISP_HARDWARE_STREAM_POS GFXOFF
+//         #define GDISP_HARDWARE_DRAWPIXEL             GFXOFF #define GDISP_HARDWARE_CLEARS GFXOFF
+//         #define GDISP_HARDWARE_FILLS                 GFXOFF #define GDISP_HARDWARE_BITFILLS
+//         GFXOFF #define GDISP_HARDWARE_SCROLL                GFXOFF #define
+//         GDISP_HARDWARE_PIXELREAD GFXOFF #define GDISP_HARDWARE_CONTROL               GFXOFF
+//         #define GDISP_HARDWARE_QUERY GFXOFF #define GDISP_HARDWARE_CLIP                  GFXOFF
 
 //        #define GDISP_PIXELFORMAT                    GDISP_PIXELFORMAT_RGB888
 //    #endif
