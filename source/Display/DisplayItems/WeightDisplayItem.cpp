@@ -55,8 +55,6 @@ void WeightDisplayItem::DisplayWeightString(const char* string)
     mDisplay.DisplayTextBox(LocationX, LocationY, WidthPx, HeightPx, string, Justify::Center,
         FontSize::Large);
 
-    // mDisplay.DrawBox(LocationX, LocationY, WidthPx, HeightPx);
-
     if (mDebugPrintWeight)
     {
         strncat(mPrintBuffer, "\n", PrintBufferSize);
