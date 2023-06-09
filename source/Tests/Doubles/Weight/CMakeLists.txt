@@ -3,12 +3,16 @@ set(NAME Weight.Doubles)
 enable_language(C CXX)
 
 set(SOURCES
+        PourRateUpdateCallbackSpy.cpp
+        PourRateUpdateCallbackSpy.h
+        PourRateSpy.cpp
+        PourRateSpy.h
         ScalesSpy.cpp
         ScalesSpy.h
-        WeightReadingCallbackSpy.cpp
-        WeightReadingCallbackSpy.h
         ScalesMemoryItemSpy.cpp
-        ScalesMemoryItemSpy.h)
+        ScalesMemoryItemSpy.h
+        WeightReadingCallbackSpy.cpp
+        WeightReadingCallbackSpy.h)
 
 set(INCLUDES .)
 

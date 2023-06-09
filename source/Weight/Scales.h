@@ -59,7 +59,6 @@ class Scales :
     void UpdateSubscribers();
     void PrintAdcValue();
     void PrintWeightValue();
-    void FilterWeight(float newReadingMg);
 
   protected:
     State mState = State::Idle;
@@ -78,7 +77,6 @@ class Scales :
     drivers::ButtonDriverInterface& mTareButton;
 
     static constexpr uint32_t AdcReadIntervalMs = 100;
-    static constexpr float FilterTimeConstant = 0.1f;
 
     uint32_t mLastReadTick = 0;
     int32_t mLastWeightConversionMg = 0.0f;

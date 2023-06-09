@@ -1,6 +1,7 @@
 set(NAME Tests.Weight)
 
 set(SOURCES
+        tests.PourRate.cpp
         tests.Scales.cpp
         tests.ScalesCommand.cpp
         tests.ScalesMemoryItem.cpp)

@@ -2,6 +2,8 @@ set(NAME Weight)
 enable_language(C CXX)
 
 set(SOURCES
+        PourRate.cpp
+        PourRate.h
         Scales.cpp
         Scales.h
         ScalesCommand.cpp

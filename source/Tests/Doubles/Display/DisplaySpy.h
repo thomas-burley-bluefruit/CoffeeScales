@@ -15,6 +15,8 @@ class DisplaySpy final : public DisplayInterface
     void Redraw() const override;
     void DisplayTextBox(int16_t x, int16_t y, int16_t boxWidth, int16_t boxHeight,
         const char* string, Justify justify, FontSize size = FontSize::Large) override;
+    void DrawLine(int16_t startX, int16_t startY, int16_t endX, int16_t endY);
+    void DrawBox(int16_t x, int16_t y, int16_t boxWidth, int16_t boxHeight);
     size_t DisplayHeight() const override;
     size_t DisplayWidth() const override;
     void ClearDisplay() const override;
@@ -27,8 +29,6 @@ class DisplaySpy final : public DisplayInterface
     int16_t DisplayTextBoxWidth = 0;
     int16_t DisplayTextBoxHeight = 0;
     std::vector<std::string> TextsDisplayed;
-    // static constexpr size_t StringBufferSize = 128;
-    // char StringBuffer[StringBufferSize] {0};
     Justify DisplayTextBoxJustify = Justify::Left;
 
     size_t DisplayHeightValue = 64;

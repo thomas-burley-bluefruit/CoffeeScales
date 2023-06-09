@@ -17,6 +17,7 @@ Instantiation::Instantiation() :
     mTareButton(buttons::Button::Tare, mTareButtonGpio, mInterruptTimerGpio, mTime),
     mScales(mHx711, mSystem, mTerminal, mScalesMemoryItem, mTareButton),
     mScalesCommand(mScales, mTerminal),
+    mPourRate(mScales, mTime, mTareButton),
     mTimerButtonGpio(TimerButtonGpioPort, TimerButtonPin),
     mTimerButton(buttons::Button::Timer, mTimerButtonGpio, mInterruptTimerGpio, mTime),
     mBrewTimer(mSystem, mTimerButton),
@@ -25,6 +26,7 @@ Instantiation::Instantiation() :
     mDisplayManager(mUgfxWrapper),
     mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer, mTimerAutoStart),
     mWeightDisplayItem(mDisplayManager, mUgfxWrapper, mScales, mTerminal),
+    mPourRateDisplayItem(mDisplayManager, mUgfxWrapper, mPourRate),
     mDisplayCommand(mTerminal, mWeightDisplayItem)
 {
 }

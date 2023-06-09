@@ -22,6 +22,10 @@ void DisplaySpy::DisplayTextBox(int16_t x, int16_t y, int16_t boxWidth, int16_t 
     TextsDisplayed.push_back(string);
 }
 
+void DisplaySpy::DrawLine(int16_t startX, int16_t startY, int16_t endX, int16_t endY) {}
+
+void DisplaySpy::DrawBox(int16_t x, int16_t y, int16_t boxWidth, int16_t boxHeight) {}
+
 size_t DisplaySpy::DisplayHeight() const
 {
     return DisplayHeightValue;

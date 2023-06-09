@@ -6,6 +6,7 @@ namespace coffeescales::display
 enum class FontSize
 {
     Large,
+    Medium,
     Small
 };
 

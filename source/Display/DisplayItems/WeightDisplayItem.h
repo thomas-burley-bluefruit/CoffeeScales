@@ -26,9 +26,9 @@ class WeightDisplayItem : public weight::WeightReadingCallbackInterface, public 
     // WeightReadingCallbackInterface
     void NewWeightReadingMg(int32_t weightMg) override;
 
-    static constexpr int16_t LocationX = 128;
+    static constexpr int16_t LocationX = 0;
     static constexpr int16_t LocationY = 0;
-    static constexpr int16_t WidthPx = 128;
+    static constexpr int16_t WidthPx = 160;
     static constexpr int16_t HeightPx = 64;
 
   private:

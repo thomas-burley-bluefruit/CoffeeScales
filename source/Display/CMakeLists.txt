@@ -6,6 +6,8 @@ set(SOURCES
         DisplayCommand.h
         DisplayManager.cpp
         DisplayManager.h
+        DisplayItems/PourRateDisplayItem.cpp
+        DisplayItems/PourRateDisplayItem.h
         DisplayItems/TimeDisplayItem.cpp
         DisplayItems/TimeDisplayItem.h
         DisplayItems/WeightDisplayItem.cpp
