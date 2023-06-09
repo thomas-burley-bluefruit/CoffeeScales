@@ -32,15 +32,15 @@ class TimeDisplayItem :
     // TimerAutoStartCallbackInterface
     void TimerAutoStartEnabled(bool enabled) override;
 
-    static constexpr int16_t TimerLocationX = 0;
+    static constexpr int16_t TimerLocationX = 160;
     static constexpr int16_t TimerLocationY = 0;
-    static constexpr int16_t TimerWidthPx = 128;
-    static constexpr int16_t TimerHeightPx = 64;
+    static constexpr int16_t TimerWidthPx = 96;
+    static constexpr int16_t TimerHeightPx = 32;
 
-    static constexpr int16_t AutoStatusLocationX = 0;
+    static constexpr int16_t AutoStatusLocationX = 165;
     static constexpr int16_t AutoStatusLocationY = 0;
     static constexpr int16_t AutoStatusWidthPx = 32;
-    static constexpr int16_t AutoStatusHeightPx = 16;
+    static constexpr int16_t AutoStatusHeightPx = 32;
 
   private:
     DisplayManagerInterface& mDisplayManager;

@@ -52,7 +52,10 @@ void WeightDisplayItem::NewWeightReadingMg(int32_t weightMg)
 void WeightDisplayItem::DisplayWeightString(const char* string)
 {
     mDisplay.ClearArea(LocationX, LocationY, WidthPx, HeightPx);
-    mDisplay.DisplayTextBox(LocationX, LocationY, WidthPx, HeightPx, string, Justify::Center);
+    mDisplay.DisplayTextBox(LocationX, LocationY, WidthPx, HeightPx, string, Justify::Center,
+        FontSize::Large);
+
+    // mDisplay.DrawBox(LocationX, LocationY, WidthPx, HeightPx);
 
     if (mDebugPrintWeight)
     {

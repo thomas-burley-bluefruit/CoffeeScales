@@ -26,6 +26,7 @@ Instantiation::Instantiation() :
     mDisplayManager(mUgfxWrapper),
     mTimeDisplayItem(mDisplayManager, mUgfxWrapper, mBrewTimer, mTimerAutoStart),
     mWeightDisplayItem(mDisplayManager, mUgfxWrapper, mScales, mTerminal),
+    mPourRateDisplayItem(mDisplayManager, mUgfxWrapper, mPourRate),
     mDisplayCommand(mTerminal, mWeightDisplayItem)
 {
 }

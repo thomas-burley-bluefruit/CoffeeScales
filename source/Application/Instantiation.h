@@ -10,6 +10,7 @@
 #include "HX711Driver.h"
 #include "InterruptTimerGpio.h"
 #include "PourRate.h"
+#include "PourRateDisplayItem.h"
 #include "Scales.h"
 #include "ScalesCommand.h"
 #include "ScalesMemoryItem.h"
@@ -62,6 +63,7 @@ class Instantiation
     display::DisplayManager mDisplayManager;
     display::TimeDisplayItem mTimeDisplayItem;
     display::WeightDisplayItem mWeightDisplayItem;
+    display::PourRateDisplayItem mPourRateDisplayItem;
     display::DisplayCommand mDisplayCommand;
 };
 

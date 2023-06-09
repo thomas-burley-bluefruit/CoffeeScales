@@ -49,12 +49,12 @@ void TimeDisplayItem::DisplayString()
 {
     mDisplay.ClearArea(TimerLocationX, TimerLocationY, TimerWidthPx, TimerHeightPx);
     mDisplay.DisplayTextBox(TimerLocationX, TimerLocationY, TimerWidthPx, TimerHeightPx,
-        mPrintBuffer, Justify::Center);
+        mPrintBuffer, Justify::Right);
 
     if (mTimerAutoStartEnabled)
     {
         mDisplay.DisplayTextBox(AutoStatusLocationX, AutoStatusLocationY, AutoStatusWidthPx,
-            AutoStatusHeightPx, AutoLabel, Justify::Center, FontSize::Small);
+            AutoStatusHeightPx, AutoLabel, Justify::Left, FontSize::Small);
     }
 }
 
