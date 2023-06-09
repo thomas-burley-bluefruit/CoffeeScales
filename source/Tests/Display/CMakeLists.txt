@@ -4,6 +4,7 @@ set(SOURCES
         tests.DisplayCommand.cpp
         tests.DisplayManager.cpp
         tests.TimeDisplayItem.cpp
+        tests.PourRateDisplayItem.cpp
         tests.WeightDisplayitem.cpp)
 
 set(INCLUDES .)
