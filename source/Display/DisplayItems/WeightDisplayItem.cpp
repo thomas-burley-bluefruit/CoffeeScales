@@ -26,8 +26,13 @@ void WeightDisplayItem::Init()
 
 void WeightDisplayItem::NewWeightReadingMg(int32_t weightMg)
 {
-    bool negativeWeight = weightMg < 0;
     int32_t absWeight = abs(weightMg);
+    bool weightRoundsToZeroG = absWeight < 50;
+
+    if (!weightRoundsToZeroG && abs(weightMg - mLastWeightDisplayedMg) < HysteresisMg)
+    {
+        return;
+    }
 
     auto grams = static_cast<float>(absWeight) / 1000.0f;
     auto deciGrams = static_cast<int32_t>(roundf(grams * 10.0f));
@@ -36,14 +41,18 @@ void WeightDisplayItem::NewWeightReadingMg(int32_t weightMg)
     auto tenthGrams =
         static_cast<int32_t>((roundedGrams - static_cast<float>(integerGrams)) * 10.0f);
 
-    if (negativeWeight)
-        integerGrams = -integerGrams;
+    bool negativeWeight = weightMg < 0 && !(integerGrams == 0 && tenthGrams == 0);
 
-    if (mLastGramsDisplayed == integerGrams && mLastDeciGramsDisplayed == tenthGrams)
+    if (mLastGramsDisplayed == integerGrams && mLastDeciGramsDisplayed == tenthGrams
+        && mLastWeightDisplayedWasNegative == negativeWeight)
+    {
         return;
+    }
 
+    mLastWeightDisplayedMg = weightMg;
     mLastGramsDisplayed = integerGrams;
     mLastDeciGramsDisplayed = tenthGrams;
+    mLastWeightDisplayedWasNegative = negativeWeight;
 
     LoadPrintBuffer();
     mRedrawRequired = true;
@@ -52,7 +61,7 @@ void WeightDisplayItem::NewWeightReadingMg(int32_t weightMg)
 void WeightDisplayItem::DisplayWeightString(const char* string)
 {
     mDisplay.ClearArea(LocationX, LocationY, WidthPx, HeightPx);
-    mDisplay.DisplayTextBox(LocationX, LocationY, WidthPx, HeightPx, string, Justify::Center,
+    mDisplay.DisplayTextBox(LocationX, LocationY, WidthPx, HeightPx, string, Justify::Right,
         FontSize::Large);
 
     if (mDebugPrintWeight)
@@ -64,7 +73,8 @@ void WeightDisplayItem::DisplayWeightString(const char* string)
 
 void WeightDisplayItem::LoadPrintBuffer()
 {
-    snprintf(mPrintBuffer, PrintBufferSize, "%li.%lig", mLastGramsDisplayed,
+    snprintf(mPrintBuffer, PrintBufferSize, "%s%li.%lig",
+        mLastWeightDisplayedWasNegative != 0 ? "-" : "", mLastGramsDisplayed,
         mLastDeciGramsDisplayed);
 }
 
