@@ -28,8 +28,10 @@ class WeightDisplayItem : public weight::WeightReadingCallbackInterface, public 
 
     static constexpr int16_t LocationX = 0;
     static constexpr int16_t LocationY = 0;
-    static constexpr int16_t WidthPx = 160;
+    static constexpr int16_t WidthPx = 150;
     static constexpr int16_t HeightPx = 64;
+
+    static constexpr int32_t HysteresisMg = 90;
 
   private:
     DisplayManagerInterface& mDisplayManager;
@@ -41,8 +43,10 @@ class WeightDisplayItem : public weight::WeightReadingCallbackInterface, public 
     char mPrintBuffer[PrintBufferSize] {0};
 
     bool mRedrawRequired = false;
+    int32_t mLastWeightDisplayedMg = 0;
     int32_t mLastGramsDisplayed = 0;
     int32_t mLastDeciGramsDisplayed = 0;
+    bool mLastWeightDisplayedWasNegative = false;
 
     bool mDebugPrintWeight = false;
 
